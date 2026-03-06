@@ -1,7 +1,7 @@
 
 [project]
 name = "composez"
-description = "Composez is AI-assisted fiction writing in your terminal"
+description = "Composez is an AI-assisted fiction writing tool in your terminal"
 readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -16,7 +16,7 @@ classifiers = [
 requires-python = ">=3.10,<3.13"
 version = "0.1.0"
 dependencies = [
-    "aider-chat @ file:///Users/kent/Documents/projects_active/composez-aider-fork",
+    "composez-aider-fork @ file:///Users/kent/Documents/projects_active/composez-aider-fork",
     # Export formats
     "python-docx",
     "ebooklib",
@@ -29,6 +29,15 @@ dependencies = [
     "fastapi",
     "uvicorn[standard]",
     "python-multipart",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-env",
+    "pre-commit",
+    "codespell",
 ]
 
 [project.scripts]

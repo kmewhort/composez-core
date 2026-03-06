@@ -14,3 +14,4 @@ novel_ui/dist/
 .aider*
 .pytest_cache/
 agents/
+.claude/
