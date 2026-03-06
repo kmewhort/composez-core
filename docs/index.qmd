@@ -1,0 +1,113 @@
+---
+pagetitle: "Composez — AI-Powered Structured Fiction Editing"
+toc: false
+sidebar: false
+---
+
+::: {.hero}
+
+# Composez
+
+::: {.tagline}
+AI-powered structured fiction editing, built on Aider
+:::
+
+::: {.hero-buttons}
+[Get Started](guide/getting-started.qmd){.btn-primary}
+[Command Reference](reference/commands.qmd){.btn-secondary}
+:::
+
+:::
+
+## What is Composez?
+
+Composez is a fork of [Aider](https://aider.chat) purpose-built for writing long-form fiction with AI. It adds a structured narrative layer on top of Aider's powerful code-editing engine, giving you an AI writing partner that understands your novel's hierarchy---acts, chapters, and scenes---and helps you write, revise, and manage your manuscript with full version control.
+
+Instead of dumping an entire novel into a single prompt, Composez lets you work at the right level of granularity: summarize a scene, write a chapter, reorganize your structure, and lint your prose---all through simple slash commands in the terminal.
+
+::: {.features}
+
+::: {.feature-card}
+### Narrative Hierarchy
+Organize your manuscript into acts, chapters, and scenes with configurable level names. Each scene has dedicated `PROSE.md` and `SUMMARY.md` files. The structure is enforced automatically.
+:::
+
+::: {.feature-card}
+### Reference Database
+Keep character sheets, location descriptions, style guides, and world-building notes in a structured `db/` directory. Core entries are loaded as context automatically so the AI maintains consistency.
+:::
+
+::: {.feature-card}
+### Smart Context Management
+Auto-context automatically identifies relevant files before each LLM call, or use `/add` with narrative locations to load specific scenes, summaries, or database entries. Write and summarize commands spin up isolated sessions with just the right context.
+:::
+
+::: {.feature-card}
+### Import & Export
+Import existing manuscripts from Novelcrafter or plain Markdown. Export your finished work to Markdown, DOCX, or EPUB with proper formatting, chapter breaks, and scene separators.
+:::
+
+::: {.feature-card}
+### Prose Linting
+Integrated Vale-based linting catches passive voice, cliches, AI-tells, and style issues. The linter is tuned for fiction---no false positives on invented names or literary conventions.
+:::
+
+::: {.feature-card}
+### Flexible Modes
+Direct editing, two-phase compose mode, and autonomous agent mode---combine any edit mode with any autonomy level. Use `/feedback` for structured critique and `/analyze-style` to capture your voice.
+:::
+
+::: {.feature-card}
+### Full Git Integration
+Every edit is version-controlled. You can review diffs, roll back changes, and branch your manuscript. Auto-commits keep a clean history without getting in your way.
+:::
+
+::: {.feature-card}
+### Works With Any LLM
+Use Claude, GPT-4, Gemini, local models, or any provider Aider supports. Composez inherits Aider's full model compatibility, including architect mode with separate planning and editing models.
+:::
+
+:::
+
+## Quick Example
+
+```bash
+# Start composez in your project
+composez
+
+# Create your narrative structure
+> /new act The Beginning
+> /new 1 chapter Arrivals
+> /new 1 1 scene The Train Station
+
+# Add a scene and write prose from its summary
+> /add 1 1 1
+> /write 1 1 1
+
+# Summarize what you've written
+> /summarize 1 1 1
+
+# Check your prose for style issues
+> /lint 1 1 1
+
+# Export when you're ready
+> /export epub
+```
+
+## How It Works
+
+Composez uses a **lightweight overlay** on Aider's coder system rather than a full subclass. This means:
+
+- **Every edit format works**: whole-file, diff, udiff, and more
+- **Chat and architect modes**: use a single model or a planner + editor pair
+- **Upstream compatibility**: stays in sync with Aider improvements
+
+The narrative structure lives in your filesystem as plain directories and Markdown files---no proprietary formats, no databases, no lock-in. Your manuscript is always readable, diffable, and yours.
+
+---
+
+<div style="text-align: center; margin: 2rem 0; color: #636e72;">
+
+[Get Started →](guide/getting-started.qmd) &nbsp;|&nbsp; [Commands Reference →](reference/commands.qmd)
+
+</div>

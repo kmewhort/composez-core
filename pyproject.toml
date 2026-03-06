@@ -1,0 +1,49 @@
+
+[project]
+name = "composez"
+description = "Composez is AI-assisted fiction writing in your terminal"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python",
+]
+requires-python = ">=3.10,<3.13"
+version = "0.1.0"
+dependencies = [
+    "aider-chat @ file:///Users/kent/Documents/projects_active/composez-aider-fork",
+    # Export formats
+    "python-docx",
+    "ebooklib",
+    "lxml>=4.9.0",
+    # Prose linting
+    "vale",
+    # Image handling (cover generation)
+    "pillow",
+    # FastAPI server (composez_core/server/)
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+]
+
+[project.scripts]
+composez = "aider.main:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["composez_core", "composez_core.*"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.codespell]
+skip = "*.svg"
+write-changes = true

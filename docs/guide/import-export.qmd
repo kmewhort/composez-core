@@ -1,0 +1,148 @@
+---
+title: "Import & Export"
+description: "Importing existing manuscripts and exporting to Markdown, DOCX, and EPUB."
+---
+
+## Importing
+
+Composez can import existing manuscripts from two sources:
+
+### Novelcrafter Import
+
+Import a [Novelcrafter](https://novelcrafter.com) Markdown export (zip file or extracted directory):
+
+```
+> /import novelcrafter ~/Downloads/my-novel-export.zip
+```
+
+Or from an extracted directory:
+
+```
+> /import novelcrafter ~/Downloads/my-novel-export/
+```
+
+This imports:
+
+- **Narrative structure** (acts, chapters, scenes with prose and summaries)
+- **Database entries** (characters, locations, items, etc.)
+- **Snippets** and other reference material
+
+The import:
+
+1. Checks that `novel/` and `db/` have no uncommitted changes
+2. Clears the existing `novel/` and `db/` directories
+3. Runs the import
+4. Commits the result automatically
+
+::: {.callout-warning}
+## Destructive operation
+The Novelcrafter import replaces your existing narrative structure and database. Commit or stash any uncommitted changes first.
+:::
+
+### Markdown Import
+
+Import a plain Markdown file using heading levels to determine structure:
+
+```
+> /import markdown ~/Documents/draft.md
+```
+
+Heading mapping:
+
+| Markdown Heading | Composez Level |
+|------------------|----------------|
+| `# Heading` | Act |
+| `## Heading` | Chapter |
+| `### Heading` | Scene |
+
+Content under each `###` heading becomes the scene's `PROSE.md`. The heading text becomes the directory title.
+
+::: {.callout-note}
+## Database not imported
+Markdown import only creates the narrative structure. You'll need to create database entries (characters, locations, etc.) manually afterward.
+:::
+
+## Exporting
+
+### Markdown Export
+
+Export your entire manuscript as a single Markdown file:
+
+```
+> /export markdown
+> /export markdown my-novel.md
+```
+
+The output includes:
+
+- Act titles as `#` headings
+- Chapter titles as `##` headings
+- Scene titles as `###` headings
+- Scene prose under each heading
+- Scene separators (`***`) between scenes within a chapter
+
+### DOCX Export
+
+Export as a styled Word document:
+
+```
+> /export docx
+> /export docx my-novel.docx
+```
+
+Requires the `python-docx` package:
+
+```bash
+pip install python-docx
+```
+
+The DOCX export includes:
+
+- Proper heading styles for acts, chapters, and scenes
+- Scene separators
+- Standard manuscript formatting
+
+### EPUB Export
+
+Export as an EPUB ebook:
+
+```
+> /export epub
+> /export epub my-novel.epub
+```
+
+Requires the `ebooklib` package:
+
+```bash
+pip install ebooklib
+```
+
+The EPUB includes:
+
+- Book title and author from `db/core/metadata.yml`
+- Chapter-based structure
+- Cover image from `cover.jpg` or `cover.png` if present
+- Proper EPUB metadata and navigation
+
+## Default Filenames
+
+If you don't specify a filename, defaults are used:
+
+| Format | Default Filename |
+|--------|-----------------|
+| Markdown | `export.md` |
+| DOCX | `export.docx` |
+| EPUB | `export.epub` |
+
+Files are created in the project root directory.
+
+## Metadata
+
+Export metadata (title, author) comes from `db/core/metadata.yml`:
+
+```yaml
+title: The Lighthouse
+author: Elena Vasquez
+```
+
+If the file doesn't exist, defaults to "Untitled" and "Unknown".

@@ -1,0 +1,113 @@
+---
+title: "Navigation & Context Commands"
+description: "Commands for loading files, viewing structure, and managing chat context."
+---
+
+## /add
+
+Add files to the chat context. Supports narrative locations, database entries, and raw file paths.
+
+### Narrative locations
+
+```
+/add act 1 chapter 2 scene 3     # Add all files for scene 3
+/add 1 2 3                       # Shorthand (same as above)
+/add 1 2                         # Add everything in chapter 2
+/add 1                           # Add everything in act 1
+```
+
+### Summary and prose selectors
+
+Prefix with `summaries` or `prose` to load specific file types:
+
+```
+/add summaries 1 2               # All SUMMARY.md files in chapter 2
+/add prose 1 2                   # All PROSE.md files in chapter 2
+/add prose 1 2 3                 # Just scene 3's PROSE.md
+```
+
+### All summaries / prose
+
+```
+/add summaries                   # Every SUMMARY.md across the novel
+/add prose                       # Every PROSE.md across the novel
+```
+
+### Database entries
+
+```
+/add db                          # All db entries
+/add db sarah                    # Specific entry by name
+/add db characters               # All entries in a category
+```
+
+### Raw file paths
+
+Falls through to Aider's base `/add` for paths that don't match the above patterns:
+
+```
+/add novel/Act 1 - Title/outline.md
+```
+
+### Behavior
+
+- Narrative files are added as **editable** by default
+- Database entries are added as **editable** (except `db/core/` which is always read-only)
+- Word counts are displayed for each added file or directory
+- Collapsed directory paths are shown when all files in a directory are added
+
+---
+
+## /drop
+
+Remove files from the chat session.
+
+```
+/drop 1 2 3                     # Drop scene 3's files
+/drop db sarah                  # Drop a db entry
+```
+
+Delegates to Aider's base `/drop`. After any drop operation, `db/core/` entries are automatically reloaded as read-only context.
+
+---
+
+## /ls
+
+List the narrative structure, database entries, and files currently in the chat.
+
+```
+/ls
+```
+
+Output includes:
+
+- **Narrative structure** --- hierarchical outline of acts, chapters, and scenes
+- **Db entries** --- all entries grouped by category
+- **Files in chat** --- editable files with word counts
+- **Read-only files** --- read-only context files with word counts
+
+---
+
+## /wordcount
+
+Show word counts for each level of the narrative hierarchy.
+
+```
+/wordcount
+```
+
+Output example:
+
+```
+Total word count: 47,832
+
+Act 1: The Beginning: 23,456 words
+  Chapter 1: Arrivals: 8,234 words
+    Scene 1: The Train Station: 2,847 words
+    Scene 2: First Impressions: 3,012 words
+    Scene 3: The Welcome: 2,375 words
+  Chapter 2: Settling In: 7,891 words
+    ...
+Act 2: Rising Action: 24,376 words
+  ...
+```

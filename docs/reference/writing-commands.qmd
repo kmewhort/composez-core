@@ -1,0 +1,288 @@
+---
+title: "Writing & Editing Commands"
+description: "Commands for generating prose, summaries, and making revisions."
+---
+
+## /write
+
+Generate prose from summaries. For scenes, writes `PROSE.md` from `SUMMARY.md`. For chapters and acts, writes all descendant scenes.
+
+### Usage
+
+```
+/write act 1 chapter 2 scene 3   # Write a single scene
+/write 1 2 3                     # Shorthand
+/write act 1 chapter 2           # Write all scenes in chapter 2
+/write 1 2                       # Shorthand
+/write act 1                     # Write all scenes in act 1
+/write 1                         # Shorthand
+```
+
+### How it works
+
+**For a single scene:**
+
+1. Reads the scene's `SUMMARY.md`
+2. Loads sibling scene summaries for continuity
+3. Loads parent-level `.md` files (chapter outlines, notes)
+4. Loads `db/core/` entries (style guide, metadata)
+5. Generates `PROSE.md` in an isolated coder session
+
+**For a chapter:**
+
+Each scene is written with context from all sibling summaries plus any `.md` files at the chapter level.
+
+**For an act:**
+
+Writes all scenes across all chapters in the act.
+
+### Requirements
+
+- The target scene(s) must have a non-empty `SUMMARY.md`
+- An empty `PROSE.md` is created automatically if missing
+
+---
+
+## /summarize
+
+Generate summaries from prose. For scenes, reads `PROSE.md` and writes `SUMMARY.md`. For chapters and acts, summarizes all descendant scenes.
+
+### Usage
+
+```
+/summarize act 1 chapter 2 scene 3
+/summarize 1 2 3
+/summarize act 1 chapter 2       # Summarize all scenes in chapter 2
+/summarize 1 2
+/summarize act 1                  # Summarize all scenes in act 1
+/summarize 1
+```
+
+### How it works
+
+**For a single scene:**
+
+1. Reads the scene's `PROSE.md`
+2. Generates a concise synopsis for `SUMMARY.md`
+
+**For a chapter or act:**
+
+Finds all descendant leaf scenes that have prose and generates summaries for each one in a single batched LLM call.
+
+### Summary content
+
+The generated summary captures:
+
+- Key events and plot points
+- Character dynamics and emotional beats
+- Important revelations, decisions, or turning points
+
+Summaries start directly with content---no title heading (the title lives in the directory name).
+
+---
+
+## /edit
+
+Make targeted edits to manuscript files. Works like chatting but makes the editing intent explicit.
+
+### Usage
+
+```
+/edit Change Tom's dialogue to be more confrontational
+/edit Tighten the pacing in the second half of this scene
+```
+
+With no arguments, switches to the model's preferred edit mode.
+
+### How it works
+
+Spins up an isolated coder with the model's preferred edit format, runs the prompt, and returns to your current mode. Files currently in the chat are available for editing.
+
+---
+
+## /query
+
+Query the manuscript without editing any files. Delegates to a read-only query mode.
+
+```
+/query What are the main themes established in act 1?
+/query Does Elena's character arc feel consistent across these scenes?
+/query Identify any plot holes in the chapter summaries
+```
+
+---
+
+## /compose
+
+Enter compose mode, which uses two models: one to plan the edits and another to execute them. This is Aider's architect mode with novel-mode prompts.
+
+```
+/compose
+/compose Restructure the dialogue in this scene to build more tension
+```
+
+With no arguments, enters persistent compose mode. With arguments, runs a single compose operation.
+
+---
+
+## /agent
+
+Plan and execute complex multi-step tasks autonomously. See the [Agent Mode guide](../guide/agent-mode.qmd) for full details.
+
+```
+/agent                           # Enter persistent agent mode
+/agent Rewrite act 1 in first person POV
+```
+
+---
+
+## /select
+
+Set a text selection for focused editing. Used primarily by IDE integrations.
+
+### Usage
+
+```
+/select filename:start_line:start_col-end_line:end_col
+```
+
+Line and column numbers are **1-based**.
+
+```
+/select novel/Act 1 - Title/Chapter 1 - Title/Scene 1 - Title/PROSE.md:5:1-12:45
+```
+
+Switches to selection editing mode focused on the selected text.
+
+---
+
+## /instruct
+
+Load an instruction file and inject its content into the current chat.
+
+### Usage
+
+```
+/instruct tone-shift             # Load instructions/tone-shift.md (or .txt)
+```
+
+The instruction content becomes a user message in the chat, influencing subsequent AI behavior. Useful for recurring directives like tone shifts, pacing changes, or style overrides.
+
+Tab-completion shows available instruction names.
+
+---
+
+## /lint
+
+Check prose files for style issues using Vale. See the [Prose Linting guide](../guide/prose-linting.qmd) for setup and configuration.
+
+### Usage
+
+```
+/lint                            # Lint files in the chat (or dirty files)
+/lint 1 2 3                      # Lint a specific scene
+/lint act 1 chapter 2            # Lint all prose in chapter 2
+/lint path/to/file.md            # Lint a specific file
+```
+
+After displaying issues, offers to fix them with AI assistance.
+
+---
+
+## /lint-level
+
+Control which severity levels `/lint` reports.
+
+### Usage
+
+```
+/lint-level                      # Show current level
+/lint-level error                # Errors only
+/lint-level warning              # Errors + warnings (default)
+/lint-level suggestion           # Everything
+```
+
+---
+
+## /analyze-style
+
+Add prose files to the chat as read-only context for style analysis.
+
+### Usage
+
+```
+/analyze-style act 1 chapter 2 scene 3
+/analyze-style 1 2 3             # Shorthand
+/analyze-style act 1 chapter 2   # All prose in chapter 2
+/analyze-style 1 2               # Shorthand
+/analyze-style act 1             # All prose in act 1
+/analyze-style path/to/file.md   # A specific file
+```
+
+### How it works
+
+1. Collects all `PROSE.md` files from the specified location
+2. Adds them to the chat as **read-only context**
+3. You then chat with the AI about the style, asking it to write a style guide or answer specific questions
+
+This is a context-loading command, not an automatic generator. After loading the prose, follow up with a message like:
+
+```
+> /analyze-style 1
+> Write a comprehensive style guide to db/core/style.md based on this prose.
+```
+
+This approach gives you control over what the AI focuses on and lets you iterate on the style guide interactively.
+
+---
+
+## /feedback
+
+Get a structured, prioritized critique of a manuscript section.
+
+### Usage
+
+```
+/feedback act 1 chapter 2 scene 3
+/feedback 1 2 3             # Shorthand
+/feedback act 1 chapter 2   # All files in chapter 2
+/feedback 1 2               # Shorthand
+/feedback act 1             # All files in act 1
+/feedback path/to/file.md   # A specific file
+```
+
+### How it works
+
+1. Loads the specified files as read-only context
+2. Spins up a temporary query-mode session with the style guide loaded
+3. Returns a structured critique with prioritized suggestions
+
+### Output format
+
+The feedback is organized into three priority tiers:
+
+- **High Priority (2--3 items)** --- critical issues like plot holes, character inconsistencies, pacing problems, unclear prose
+- **Medium Priority (2--3 items)** --- important improvements like dialogue refinement, scene transitions, deepening characterization
+- **Low Priority (2--3 items)** --- polish-level suggestions like word choice, rhythm, atmospheric details
+
+Each suggestion quotes the relevant passage, explains the issue, and proposes a concrete improvement. If a style guide is loaded, feedback references it.
+
+---
+
+## /auto-context
+
+Toggle automatic context identification before each LLM call.
+
+### Usage
+
+```
+/auto-context              # Toggle on/off
+/auto-context on           # Enable
+/auto-context off          # Disable
+```
+
+### How it works
+
+When enabled (the default), Composez runs a lightweight pre-pass before each user message to identify relevant files, adding them as temporary read-only context. See [Auto-Context](../guide/configuration.qmd#auto-context) for details.
+
+Changes from this command only last for the current session. Use the Settings tab (in the web UI) or `.composez` to persist the setting.

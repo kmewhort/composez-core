@@ -1,0 +1,88 @@
+---
+title: "Installation"
+description: "How to install Composez and configure your first project."
+---
+
+## Prerequisites
+
+- **Python 3.9+**
+- **Git** (for version control integration)
+- An API key for your preferred LLM provider (Claude, OpenAI, etc.)
+
+## Install Composez
+
+Composez is distributed as a fork of Aider. Clone the repository and install:
+
+```bash
+git clone https://github.com/kmewhort/aider.git composez
+cd composez
+python -m venv venv
+source venv/bin/activate    # On Windows: venv\Scripts\activate
+pip install -e .
+```
+
+## Configure Your API Key
+
+Set your API key as an environment variable. For Claude (recommended):
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+```
+
+For OpenAI:
+
+```bash
+export OPENAI_API_KEY=sk-...
+```
+
+You can also place these in a `.env` file in your project directory.
+
+## Create a New Project
+
+```bash
+mkdir my-novel && cd my-novel
+git init
+composez
+```
+
+On first launch, Composez will:
+
+1. Create the `.composez` configuration file with default settings
+2. Set up the `db/core/` directory with a default style guide
+3. Create `db/core/metadata.yml` with the project name and git author
+4. Generate a `CLAUDE.md` file so other AI tools understand your project
+
+## Optional: Install Vale for Prose Linting
+
+Composez uses [Vale](https://vale.sh) for prose style checking. Install it for `/lint` support:
+
+```bash
+pip install vale
+```
+
+On first lint, Composez will create a `.vale.ini` with fiction-friendly defaults and download the required style packages (write-good, proselint, ai-tells).
+
+## Optional: Install Export Dependencies
+
+For DOCX and EPUB export:
+
+```bash
+pip install python-docx    # For /export docx
+pip install ebooklib        # For /export epub
+```
+
+Markdown export works without additional dependencies.
+
+## Verify Your Installation
+
+```bash
+composez --version
+```
+
+Then start Composez and try:
+
+```
+> /ls
+```
+
+You should see an empty narrative structure and the default db entries.

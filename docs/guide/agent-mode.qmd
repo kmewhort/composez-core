@@ -1,0 +1,170 @@
+---
+title: "Agent Mode"
+description: "Plan and execute complex multi-step tasks with an autonomous agent."
+---
+
+## Overview
+
+Agent mode is one of three [autonomy levels](modes.qmd) in Composez. It lets you describe a high-level goal---"rewrite the first three chapters to shift the POV from third person to first person"---and have Composez plan and execute the multi-step work automatically. The agent creates a structured plan of slash commands, runs them in isolated subprocesses, reviews results after each step, and revises the plan as needed.
+
+## Entering Agent Mode
+
+```
+> /agent Rewrite act 1 chapter 1 in first person POV
+```
+
+This runs the agent one-shot: it plans, executes, and returns to your normal chat mode. You can also enter persistent agent mode:
+
+```
+> /agent
+```
+
+Now every message you type is interpreted by the agent orchestrator.
+
+## How Plans Work
+
+When you give the agent a task, it produces a YAML plan:
+
+```yaml
+plan:
+  - step: 1
+    description: "Gather context about existing POV"
+    commands:
+      - "/add summaries"
+      - "/add db"
+      - "/query What is the current POV and tense in act 1?"
+
+  - step: 2
+    description: "Update style guide for first person"
+    commands:
+      - "/add db core style"
+      - "/edit Update the style guide to specify first person POV"
+
+  - step: 3
+    description: "Rewrite scenes in parallel"
+    depends_on: [1, 2]
+    parallel:
+      - commands:
+          - "/add act 1 chapter 1 scene 1"
+          - "/write act 1 chapter 1 scene 1"
+      - commands:
+          - "/add act 1 chapter 1 scene 2"
+          - "/write act 1 chapter 1 scene 2"
+
+  - step: 4
+    description: "Commit changes"
+    command: "/git add -A && git commit -m 'Rewrite act 1 ch 1 in first person'"
+```
+
+## Plan Elements
+
+### Sequential Steps
+
+Most steps run one after another. Each step has a unique number and a description:
+
+```yaml
+- step: 1
+  description: "Analyze the current narrative structure"
+  commands:
+    - "/add summaries"
+    - "/query What are the main plot threads across act 1?"
+```
+
+Use `commands` (list) for multi-command scripts and `command` (string) for single commands.
+
+### Parallel Steps
+
+Independent work can be parallelized. Each entry in `parallel` gets its own subprocess:
+
+```yaml
+- step: 3
+  description: "Write scenes concurrently"
+  parallel:
+    - commands:
+        - "/add 1 1 1"
+        - "/write 1 1 1"
+    - commands:
+        - "/add 1 1 2"
+        - "/write 1 1 2"
+```
+
+### Dependencies
+
+By default, steps run sequentially. Use `depends_on` to express explicit dependencies:
+
+```yaml
+- step: 3
+  depends_on: [1, 2]
+  description: "This step waits for steps 1 and 2"
+```
+
+### User Questions
+
+The agent can pause to ask you a question:
+
+```yaml
+- step: 2
+  description: "Confirm tone preference"
+  ask_user: "Should the rewrite feel more literary or more commercial?"
+```
+
+Your answer is available in later steps via `{{answer:2}}`:
+
+```yaml
+- step: 3
+  commands:
+    - "/add 1 1 1"
+    - "/edit Rewrite this scene with a {{answer:2}} tone"
+```
+
+## Subprocess Isolation
+
+Each step runs in its own fresh Composez subprocess. This means:
+
+- Each step starts with an empty context (no files added, no chat history)
+- File edits from earlier steps are visible on disk
+- `/add` context and chat history do **not** carry over
+
+This is by design---it prevents context pollution between steps. Use `/add` at the start of each step to set up the context it needs.
+
+::: {.callout-tip}
+## Saving and loading context
+If you need to carry context across steps, use `/save` and `/load`:
+
+```yaml
+- step: 1
+  commands:
+    - "/add summaries"
+    - "/query Analyze the plot structure"
+    - "/save ctx analysis"
+
+- step: 2
+  commands:
+    - "/load ctx analysis"
+    - "/query Based on your analysis, suggest improvements"
+```
+
+Only use this when genuinely needed---the default pattern of fresh context per step is usually better.
+:::
+
+## Review Loop
+
+After each step that produces meaningful output (commands like `/query`, `/write`, `/summarize`, `/edit`), the agent reviews the results and decides whether to:
+
+- **Continue** with the next planned step
+- **Revise** the remaining plan based on results
+- **Ask the user** a clarifying question
+- **Stop** if the task is complete or should be abandoned
+
+This makes the agent adaptive---if writing Scene 1 reveals a plot inconsistency, the agent can revise the remaining plan to address it.
+
+## Auto-Commits
+
+Auto-commits are disabled during plan execution. The plan should include an explicit `/git commit` step at the end. This gives you a single clean commit for the entire operation rather than one per step.
+
+## Tips
+
+- Start with focused tasks. "Rewrite the dialogue in act 1 chapter 2" is better than "Make the whole novel better."
+- The agent works best with clear, concrete goals. Vague requests lead to vague plans.
+- Review the plan before it executes. The agent shows you the plan and you can adjust before committing.
+- For very large operations, break them into multiple agent invocations rather than one enormous plan.

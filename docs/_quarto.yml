@@ -1,0 +1,75 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Composez"
+  description: "AI-powered structured fiction editing"
+  favicon: "images/favicon.svg"
+  navbar:
+    background: "#1a1a2e"
+    foreground: "#eee"
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Guide"
+        href: guide/getting-started.qmd
+      - text: "Reference"
+        href: reference/commands.qmd
+    right:
+      - icon: github
+        href: https://github.com/kmewhort/aider
+        aria-label: GitHub
+
+  sidebar:
+    - id: guide
+      title: "Guide"
+      style: "docked"
+      collapse-level: 2
+      contents:
+        - section: "Getting Started"
+          contents:
+            - guide/getting-started.qmd
+            - guide/installation.qmd
+            - guide/quickstart.qmd
+        - section: "Core Concepts"
+          contents:
+            - guide/narrative-structure.qmd
+            - guide/reference-database.qmd
+            - guide/writing-workflow.qmd
+        - section: "Advanced"
+          contents:
+            - guide/modes.qmd
+            - guide/agent-mode.qmd
+            - guide/prose-linting.qmd
+            - guide/import-export.qmd
+            - guide/configuration.qmd
+
+    - id: reference
+      title: "Reference"
+      style: "docked"
+      collapse-level: 2
+      contents:
+        - section: "Commands"
+          contents:
+            - reference/commands.qmd
+            - reference/navigation-commands.qmd
+            - reference/writing-commands.qmd
+            - reference/management-commands.qmd
+        - section: "Configuration"
+          contents:
+            - reference/composez-config.qmd
+            - reference/project-layout.qmd
+
+  page-footer:
+    center: "Built with [Quarto](https://quarto.org/) &mdash; Composez is a fork of [Aider](https://aider.chat)"
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles.scss]
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github

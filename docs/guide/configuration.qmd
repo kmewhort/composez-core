@@ -1,0 +1,190 @@
+---
+title: "Configuration"
+description: "Configuring narrative levels, style, and project settings."
+---
+
+## The .composez File
+
+Every Composez project has a `.composez` file at the project root. This YAML file controls the narrative hierarchy and other project-level settings.
+
+### Default Configuration
+
+Created automatically on first launch:
+
+```yaml
+levels:
+- Act
+- Chapter
+- Scene
+```
+
+### Custom Levels
+
+Change the hierarchy to match your project:
+
+```yaml
+# For a simpler structure
+levels:
+- Chapter
+- Scene
+```
+
+```yaml
+# For a different naming convention
+levels:
+- Part
+- Chapter
+- Scene
+```
+
+```yaml
+# For a more granular structure
+levels:
+- Book
+- Part
+- Chapter
+- Scene
+```
+
+**Rules:**
+
+- You need at least **two** levels
+- Level names are automatically title-cased (`chapter` becomes `Chapter`)
+- The **last** level is always the leaf level where `PROSE.md` and `SUMMARY.md` live
+- Changes to levels after creating content may require renaming directories
+
+## Auto-Context
+
+Composez can automatically identify which files are relevant before each LLM call, adding them as temporary read-only context. This means you don't always need to manually `/add` files---the AI figures out what it needs.
+
+Auto-context is **enabled by default**. To set the default for your project, add to `.composez`:
+
+```yaml
+auto_context: false
+```
+
+You can also toggle it for the current session with `/auto-context on` or `/auto-context off`.
+
+### How it works
+
+Before each user message (not slash commands), Composez:
+
+1. Runs a lightweight context-analysis pass using the weak model
+2. Identifies which manuscript and database files are relevant to your message
+3. Temporarily adds them as read-only context for the duration of that single LLM call
+4. Removes them afterward so they don't accumulate
+
+This is especially useful for conversational editing where you mention characters or scenes by name without having explicitly added them.
+
+::: {.callout-tip}
+## Auto-context complements manual /add
+Auto-context adds files as **read-only**. If you need to **edit** a file, you still need to `/add` it explicitly. Auto-context is best for pulling in reference material (character sheets, location descriptions) that the AI needs for consistency.
+:::
+
+## Style Guide
+
+The style guide at `db/core/style.md` is the most impactful configuration for prose quality. It's loaded as context for every AI interaction.
+
+You can write the style guide manually, or use `/analyze-style` to load your prose and ask the AI to write one:
+
+```
+> /analyze-style 1 1             # Load all prose from act 1, chapter 1
+> Write a comprehensive style guide to db/core/style.md based on this prose.
+```
+
+See the [command reference](../reference/writing-commands.qmd#analyze-style) for details.
+
+A good style guide includes:
+
+```markdown
+## Voice & Tone
+Third-person limited POV, past tense. Stay close to the
+viewpoint character's thoughts and perceptions.
+
+## Prose Principles
+- Show, don't tell: convey emotion through action and
+  physical sensation, not labels
+- Favor active voice in action scenes
+- Use short, punchy sentences during tension
+- Allow longer, more flowing sentences for reflection
+
+## Dialogue
+- No dialogue tags beyond "said" and "asked" except
+  when genuinely needed
+- Use action beats instead of adverbs: not "she said angrily"
+  but "she slammed the cup down"
+- Each character should have a distinct speech pattern
+
+## Pacing
+- Open scenes in media res when possible
+- End scenes on tension, questions, or emotional shifts
+- Vary sentence length for rhythm
+
+## Avoid
+- Purple prose and overwriting
+- Info-dumps disguised as dialogue
+- Head-hopping between characters within a scene
+```
+
+## Project Metadata
+
+`db/core/metadata.yml` stores book-level information:
+
+```yaml
+title: The Lighthouse
+author: Elena Vasquez
+```
+
+This is used by:
+
+- **EPUB export** for title and author metadata
+- **CLAUDE.md generation** so other AI tools understand your project
+
+## Instructions
+
+The `instructions/` directory holds reusable directives:
+
+```
+instructions/
+  tone-dark.md
+  action-scenes.md
+  dialogue-rules.md
+```
+
+Load an instruction before writing to guide the AI:
+
+```
+> /instruct tone-dark
+```
+
+Create new instructions:
+
+```
+> /new instruction action-scenes
+```
+
+Instructions are injected into the chat as user messages, influencing the AI's behavior for subsequent commands.
+
+## Lint Configuration
+
+See [Prose Linting](prose-linting.qmd) for Vale configuration via `.vale.ini`.
+
+## Aider Configuration
+
+Composez inherits all of Aider's configuration options. You can use:
+
+- **`.aider.conf.yml`** for persistent settings
+- **`.env`** for API keys
+- **Command-line flags** for per-session overrides
+
+Common Aider settings that matter for fiction:
+
+```yaml
+# .aider.conf.yml
+auto-commits: true       # Commit after each AI edit
+auto-lint: true          # Run Vale after each edit
+stream: true             # Stream AI responses
+model: claude-sonnet-4-20250514    # Model selection
+```
+
+See [Aider's configuration docs](https://aider.chat/docs/config.html) for the full list.

@@ -1,0 +1,140 @@
+---
+title: ".composez Configuration"
+description: "Reference for the .composez project configuration file."
+---
+
+## File Location
+
+The `.composez` file lives at the root of your project directory. It's created automatically on first launch.
+
+## Format
+
+YAML format. The file is read by `composez_core/config.py`.
+
+## Fields
+
+### levels
+
+**Type:** list of strings
+**Default:** `["Act", "Chapter", "Scene"]`
+**Required:** No (defaults are used if missing)
+
+The narrative hierarchy levels, from outermost to innermost. The last level is always the **leaf level** where `PROSE.md` and `SUMMARY.md` files live.
+
+**Constraints:**
+
+- Minimum 2 levels
+- Each level must be a non-empty string
+- Names are automatically title-cased (`chapter` → `Chapter`)
+
+### auto_context
+
+**Type:** boolean
+**Default:** `true`
+**Required:** No
+
+When enabled, Composez automatically identifies relevant files before each LLM call and adds them as temporary read-only context. Uses the weak model for a lightweight analysis pass.
+
+This sets the **default** for new sessions. The `/auto-context` command can override the setting for the current session without modifying this file.
+
+Set to `false` to disable by default:
+
+```yaml
+auto_context: false
+```
+
+### Examples
+
+#### Default (3-level)
+
+```yaml
+levels:
+- Act
+- Chapter
+- Scene
+```
+
+Directory structure:
+
+```
+novel/
+  Act 1 - Title/
+    Chapter 1 - Title/
+      Scene 1 - Title/
+        PROSE.md
+        SUMMARY.md
+```
+
+#### Two-level (simple)
+
+```yaml
+levels:
+- Chapter
+- Scene
+```
+
+Directory structure:
+
+```
+novel/
+  Chapter 1 - Title/
+    Scene 1 - Title/
+      PROSE.md
+      SUMMARY.md
+```
+
+#### Four-level
+
+```yaml
+levels:
+- Book
+- Part
+- Chapter
+- Scene
+```
+
+Directory structure:
+
+```
+novel/
+  Book 1 - Title/
+    Part 1 - Title/
+      Chapter 1 - Title/
+        Scene 1 - Title/
+          PROSE.md
+          SUMMARY.md
+```
+
+#### Custom names
+
+```yaml
+levels:
+- Volume
+- Section
+- Passage
+```
+
+The level names appear in directory names and command syntax:
+
+```
+/new volume The First Year
+/new 1 section Autumn
+/new 1 1 passage The Letter
+/write 1 1 1
+```
+
+## Programmatic Access
+
+```python
+from composez_core.config import load_config, save_config, get_levels
+
+# Read config
+config = load_config("/path/to/project")
+levels = config["levels"]  # ["Act", "Chapter", "Scene"]
+
+# Just get levels
+levels = get_levels("/path/to/project")
+
+# Write config
+save_config("/path/to/project", {"levels": ["Part", "Chapter", "Scene"]})
+```

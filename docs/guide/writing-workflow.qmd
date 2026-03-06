@@ -1,0 +1,208 @@
+---
+title: "Writing Workflow"
+description: "The core write-summarize-revise loop and how to use it effectively."
+---
+
+## The Core Loop
+
+The fundamental workflow in Composez follows a cycle:
+
+1. **Plan** --- outline what happens in your scenes (summaries)
+2. **Write** --- generate prose from summaries
+3. **Revise** --- refine the prose through conversation
+4. **Summarize** --- update summaries to reflect changes
+5. **Repeat** --- move to the next scene with accurate context
+
+This loop keeps summaries in sync with prose, which is critical for context management. When writing Scene 5, the AI reads the summaries of Scenes 1--4 rather than their full prose, keeping the context window focused and efficient.
+
+## Step by Step
+
+### 1. Set Up Your Structure
+
+Before writing, create the skeleton of your narrative:
+
+```
+> /new act The Awakening
+> /new 1 chapter Morning Light
+> /new 1 1 scene The Alarm
+> /new 1 1 scene The Discovery
+> /new 1 1 scene The Decision
+> /new 1 chapter The Journey
+> /new 1 2 scene Departure
+```
+
+### 2. Write Summaries First
+
+Add your scenes and describe what happens in each:
+
+```
+> /add 1 1 1
+> Elena wakes to the lighthouse alarm at 3 AM. Dense fog.
+> She checks the radar and sees something large moving offshore.
+> She tells herself it's a whale.
+```
+
+The AI writes the `SUMMARY.md`. Repeat for each scene in the chapter.
+
+### 3. Write Prose
+
+Once you have summaries for a chapter's scenes, write the prose:
+
+```
+> /write 1 1
+```
+
+This writes all scenes in Chapter 1. For each scene, the AI:
+
+- Loads the scene's `SUMMARY.md` as context
+- Loads sibling scene summaries for continuity
+- Loads parent-level `.md` files (chapter outlines, etc.)
+- Loads `db/core/` entries (style guide, etc.)
+- Generates `PROSE.md`
+
+You can also write individual scenes:
+
+```
+> /write 1 1 1
+```
+
+### 4. Get Feedback
+
+Before diving into revisions, get a structured critique:
+
+```
+> /feedback 1 1 1
+```
+
+This gives you prioritized suggestions (high, medium, low) with specific passages and concrete improvements.
+
+### 5. Revise Interactively
+
+Load the prose into your chat and revise:
+
+```
+> /add prose 1 1 1
+```
+
+Then converse naturally:
+
+```
+> The opening paragraph is too slow. Start with the alarm sound.
+> Make Elena's internal monologue more fragmented — short sentences.
+> Add more sensory detail about the fog.
+```
+
+### 6. Update Summaries
+
+After significant prose changes, regenerate the summary:
+
+```
+> /summarize 1 1 1
+```
+
+Or summarize an entire chapter:
+
+```
+> /summarize 1 1
+```
+
+This drills down to all scenes in the chapter and updates each `SUMMARY.md` from its `PROSE.md`.
+
+## Working at Different Levels
+
+### Scene-Level Work
+
+For focused, detailed work on a single scene:
+
+```
+> /add 1 1 1
+```
+
+This loads both `SUMMARY.md` and `PROSE.md`. You can edit either file through conversation.
+
+### Chapter-Level Work
+
+For working across a chapter:
+
+```
+> /add summaries 1 1    # Load all summaries
+> /add prose 1 1        # Load all prose
+> /add 1 1              # Load everything
+```
+
+### Act-Level Work
+
+Be mindful of context size when loading entire acts. Often, loading summaries is sufficient:
+
+```
+> /add summaries         # All summaries across the entire novel
+> /add summaries 1       # All summaries in act 1
+```
+
+## The `/edit` Command
+
+For targeted edits that aren't full rewrites, use `/edit`:
+
+```
+> /add 1 1 1
+> /edit Change Tom's dialogue to be more confrontational
+```
+
+This is similar to chatting, but the command makes intent explicit and works well in agent mode plans.
+
+## Auto-Context
+
+By default, Composez automatically identifies relevant files before each LLM call. When you mention a character or scene by name, the AI pulls in the relevant database entries and narrative files as temporary read-only context---no need to `/add` them manually.
+
+This works for conversational editing but not for `/write` and `/summarize`, which use their own focused context. See [Configuration](configuration.qmd#auto-context) for details.
+
+## Context Management Tips
+
+::: {.callout-tip}
+## Keep context focused
+The AI produces better prose when it has focused context rather than everything at once. Load the scene you're writing plus summaries of adjacent scenes, not the entire novel.
+:::
+
+::: {.callout-tip}
+## Use the style guide
+Edit `db/core/style.md` to match your voice. Be specific: instead of "write well," say "use third-person limited POV, past tense, favor short sentences in action scenes."
+:::
+
+::: {.callout-tip}
+## Summary quality matters
+The AI's prose is only as good as the context it receives. Invest time in clear, specific summaries that capture not just plot but tone, character dynamics, and sensory atmosphere.
+:::
+
+## Compose Mode
+
+For complex revisions, use compose mode (architect mode) with two models---one plans the edits, the other executes:
+
+```
+> /compose
+```
+
+This is useful for large structural changes where you want a planning step before the AI starts editing files.
+
+## Instructions
+
+For recurring directives that should apply to specific tasks, use the instructions system:
+
+```
+> /new instruction tone-shift
+```
+
+Then write the instruction:
+
+```
+> From this point forward, the tone should shift darker.
+> Elena's inner voice becomes more paranoid.
+> Dialogue should have more subtext and less directness.
+```
+
+Load it before writing:
+
+```
+> /instruct tone-shift
+```
+
+The instruction content is injected into the chat, guiding the AI for subsequent commands.

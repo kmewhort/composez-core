@@ -1,0 +1,169 @@
+---
+title: "Narrative Structure"
+description: "How Composez organizes your manuscript into a hierarchy of acts, chapters, and scenes."
+---
+
+## Overview
+
+Composez enforces a hierarchical directory structure for your manuscript. By default, this is a three-level hierarchy: **Act** > **Chapter** > **Scene**. The level names are configurable via the `.composez` file, but the structure works the same regardless of what you call them.
+
+All narrative content lives under the `novel/` directory.
+
+## Directory Layout
+
+```
+novel/
+  Act 1 - The Beginning/
+    outline.md                              # Any .md file (user notes)
+    Chapter 1 - Arrivals/
+      notes.md                              # Any .md file (user notes)
+      Scene 1 - The Train Station/
+        SUMMARY.md                          # Scene synopsis
+        PROSE.md                            # Scene prose
+      Scene 2 - First Impressions/
+        SUMMARY.md
+        PROSE.md
+    Chapter 2 - Settling In/
+      Scene 1 - The Apartment/
+        SUMMARY.md
+        PROSE.md
+  Act 2 - Rising Action/
+    ...
+```
+
+## Naming Convention
+
+Every directory at a narrative level follows the pattern:
+
+```
+Level N - Title
+```
+
+For example: `Act 1 - The Beginning`, `Chapter 3 - Revelations`, `Scene 2 - The Duel`.
+
+The number `N` is an ordinal that determines ordering. Titles are optional but recommended---they make the structure readable in your file browser and provide context to the AI.
+
+## File Rules
+
+Different levels allow different files:
+
+### Leaf Level (Scenes)
+
+The deepest level---scenes by default---may **only** contain:
+
+- **`SUMMARY.md`** --- a synopsis of the scene
+- **`PROSE.md`** --- the narrative prose
+
+No other files are allowed. This constraint is enforced by the `edit_path_validator` and prevents the AI from creating stray files inside scenes.
+
+### Non-Leaf Levels (Acts, Chapters)
+
+Any `.md` file is allowed. Use these for:
+
+- Outlines and beat sheets
+- Character notes specific to a chapter
+- Research or reference material
+- Timeline documents
+
+These files are included as context when you `/add` the parent level.
+
+::: {.callout-tip}
+## Tip: Use non-leaf .md files for planning
+Create an `outline.md` at the chapter level to sketch out your scene progression before writing. The AI will use it as context when generating prose.
+:::
+
+## SUMMARY.md and PROSE.md
+
+These two files are the backbone of the writing workflow:
+
+### SUMMARY.md
+
+A concise synopsis of the scene. It should capture:
+
+- Key events and plot points
+- Character dynamics and emotional beats
+- Important revelations or turning points
+- Setting and atmosphere notes
+
+Summaries serve as **context** when writing adjacent scenes. When you `/write` a chapter, the AI reads all scene summaries to maintain narrative continuity without needing the full prose of every scene in the prompt.
+
+### PROSE.md
+
+The actual narrative prose. This is the text that will appear in your exported manuscript.
+
+::: {.callout-note}
+## No top-level headings
+Neither `SUMMARY.md` nor `PROSE.md` should contain top-level headings (`# Title`). The scene's title lives in the directory name. If you need to change a title, use `git mv` to rename the directory, or let the AI suggest a rename.
+:::
+
+## Auto-Created Files
+
+`SUMMARY.md` and `PROSE.md` are in the `auto_create_fnames` set, which means the AI can create them without asking for user confirmation. All other new files (database entries, notes, etc.) still require your approval.
+
+## How the Narrative Map Works
+
+Composez builds a **narrative map** from your directory structure. This map:
+
+1. Scans the `novel/` directory for level-matching directories
+2. Reads `SUMMARY.md` files from each scene
+3. Counts words in `PROSE.md` files
+4. Renders a structured outline that the AI sees as context
+
+The narrative map replaces Aider's tree-sitter-based code analysis (repo map) with something appropriate for fiction. The AI always sees the full narrative outline, including summaries and word counts.
+
+## Configurable Levels
+
+The default levels are `["Act", "Chapter", "Scene"]`, but you can change them in `.composez`:
+
+```yaml
+levels:
+  - Part
+  - Chapter
+  - Scene
+```
+
+Or for a simpler structure:
+
+```yaml
+levels:
+  - Chapter
+  - Scene
+```
+
+The last level in the list is always the **leaf level** where `PROSE.md` and `SUMMARY.md` live. You need at least two levels.
+
+See [Configuration](configuration.qmd) for details.
+
+## Navigating with Location Arguments
+
+Most commands accept a **location argument** to target specific parts of the hierarchy. Three syntaxes are supported:
+
+### Keyword Syntax
+
+```
+act 1 chapter 2 scene 3
+```
+
+### Shorthand Syntax
+
+```
+1 2 3
+```
+
+Numbers are matched to levels in order: the first number is the act, second is chapter, third is scene.
+
+### Mixed Syntax
+
+```
+act 1 chapter 2 scene
+```
+
+Using a level name without a number targets "all" at that level (useful for commands like `/write` that can operate on multiple scenes).
+
+### Partial Locations
+
+You don't have to specify every level:
+
+- `/add 1` --- adds everything in Act 1
+- `/write 1 2` --- writes all scenes in Act 1, Chapter 2
+- `/summarize 1 2 3` --- summarizes Act 1, Chapter 2, Scene 3

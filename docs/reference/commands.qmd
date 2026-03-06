@@ -1,0 +1,95 @@
+---
+title: "Commands Overview"
+description: "Complete reference for all Composez slash commands."
+---
+
+## Command Categories
+
+Composez provides slash commands organized into three categories:
+
+### [Navigation & Context](navigation-commands.qmd)
+
+Commands for loading files, viewing structure, and managing context.
+
+| Command | Description |
+|---------|-------------|
+| `/add` | Add files to the chat context |
+| `/drop` | Remove files from the chat (core db entries reload automatically) |
+| `/ls` | List narrative structure, db entries, and files in chat |
+| `/wordcount` | Show word counts by act, chapter, and scene |
+
+### [Writing & Editing](writing-commands.qmd)
+
+Commands for generating and revising manuscript content.
+
+| Command | Description |
+|---------|-------------|
+| `/write` | Generate prose from summaries |
+| `/summarize` | Generate summaries from prose |
+| `/edit` | Make targeted edits to manuscript files |
+| `/query` | Query the manuscript (read-only) |
+| `/compose` | Enter compose mode (two-model planning + editing) |
+| `/agent` | Plan and execute multi-step tasks |
+| `/select` | Set a text selection for focused editing |
+| `/instruct` | Load an instruction file into the chat |
+| `/lint` | Check prose for style issues with Vale |
+| `/lint-level` | Set which severity levels `/lint` reports |
+| `/analyze-style` | Load prose files for style analysis |
+| `/feedback` | Get prioritized critique of a manuscript section |
+| `/auto-context` | Toggle automatic context identification |
+
+### [Management](management-commands.qmd)
+
+Commands for creating, deleting, moving, and reorganizing content.
+
+| Command | Description |
+|---------|-------------|
+| `/new` | Create acts, chapters, scenes, db entries, or instructions |
+| `/delete` | Delete narrative nodes, db entries, or instructions |
+| `/insert-after` | Insert a new node after a position |
+| `/insert-before` | Insert a new node before a position |
+| `/move` | Move a narrative node or file |
+| `/import` | Import from Novelcrafter or Markdown |
+| `/export` | Export to Markdown, DOCX, or EPUB |
+| `/save` | Save chat history or context to cache |
+| `/load` | Restore chat history or context from cache |
+| `/copy-context` | Copy full chat context to clipboard |
+| `/paste-response` | Apply a pasted LLM response |
+
+## Location Argument Syntax
+
+Many commands accept a **location argument** to target parts of the hierarchy. Three syntaxes are supported interchangeably:
+
+### Keyword
+
+```
+act 1 chapter 2 scene 3
+```
+
+### Shorthand (numbers only)
+
+```
+1 2 3
+```
+
+Numbers map to levels in order: first = act, second = chapter, third = scene.
+
+### Partial Locations
+
+You don't need to specify all levels:
+
+| Argument | Target |
+|----------|--------|
+| `1` | Act 1 (and all contents) |
+| `1 2` | Act 1, Chapter 2 (and all scenes) |
+| `1 2 3` | Act 1, Chapter 2, Scene 3 |
+| `act 1` | Act 1 |
+| `act 1 chapter 2` | Act 1, Chapter 2 |
+
+## Hidden Commands
+
+These standard Aider commands are hidden in novel mode since they don't apply:
+
+- `/test` --- no test runner for fiction
+- `/code` --- replaced by `/edit`
+- `/architect` --- replaced by `/compose`

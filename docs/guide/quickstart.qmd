@@ -1,0 +1,135 @@
+---
+title: "Quickstart"
+description: "Write your first scene with Composez in 5 minutes."
+---
+
+This walkthrough takes you from an empty project to a written, summarized scene.
+
+## 1. Start Composez
+
+```bash
+mkdir my-novel && cd my-novel
+git init
+composez
+```
+
+## 2. Create Your Structure
+
+```
+> /new act The Awakening
+Created novel/Act 1 - The Awakening/
+
+> /new 1 chapter Morning Light
+Created novel/Act 1 - The Awakening/Chapter 1 - Morning Light/
+
+> /new 1 1 scene The Alarm
+Created novel/Act 1 - The Awakening/Chapter 1 - Morning Light/Scene 1 - The Alarm/
+```
+
+The `/new` command auto-numbers each level. You can also use keyword syntax:
+
+```
+> /new act 1 chapter 1 scene A Strange Visitor
+```
+
+## 3. Add a Character
+
+```
+> /new db characters elena
+Created db entry: db/characters/elena.md
+```
+
+The file opens in your chat. Describe your character:
+
+```
+> Elena Vasquez, 34. Former marine biologist turned lighthouse keeper.
+> Sharp-eyed, pragmatic, haunted by something she saw in the deep.
+> Speech: clipped sentences, avoids eye contact, dry humor.
+```
+
+## 4. Write the Summary
+
+Add the scene to your context and write the summary:
+
+```
+> /add 1 1 1
+Added novel/Act 1 - The Awakening/Chapter 1 - Morning Light/Scene 1 - The Alarm/ (0 words)
+```
+
+Now describe what happens:
+
+```
+> Elena wakes to the lighthouse alarm at 3 AM. The fog is impossibly thick.
+> She checks the radar — something large is moving just offshore.
+> She tells herself it's a whale. She almost believes it.
+```
+
+The AI will write the `SUMMARY.md` for you.
+
+## 5. Write the Prose
+
+```
+> /write 1 1 1
+```
+
+This spins up a focused session with the scene's summary, your character sheet, and style guide as context, then generates the full prose in `PROSE.md`.
+
+## 6. Review and Revise
+
+Get AI feedback on what you've written:
+
+```
+> /feedback 1 1 1
+```
+
+This gives you a prioritized critique with concrete suggestions. Or load the prose and chat about it directly:
+
+```
+> /add prose 1 1 1
+Added novel/.../Scene 1 - The Alarm/PROSE.md (847 words)
+```
+
+Now you can chat naturally about the prose:
+
+```
+> Make Elena's internal monologue shorter and more fragmented.
+> The radar scene should build more tension — slow it down.
+```
+
+## 7. Summarize
+
+Once you're happy with the prose, generate the summary:
+
+```
+> /summarize 1 1 1
+```
+
+This reads the prose and writes a concise synopsis to `SUMMARY.md`, which will be used as context when writing adjacent scenes.
+
+## 8. Check Your Prose
+
+```
+> /lint 1 1 1
+```
+
+Vale checks for passive voice, cliches, and other style issues. Fix them interactively or dismiss.
+
+## 9. See Your Progress
+
+```
+> /ls
+```
+
+Shows your narrative structure, db entries, word counts, and what's currently loaded in the chat.
+
+```
+> /wordcount
+```
+
+Gives you word counts broken down by act, chapter, and scene.
+
+## Next Steps
+
+- [Narrative Structure](narrative-structure.qmd) --- understand how acts, chapters, and scenes work
+- [Writing Workflow](writing-workflow.qmd) --- the full write → summarize → revise loop
+- [Commands Reference](../reference/commands.qmd) --- every command in detail

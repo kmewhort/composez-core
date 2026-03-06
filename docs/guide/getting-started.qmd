@@ -1,0 +1,93 @@
+---
+title: "Getting Started"
+description: "Overview of Composez and how it fits into your fiction writing workflow."
+---
+
+## What is Composez?
+
+Composez is a terminal-based AI writing tool for long-form fiction. It's built as a fork of [Aider](https://aider.chat), the AI pair-programming assistant, adapted for the specific needs of novel writing:
+
+- **Structured narrative management** instead of flat file editing
+- **Prose-oriented prompts** instead of code-oriented ones
+- **Reference database** for characters, locations, and world-building
+- **Scene-level granularity** for focused, context-efficient AI interactions
+- **Export pipeline** for producing publication-ready manuscripts
+
+If you've used Aider for code, Composez will feel familiar. If you haven't, think of it as a command-line interface where you chat with an AI that understands your novel's structure.
+
+## Key Concepts
+
+### The Narrative Hierarchy
+
+Your manuscript is organized into a configurable hierarchy of levels---by default, **Act**, **Chapter**, and **Scene**:
+
+```
+novel/
+  Act 1 - The Beginning/
+    Chapter 1 - Arrivals/
+      Scene 1 - The Train Station/
+        SUMMARY.md      # Synopsis of this scene
+        PROSE.md        # The actual prose
+      Scene 2 - First Impressions/
+        SUMMARY.md
+        PROSE.md
+    Chapter 2 - Settling In/
+      ...
+  Act 2 - Rising Action/
+    ...
+```
+
+Each scene contains exactly two files:
+
+- **`PROSE.md`** --- the actual narrative prose
+- **`SUMMARY.md`** --- a synopsis the AI uses for context when writing adjacent scenes
+
+Non-leaf levels (acts and chapters) can contain any `.md` files you want---outlines, notes, research, timelines.
+
+### The Reference Database
+
+The `db/` directory holds reference material that the AI uses to maintain consistency:
+
+```
+db/
+  core/
+    metadata.yml    # Book title, author
+    style.md        # Style guide (voice, tone, POV)
+  characters/
+    sarah.md
+    tom.md
+  locations/
+    apartment.md
+  themes/
+    ...
+```
+
+Entries in `db/core/` are **always loaded** as read-only context. Other entries can be added on demand with `/add db`.
+
+### Slash Commands
+
+Everything in Composez is driven by slash commands. The most important ones:
+
+| Command | What it does |
+|---------|-------------|
+| `/add` | Load files into the AI's context |
+| `/write` | Generate prose from summaries |
+| `/summarize` | Generate summaries from prose |
+| `/new` | Create new acts, chapters, scenes, or db entries |
+| `/lint` | Check prose for style issues |
+| `/analyze-style` | Load prose for style analysis |
+| `/feedback` | Get prioritized critique of a section |
+| `/export` | Export to Markdown, DOCX, or EPUB |
+| `/ls` | Show narrative structure and what's loaded |
+
+See the [Commands Reference](../reference/commands.qmd) for the full list.
+
+### Git Integration
+
+Composez inherits Aider's full git integration. Every AI edit is automatically committed, giving you a complete history of changes. You can review diffs, revert edits, and branch your manuscript just like code.
+
+## What's Next?
+
+- [Installation](installation.qmd) --- get Composez up and running
+- [Quickstart](quickstart.qmd) --- write your first scene in 5 minutes
+- [Narrative Structure](narrative-structure.qmd) --- deep dive into how the hierarchy works

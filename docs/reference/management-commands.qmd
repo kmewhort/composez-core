@@ -1,0 +1,232 @@
+---
+title: "Management Commands"
+description: "Commands for creating, deleting, moving, importing, and exporting content."
+---
+
+## /new
+
+Create new narrative nodes, database entries, or instruction files.
+
+### Narrative nodes
+
+```
+/new act The Beginning                    # Create Act 1
+/new act 1 chapter Arrivals               # Create Chapter 1 in Act 1
+/new 1 chapter Arrivals                   # Same (shorthand)
+/new act 1 chapter 1 scene The Train      # Create Scene 1 in Chapter 1
+/new 1 1 scene The Train                  # Same (shorthand)
+```
+
+When creating a node:
+
+- The number is auto-assigned (next in sequence)
+- A `SUMMARY.md` is created with the title as initial content
+- For leaf nodes (scenes), an empty `PROSE.md` is also created
+- Both files are added to the chat for immediate editing
+
+### Database entries
+
+```
+/new db characters elena          # Create db/characters/elena.md
+/new db locations lighthouse      # Create db/locations/lighthouse.md
+/new db core style               # Create db/core/style.md
+```
+
+The entry is added to the chat so you can describe it immediately. Core entries are added as read-only; others as editable.
+
+### Instruction files
+
+```
+/new instruction tone-shift       # Create instructions/tone-shift.md
+```
+
+---
+
+## /delete
+
+Delete narrative nodes, database entries, or instruction files.
+
+### Narrative nodes
+
+```
+/delete act 2                     # Delete Act 2 and all contents
+/delete 1 2                       # Delete Act 1, Chapter 2
+/delete 1 2 3                     # Delete Act 1, Chapter 2, Scene 3
+```
+
+Deletion is **cascading** (all children are removed) and **renumbering** (subsequent siblings are decremented). For example, deleting Chapter 2 renames Chapter 3 to Chapter 2, Chapter 4 to Chapter 3, etc.
+
+A confirmation prompt shows the number of files that will be deleted.
+
+### Database entries
+
+```
+/delete db sarah                  # Delete by name
+/delete db characters sarah       # Delete by category/name
+```
+
+### Instruction files
+
+```
+/delete instruction tone-shift
+```
+
+---
+
+## /insert-after
+
+Insert a new node after a given position, renumbering subsequent siblings.
+
+### Usage
+
+```
+/insert-after act 2                       # Insert new act after Act 2
+/insert-after act 1 chapter 3             # Insert new chapter after Ch 3
+/insert-after act 1 chapter 2 scene 1     # Insert scene after Scene 1
+/insert-after 2                           # Shorthand: insert act after 2
+/insert-after 1 3                         # Shorthand: insert chapter after 3
+/insert-after 1 2 1                       # Shorthand: insert scene after 1
+```
+
+An optional title can be appended:
+
+```
+/insert-after 1 2 The Confrontation
+```
+
+---
+
+## /insert-before
+
+Same as `/insert-after` but inserts before the specified position.
+
+```
+/insert-before act 1 chapter 2 scene 3 The Flashback
+/insert-before 1 2 3 The Flashback
+```
+
+---
+
+## /move
+
+Move a narrative node or file to a new position.
+
+### Narrative moves
+
+Use `to` to separate source and target:
+
+```
+/move 2 1 to 2 2                 # Move Act 2, Ch 1 → Act 2, Ch 2 position
+/move 1 1 1 to 1 2 1            # Move scene between chapters
+/move 2 1 to 2                   # Move Ch 1 to end of Act 2
+/move act 2 chapter 1 to act 2 chapter 3   # Keyword syntax
+```
+
+The source is removed from its original position, siblings are renumbered, and the node is inserted at the target. Titles are preserved.
+
+### File/directory moves
+
+For non-narrative paths:
+
+```
+/move db/characters/Sarah.md db/locations/
+```
+
+---
+
+## /import
+
+Import content from external sources.
+
+### Novelcrafter
+
+```
+/import novelcrafter path/to/export.zip
+/import novelcrafter path/to/export-dir/
+```
+
+Imports narrative structure and database entries. Replaces existing `novel/` and `db/` directories. See [Import & Export](../guide/import-export.qmd).
+
+### Markdown
+
+```
+/import markdown path/to/draft.md
+```
+
+Maps `#` → Act, `##` → Chapter, `###` → Scene. Only replaces `novel/`. See [Import & Export](../guide/import-export.qmd).
+
+---
+
+## /export
+
+Export the manuscript to a file.
+
+```
+/export markdown                 # → export.md
+/export markdown my-novel.md     # Custom filename
+/export docx                     # → export.docx (requires python-docx)
+/export epub                     # → export.epub (requires ebooklib)
+```
+
+See [Import & Export](../guide/import-export.qmd) for details on each format.
+
+---
+
+## /save
+
+Save chat history or file context to a named cache slot.
+
+```
+/save chat                       # Save chat history to cache/chat/default.yml
+/save chat analysis              # Save to cache/chat/analysis.yml
+/save ctx                        # Save file context to cache/context/default.yml
+/save ctx research               # Save to cache/context/research.yml
+```
+
+### Chat saves
+
+Saves `done_messages` and `cur_messages` as YAML. Useful for preserving conversation context across sessions or agent steps.
+
+### Context saves
+
+Saves the list of editable and read-only file paths. Useful for quickly switching between different working sets.
+
+---
+
+## /load
+
+Restore chat history or file context from a cache slot.
+
+```
+/load chat                       # Restore from cache/chat/default.yml
+/load chat analysis              # Restore from cache/chat/analysis.yml
+/load ctx                        # Restore from cache/context/default.yml
+/load ctx research               # Restore from cache/context/research.yml
+```
+
+Loading **replaces** the current chat history or file context---it does not merge.
+
+---
+
+## /copy-context
+
+Copy the full chat context (as the LLM sees it) to the clipboard.
+
+```
+/copy-context                    # Full context
+/copy-context continue           # Only current conversation (after summary)
+```
+
+Useful for copying context to a web UI for LLMs that don't have API access.
+
+---
+
+## /paste-response
+
+Apply an LLM response from the clipboard as if the model returned it.
+
+```
+/paste-response
+```
+
+This reads the clipboard, applies any file edits found in the response using the normal edit pipeline, auto-commits, and runs the linter. Paired with `/copy-context` for a web-UI workflow.

@@ -1,0 +1,173 @@
+---
+title: "Reference Database"
+description: "Managing character sheets, locations, and world-building material in the db/ directory."
+---
+
+## Overview
+
+The reference database (`db/`) holds all the background material the AI needs to write consistently: character descriptions, location details, style guides, timelines, and any other reference material. These files are treated as **read-only context** during normal editing---the AI reads them but won't modify them unless you explicitly ask.
+
+## Directory Structure
+
+```
+db/
+  core/
+    metadata.yml        # Book title and author
+    style.md            # Style guide (voice, POV, tone)
+  characters/
+    sarah.md
+    tom.md
+  locations/
+    apartment.md
+    lighthouse.md
+  items/
+    ...
+  themes/
+    ...
+  notes/
+    ...
+  snippets/
+    ...
+```
+
+### Default Categories
+
+When you initialize a project, the following categories are created:
+
+| Category | Purpose |
+|----------|---------|
+| `core` | Always-loaded context: metadata, style guide |
+| `characters` | Character sheets and descriptions |
+| `locations` | Setting descriptions |
+| `items` | Important objects |
+| `themes` | Thematic notes |
+| `style` | Style reference material |
+| `notes` | General notes |
+| `other` | Anything else |
+
+You can add any category you want---just create a subdirectory under `db/`.
+
+## Core Context
+
+Files in `db/core/` are special: they're **always loaded** as read-only context whenever novel mode is active. You don't need to `/add` them---they're included automatically.
+
+### metadata.yml
+
+Created on first launch with the project directory name and git user:
+
+```yaml
+title: My Novel
+author: Jane Smith
+```
+
+This metadata is used for EPUB export and other features.
+
+### style.md
+
+A default style guide is seeded on first launch. It includes guidelines for:
+
+- Voice and tone
+- Prose principles (show vs. tell, active voice)
+- Dialogue conventions
+- Pacing
+- Consistency rules
+
+Edit this file to match your project's style. The AI will follow these guidelines when writing prose.
+
+## Managing Entries
+
+### Creating Entries
+
+```
+> /new db characters elena
+Created db entry: db/characters/elena.md
+Added to chat for editing: characters/elena
+```
+
+The entry is added to your chat so you can describe the character immediately. Non-core entries are added as editable; core entries are added as read-only.
+
+### Loading Entries
+
+```
+> /add db                     # Add ALL db entries
+> /add db sarah               # Add a specific entry by name
+> /add db characters           # Add all entries in a category
+```
+
+### Deleting Entries
+
+```
+> /delete db sarah
+> /delete db characters sarah   # Scoped by category
+```
+
+### Listing Entries
+
+```
+> /ls
+```
+
+Shows all db entries grouped by category, along with the narrative structure.
+
+## Writing Effective Reference Entries
+
+For best results, structure your entries to give the AI clear, concrete details:
+
+### Character Sheets
+
+```markdown
+Elena Vasquez, 34. Former marine biologist, now lighthouse keeper
+on Cape Isolation.
+
+**Appearance**: Tall, sun-weathered skin, dark hair always in a
+practical braid. Calloused hands. Faint scar across her left palm
+from a diving accident.
+
+**Personality**: Pragmatic and self-reliant. Dry humor as a
+defense mechanism. Avoids emotional vulnerability. Deeply curious
+but has learned to suppress it.
+
+**Speech**: Clipped sentences. Rarely asks questions — makes
+statements. Avoids eye contact during difficult conversations.
+Uses marine biology metaphors unconsciously.
+
+**Background**: Left her university position after an incident
+during a deep-sea expedition. Refuses to discuss what happened.
+Took the lighthouse job for isolation.
+
+**Relationships**:
+- Tom (ex-colleague): complicated, unresolved trust issues
+- The lighthouse: treats it like a living thing
+```
+
+### Location Descriptions
+
+```markdown
+The lighthouse stands on a basalt promontory 40 meters above
+the tide line. Victorian-era construction, white-painted stone,
+red-capped lantern room.
+
+**Interior**: Spiral iron staircase, 127 steps. Ground floor
+converted to a small apartment. Equipment room on the second
+level. Lantern room at the top with 360-degree views.
+
+**Atmosphere**: The building groans in high wind. Salt encrusts
+every exterior surface. The foghorn can be heard from inside,
+a deep vibration more felt than heard.
+
+**Key details**: The radio equipment is from the 1970s but
+reliable. There's no cell coverage. Supply boat comes Tuesdays.
+```
+
+::: {.callout-tip}
+## Tip: Be specific about speech patterns
+The AI is excellent at maintaining character voice when you give concrete examples of how a character speaks rather than abstract descriptions.
+:::
+
+## How the Database Integrates
+
+When you're chatting or writing, the AI sees your db entries as read-only context prefixed with:
+
+> *Here are some READ ONLY reference files (db entries, summaries, etc.) provided for context. Do not edit these files! Use them to maintain consistency in characters, settings, timeline, and tone.*
+
+This ensures the AI uses the entries for reference but doesn't modify them during normal prose editing.

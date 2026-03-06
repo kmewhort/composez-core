@@ -1,0 +1,109 @@
+---
+title: "Edit Modes & Autonomy"
+description: "Understanding the two independent axes that control how Composez interacts with your manuscript."
+---
+
+## Two Independent Axes
+
+Composez has two orthogonal settings that control its behavior:
+
+1. **Edit mode** --- *what* the AI does (query content, edit files, replace a selection)
+2. **Autonomy level** --- *how* the AI is orchestrated (single turn, two-phase, multi-step agent)
+
+Any edit mode works with any autonomy level. They're completely independent.
+
+## Edit Modes
+
+| Mode | What it does | Command |
+|------|-------------|---------|
+| **Query** | Answers questions without changing files | `/query` |
+| **Edit** | Makes changes to manuscript files | `/edit` or just chat |
+| **Selection** | Replaces a specific text range | `/select` to set, then chat |
+
+Switch modes with `/chat-mode`:
+
+```
+> /chat-mode query        # Switch to query mode
+> /chat-mode edit         # Switch to edit mode
+```
+
+## Autonomy Levels
+
+| Level | How it works | Command |
+|-------|-------------|---------|
+| **Direct** | Single turn --- one prompt, one response (the default) | `/chat-mode direct` |
+| **Compose** | Two-phase --- a planning model designs changes, an editor model applies them | `/compose` |
+| **Agent** | Multi-step --- plans and executes a sequence of slash commands | `/agent` |
+
+### Direct (default)
+
+You send a message, the AI responds once, and any edits are applied. This is the standard mode for most writing and editing work.
+
+### Compose
+
+Uses two models in sequence:
+
+1. A **planning model** (the main model) analyzes your request and writes a detailed plan
+2. An **editor model** turns the plan into specific file edits
+
+This is useful when working with models that are strong at reasoning but less precise at producing file edits. Composez picks a suitable editor model by default, or you can choose one with `--editor-model`.
+
+Enter compose mode with `/compose` or use it one-shot:
+
+```
+> /compose Restructure the dialogue in scene 3 to reveal the secret gradually
+```
+
+### Agent
+
+The AI creates a structured YAML plan of slash commands and executes them step by step. This is ideal for complex, multi-step tasks that span multiple scenes or files.
+
+```
+> /agent Rewrite act 1 chapter 1 in first person POV
+```
+
+See [Agent Mode](agent-mode.qmd) for the full guide on plans, parallel execution, and review loops.
+
+## Combining Modes
+
+Every edit mode works with every autonomy level. The table below shows what happens for each combination:
+
+| | Direct | Compose | Agent |
+|---|---|---|---|
+| **Query** | AI answers directly in one turn. | Planning model drafts an answer, then a second pass refines it. No files edited. | AI creates a multi-step plan to research and answer the question. |
+| **Edit** | AI edits files in one step. | Planning model designs changes, then an editor model implements them. | AI creates a multi-step plan of editing commands executed automatically. |
+| **Selection** | AI replaces the selected text in one turn. | Planning model designs the replacement, then a second pass applies it. | AI creates a multi-step plan that may include research before replacing the selection. |
+
+### Legacy names
+
+The old mode names still work:
+
+- `/architect` is equivalent to `/compose`
+- `/code` is equivalent to `/edit`
+
+## Switching
+
+Use `/chat-mode` to switch either axis independently:
+
+```
+> /chat-mode query        # Change edit mode to query (keeps current autonomy)
+> /chat-mode compose      # Change autonomy to compose (keeps current edit mode)
+> /chat-mode edit         # Change edit mode to edit
+> /chat-mode direct       # Change autonomy back to direct
+```
+
+Or use the shorthand commands:
+
+```
+> /query                  # Switch to query mode
+> /compose                # Switch to compose autonomy
+> /agent                  # Switch to agent autonomy
+```
+
+The prompt indicator shows your current mode:
+
+```
+> normal prompt (edit + direct)
+compose> compose mode active
+query> query mode active
+```

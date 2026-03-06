@@ -1,0 +1,139 @@
+---
+title: "Prose Linting"
+description: "Using Vale to catch style issues, passive voice, cliches, and AI-tells in your prose."
+---
+
+## Overview
+
+Composez integrates [Vale](https://vale.sh), the prose linter, to check your writing for style issues. The linter is configured with fiction-friendly defaults---it won't flag invented character names as spelling errors or penalize you for literary conventions like em-dashes.
+
+Three style packages are included:
+
+- **write-good** --- general prose quality (passive voice, weasel words, etc.)
+- **proselint** --- editing advice (cliches, typography, jargon)
+- **ai-tells** --- patterns that make AI-generated prose feel generic
+
+## Setup
+
+Install the Vale Python package:
+
+```bash
+pip install vale
+```
+
+That's it. On first lint, Composez will:
+
+1. Create a `.vale.ini` configuration file with fiction-friendly defaults
+2. Run `vale sync` to download the style packages
+
+## Using /lint
+
+### Lint by location
+
+```
+> /lint 1 2 3                  # Lint act 1, chapter 2, scene 3
+> /lint act 1 chapter 2        # Lint all prose in chapter 2
+> /lint 1                      # Lint all prose in act 1
+```
+
+### Lint files in the chat
+
+```
+> /lint                        # Lint all files currently in the chat
+```
+
+### Lint specific files
+
+```
+> /lint novel/Act 1 - Title/Chapter 1 - Title/Scene 1 - Title/PROSE.md
+```
+
+## Lint Output
+
+Vale reports issues grouped by severity:
+
+```
+## Vale lint: novel/.../Scene 1 - The Alarm/PROSE.md
+
+### warning (2)
+  Line 5: [write-good.Passive] "was killed" may be passive voice.
+  Line 12: [proselint.Clichés] "It was a dark and stormy night" is a cliché.
+
+### suggestion (1)
+  Line 8: [ai-tells.GenericDescriptors] "beautiful" is a generic descriptor.
+```
+
+After each file, Composez asks if you want to fix the issues:
+
+```
+Fix lint issues in .../PROSE.md? [Y/n]
+```
+
+If you accept, the AI reads the lint output and edits the file to address the issues.
+
+## Lint Levels
+
+Control which severities are reported with `/lint-level`:
+
+```
+> /lint-level                 # Show current level
+> /lint-level error           # Only show errors
+> /lint-level warning         # Errors + warnings (default)
+> /lint-level suggestion      # Everything
+```
+
+The lint level also applies to auto-lint (the linter that runs after each AI edit).
+
+## Auto-Lint
+
+When Composez is configured with `--auto-lint` (or `auto_lint: true` in config), Vale automatically runs after each AI edit to prose files. Issues at or above the current lint level will trigger a fix cycle.
+
+## Fiction-Friendly Defaults
+
+The default `.vale.ini` disables rules that aren't useful for fiction:
+
+| Rule | Default | Why |
+|------|---------|-----|
+| `Vale.Spelling` | OFF | Invented names and places cause false positives |
+| `write-good.E-Prime` | OFF | Flagging "is/was/are" is too noisy for prose |
+| `write-good.Passive` | suggestion | Passive voice is a stylistic choice, not an error |
+| `ai-tells.EmDashUsage` | OFF | Em-dashes are standard literary punctuation |
+| `ai-tells.FormalTransitions` | OFF | "Furthermore" and "Moreover" have literary uses |
+| `proselint.Typography` | suggestion | Ellipsis style is a house-style decision |
+| `proselint.Clichés` | warning | Worth flagging but not blocking |
+| `proselint.But` | suggestion | "Don't start with So/But" is advisory |
+| `write-good.So` | suggestion | Same as above |
+
+## Customizing Vale
+
+Edit `.vale.ini` in your project root to adjust:
+
+```ini
+# Example: disable passive voice checking entirely
+write-good.Passive = NO
+
+# Example: make cliches into errors
+proselint.Clichés = error
+
+# Example: add your own style package
+Packages = write-good, proselint, \
+  https://github.com/tbhb/vale-ai-tells/releases/download/v1.4.0/ai-tells.zip
+```
+
+After editing `.vale.ini`, the next `/lint` will automatically re-sync the style packages.
+
+## Creating Custom Rules
+
+Vale supports custom rules via YAML files in the `.vale-styles/` directory. This is useful for project-specific checks:
+
+```yaml
+# .vale-styles/MyNovel/CharacterNames.yml
+extends: existence
+message: "Use 'Elena' not '%s' — that's her old name."
+level: warning
+tokens:
+  - Helen
+  - Helena
+```
+
+See [Vale's documentation](https://vale.sh/docs/topics/styles/) for the full rule specification.

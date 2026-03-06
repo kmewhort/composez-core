@@ -1,0 +1,177 @@
+---
+title: "Project Layout"
+description: "Complete reference for the directory structure of a Composez project."
+---
+
+## Full Layout
+
+A complete Composez project looks like this:
+
+```
+my-novel/
+│
+├── .composez                    # Project configuration (levels, etc.)
+├── .vale.ini                    # Vale linter config (created on first lint)
+├── .vale-styles/                # Downloaded Vale style packages
+├── .git/                        # Git repository
+├── .env                         # API keys (optional)
+├── .aider.conf.yml              # Aider settings (optional)
+├── .gitignore
+├── CLAUDE.md                    # Auto-generated project guide for AI tools
+│
+├── novel/                       # All narrative content
+│   ├── Act 1 - The Beginning/
+│   │   ├── outline.md           # Any .md file (user notes)
+│   │   ├── Chapter 1 - Arrivals/
+│   │   │   ├── notes.md         # Any .md file (user notes)
+│   │   │   ├── Scene 1 - The Train Station/
+│   │   │   │   ├── SUMMARY.md   # Scene synopsis
+│   │   │   │   └── PROSE.md     # Scene prose
+│   │   │   └── Scene 2 - First Impressions/
+│   │   │       ├── SUMMARY.md
+│   │   │       └── PROSE.md
+│   │   └── Chapter 2 - Settling In/
+│   │       └── ...
+│   └── Act 2 - Rising Action/
+│       └── ...
+│
+├── db/                          # Reference database (read-only context)
+│   ├── core/                    # Always-loaded context
+│   │   ├── metadata.yml         # Book title and author
+│   │   └── style.md             # Style guide
+│   ├── characters/
+│   │   ├── elena.md
+│   │   └── tom.md
+│   ├── locations/
+│   │   └── lighthouse.md
+│   ├── items/
+│   ├── themes/
+│   ├── style/
+│   ├── notes/
+│   ├── snippets/
+│   └── other/
+│
+├── instructions/                # Reusable instruction files
+│   ├── tone-shift.md
+│   └── action-scenes.md
+│
+├── cache/                       # Save/load slots (auto-created)
+│   ├── chat/
+│   │   └── default.yml
+│   └── context/
+│       └── default.yml
+│
+├── cover.jpg                    # Cover image (optional, used by EPUB export)
+│
+├── export.md                    # Export output (created by /export)
+├── export.docx
+└── export.epub
+```
+
+## Key Directories
+
+### `novel/`
+
+All narrative content. The constant `NOVEL_DIR = "novel"` is hardcoded in `composez_core/config.py`.
+
+**Structure rules:**
+
+- Directories follow the pattern `Level N - Title` (e.g., `Act 1 - The Beginning`)
+- Non-leaf levels (Act, Chapter) can contain any `.md` files
+- Leaf levels (Scene) can only contain `SUMMARY.md` and `PROSE.md`
+- The `edit_path_validator` hook enforces these rules at the coder level
+
+### `db/`
+
+Reference material organized by category. Each category is a subdirectory.
+
+**Special behavior:**
+
+- `db/core/` files are **always loaded** as read-only context
+- Other categories are loaded on demand via `/add db`
+- The AI is instructed not to edit db files during normal chat
+
+### `instructions/`
+
+Reusable directive files loaded via `/instruct`. Can be `.md` or `.txt`.
+
+### `cache/`
+
+Auto-created by `/save`. Contains YAML serializations of chat history (`cache/chat/`) and file context (`cache/context/`).
+
+## Important Files
+
+### `.composez`
+
+YAML configuration. See [.composez Configuration](composez-config.qmd).
+
+### `db/core/metadata.yml`
+
+Book metadata used by EPUB export:
+
+```yaml
+title: The Lighthouse
+author: Elena Vasquez
+```
+
+### `db/core/style.md`
+
+Style guide loaded as context for every AI interaction. The most impactful file for prose quality.
+
+### `SUMMARY.md`
+
+Scene synopsis. Exists only at leaf level. Used as context when writing adjacent scenes.
+
+### `PROSE.md`
+
+Scene prose. Exists only at leaf level. This is the text that appears in your exported manuscript.
+
+### `.vale.ini`
+
+Vale linter configuration. Created automatically on first `/lint` with fiction-friendly defaults. See [Prose Linting](../guide/prose-linting.qmd).
+
+### `CLAUDE.md`
+
+Auto-generated on project initialization. Describes the project structure so other AI tools (Claude Code, etc.) can understand and work with the project correctly.
+
+### `cover.jpg` / `cover.png`
+
+Optional cover image used by EPUB export. A placeholder SVG is created on project initialization.
+
+## Naming Conventions
+
+### Directory Names
+
+```
+Level N - Title
+```
+
+- **Level**: matches a configured level name (Act, Chapter, Scene, etc.)
+- **N**: ordinal number (1-based, auto-incremented by `/new`)
+- **Title**: optional, human-readable description
+
+Examples:
+
+```
+Act 1 - The Awakening
+Chapter 3 - Revelations
+Scene 12 - The Duel
+```
+
+### Database Entry Names
+
+Lowercase, no spaces preferred. The filename (minus extension) is the entry name:
+
+```
+db/characters/elena.md    → entry name: elena
+db/locations/lighthouse.md → entry name: lighthouse
+```
+
+### Instruction Names
+
+The filename stem is the instruction name:
+
+```
+instructions/tone-shift.md  → /instruct tone-shift
+instructions/pacing.txt     → /instruct pacing
+```
