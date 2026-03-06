@@ -1,6 +1,8 @@
 # Composez
 
-A terminal-based AI writing tool for long-form fiction. Built as a plugin on top of [Aider](https://aider.chat), Composez adds structured narrative editing so you can write, revise, and manage novels from the command line.
+A terminal-based, git-integrated AI writing tool for long-form fiction. Composez adds structured narrative editing so you can write, revise, and manage novels from the command line as you write with your favourite editor.
+
+If you're looking for a more ready-to-use, one-click solution, check out the web editing tool at https://composez.ai.
 
 ## Features
 
@@ -51,6 +53,16 @@ git init
 composez
 ```
 
+### Import
+
+To import an existing manuscript from `markdown` or `novelcrafter`, first create your project, put your export in your project root, and then:
+
+- Markdown: `/import markdown my_markdown.md`
+- Novelcrafter: `/import novelcrafter novelcrafter_export.zip`
+
+
+### Writing
+
 Inside the Composez shell, build your structure and write:
 
 ```
@@ -85,6 +97,11 @@ See [docs.composez.ai](https://docs.composez.ai) for the full guide, including:
 - [Command Reference](https://docs.composez.ai/reference/commands.html)
 - [Configuration](https://docs.composez.ai/reference/composez-config.html)
 
+## Architecture
+
+Composez is built as a plugin on top of [Aider](https://aider.chat). This repo contains novel-specific coders, prompts, etc. More generic changes to the the origin Aider tool can be found in the [composez-aider-fork](https://github.com/kmewhort/composez-aider-fork).
+
+
 ## License
 
-Apache License 2.0
+AGPL-3.0 license.  See `LICENSE` for furthe details.
