@@ -16,7 +16,7 @@ classifiers = [
 requires-python = ">=3.10,<3.13"
 version = "0.1.0"
 dependencies = [
-    "composez-aider-fork @ file:///Users/kent/Documents/projects_active/composez-aider-fork",
+    "composez-aider-fork>=0.86.2",
     # Export formats
     "python-docx",
     "ebooklib",
