@@ -84,7 +84,7 @@ class TestGenerateClaudeMd(unittest.TestCase):
             content = generate_claude_md(root)
 
             self.assertIn("SUMMARY.md and PROSE.md only", content)
-            self.assertIn("Do NOT create or edit CONTENT.md", content)
+            self.assertIn("Do NOT create files outside", content)
             self.assertIn("top-level headings", content)
 
 

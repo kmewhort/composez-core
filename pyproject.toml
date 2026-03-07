@@ -31,6 +31,15 @@ dependencies = [
     "python-multipart",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-env",
+    "pre-commit",
+    "codespell",
+]
+
 [project.scripts]
 composez = "aider.main:main"
 
