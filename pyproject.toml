@@ -6,7 +6,7 @@ readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -14,7 +14,7 @@ classifiers = [
     "Programming Language :: Python",
 ]
 requires-python = ">=3.10,<3.13"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
     "composez-aider-fork>=0.86.2",
     # Export formats
