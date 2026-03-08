@@ -15,3 +15,4 @@ novel_ui/dist/
 .pytest_cache/
 agents/
 .claude/
+docs/_site/

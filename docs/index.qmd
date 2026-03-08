@@ -1,15 +1,15 @@
 ---
-pagetitle: "Composez — AI-Powered Structured Fiction Editing"
+pagetitle: "Composez CLI"
 toc: false
 sidebar: false
 ---
 
 ::: {.hero}
 
-# Composez
+# Composez CLI
 
 ::: {.tagline}
-AI-powered structured fiction editing, built on Aider
+Your fiction writing from the power of a terminal CLI. Supported by AI.
 :::
 
 ::: {.hero-buttons}
@@ -19,11 +19,18 @@ AI-powered structured fiction editing, built on Aider
 
 :::
 
-## What is Composez?
+## What is Composez CLI?
 
-Composez is a fork of [Aider](https://aider.chat) purpose-built for writing long-form fiction with AI. It adds a structured narrative layer on top of Aider's powerful code-editing engine, giving you an AI writing partner that understands your novel's hierarchy---acts, chapters, and scenes---and helps you write, revise, and manage your manuscript with full version control.
+Composez CLI is a terminal tool purpose-built for writing long-form fiction with AI assistance. It adds structure to your manuscript, making well organized for git version control, AI review and editing -- and you!
 
-Instead of dumping an entire novel into a single prompt, Composez lets you work at the right level of granularity: summarize a scene, write a chapter, reorganize your structure, and lint your prose---all through simple slash commands in the terminal.
+Instead of dumping an entire novel into a single prompt, Composez lets you work at the right level of granularity: summarize a scene, write a chapter, reorganize your structure, and lint your prose--all through simple slash commands in the terminal.
+
+Composez CLI is based on and forked from the [Aider](https://aider.chat) software development CLI.
+
+
+## Where is the User Interface?
+
+This is the documentation for the Composez **CLI**, a terminal companion you can use alongside your favourite editor. If you're looking for a more ready-made novel editing solution, try out our cloud application, [Composez](https://composez.ai), featuring the raw power of Composez CLI along other features -- all ready-to-go in a browser application.
 
 ::: {.features}
 
@@ -96,13 +103,9 @@ composez
 
 ## How It Works
 
-Composez uses a **lightweight overlay** on Aider's coder system rather than a full subclass. This means:
+Your narrative structure lives in your filesystem as plain directories and Markdown files---no proprietary formats, no databases, no lock-in. Your manuscript is always readable, diffable, and yours.
 
-- **Every edit format works**: whole-file, diff, udiff, and more
-- **Chat and architect modes**: use a single model or a planner + editor pair
-- **Upstream compatibility**: stays in sync with Aider improvements
-
-The narrative structure lives in your filesystem as plain directories and Markdown files---no proprietary formats, no databases, no lock-in. Your manuscript is always readable, diffable, and yours.
+From there, our tools let you work with your prose, summaries and database of characters, locations, and other material.  The AI chat knows how all this works and you can simply ask it for help!
 
 ---
 

@@ -3,10 +3,11 @@ project:
   output-dir: _site
 
 website:
-  title: "Composez"
+  title: ""
   description: "AI-powered structured fiction editing"
   favicon: "images/favicon.svg"
   navbar:
+    logo: "images/composez_logo_small.png"
     background: "#1a1a2e"
     foreground: "#eee"
     left:
@@ -16,9 +17,11 @@ website:
         href: guide/getting-started.qmd
       - text: "Reference"
         href: reference/commands.qmd
+      - text: "Web App"
+        href: https://composez.ai
     right:
       - icon: github
-        href: https://github.com/kmewhort/aider
+        href: https://github.com/kmewhort/composez-core
         aria-label: GitHub
 
   sidebar:
@@ -62,7 +65,7 @@ website:
             - reference/project-layout.qmd
 
   page-footer:
-    center: "Built with [Quarto](https://quarto.org/) &mdash; Composez is a fork of [Aider](https://aider.chat)"
+    center: "Composez CLI"
 
 format:
   html:
