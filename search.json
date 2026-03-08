@@ -200,7 +200,7 @@
     "href": "index.html#how-it-works",
     "title": "Composez CLI",
     "section": "How It Works",
-    "text": "How It Works\nComposez uses a lightweight overlay on Aider’s coder system rather than a full subclass. This means:\n\nEvery edit format works: whole-file, diff, udiff, and more\nChat and architect modes: use a single model or a planner + editor pair\nUpstream compatibility: stays in sync with Aider improvements\n\nThe narrative structure lives in your filesystem as plain directories and Markdown files—no proprietary formats, no databases, no lock-in. Your manuscript is always readable, diffable, and yours.\n\n\nGet Started →  |  Commands Reference →"
+    "text": "How It Works\nYour narrative structure lives in your filesystem as plain directories and Markdown files—no proprietary formats, no databases, no lock-in. Your manuscript is always readable, diffable, and yours.\nFrom there, our tools let you work with your prose, summaries and database of characters, locations, and other material. The AI chat knows how all this works and you can simply ask it for help!\n\n\nGet Started →  |  Commands Reference →"
   },
   {
     "objectID": "guide/import-export.html",
