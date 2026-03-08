@@ -1,0 +1,1684 @@
+[
+  {
+    "objectID": "reference/project-layout.html",
+    "href": "reference/project-layout.html",
+    "title": "Project Layout",
+    "section": "",
+    "text": "A complete Composez project looks like this:\nmy-novel/\n│\n├── .composez                    # Project configuration (levels, etc.)\n├── .vale.ini                    # Vale linter config (created on first lint)\n├── .vale-styles/                # Downloaded Vale style packages\n├── .git/                        # Git repository\n├── .env                         # API keys (optional)\n├── .aider.conf.yml              # Aider settings (optional)\n├── .gitignore\n├── CLAUDE.md                    # Auto-generated project guide for AI tools\n│\n├── novel/                       # All narrative content\n│   ├── Act 1 - The Beginning/\n│   │   ├── outline.md           # Any .md file (user notes)\n│   │   ├── Chapter 1 - Arrivals/\n│   │   │   ├── notes.md         # Any .md file (user notes)\n│   │   │   ├── Scene 1 - The Train Station/\n│   │   │   │   ├── SUMMARY.md   # Scene synopsis\n│   │   │   │   └── PROSE.md     # Scene prose\n│   │   │   └── Scene 2 - First Impressions/\n│   │   │       ├── SUMMARY.md\n│   │   │       └── PROSE.md\n│   │   └── Chapter 2 - Settling In/\n│   │       └── ...\n│   └── Act 2 - Rising Action/\n│       └── ...\n│\n├── db/                          # Reference database (read-only context)\n│   ├── core/                    # Always-loaded context\n│   │   ├── metadata.yml         # Book title and author\n│   │   └── style.md             # Style guide\n│   ├── characters/\n│   │   ├── elena.md\n│   │   └── tom.md\n│   ├── locations/\n│   │   └── lighthouse.md\n│   ├── items/\n│   ├── themes/\n│   ├── style/\n│   ├── notes/\n│   ├── snippets/\n│   └── other/\n│\n├── instructions/                # Reusable instruction files\n│   ├── tone-shift.md\n│   └── action-scenes.md\n│\n├── cache/                       # Save/load slots (auto-created)\n│   ├── chat/\n│   │   └── default.yml\n│   └── context/\n│       └── default.yml\n│\n├── cover.jpg                    # Cover image (optional, used by EPUB export)\n│\n├── export.md                    # Export output (created by /export)\n├── export.docx\n└── export.epub",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      "Project Layout"
+    ]
+  },
+  {
+    "objectID": "reference/project-layout.html#full-layout",
+    "href": "reference/project-layout.html#full-layout",
+    "title": "Project Layout",
+    "section": "",
+    "text": "A complete Composez project looks like this:\nmy-novel/\n│\n├── .composez                    # Project configuration (levels, etc.)\n├── .vale.ini                    # Vale linter config (created on first lint)\n├── .vale-styles/                # Downloaded Vale style packages\n├── .git/                        # Git repository\n├── .env                         # API keys (optional)\n├── .aider.conf.yml              # Aider settings (optional)\n├── .gitignore\n├── CLAUDE.md                    # Auto-generated project guide for AI tools\n│\n├── novel/                       # All narrative content\n│   ├── Act 1 - The Beginning/\n│   │   ├── outline.md           # Any .md file (user notes)\n│   │   ├── Chapter 1 - Arrivals/\n│   │   │   ├── notes.md         # Any .md file (user notes)\n│   │   │   ├── Scene 1 - The Train Station/\n│   │   │   │   ├── SUMMARY.md   # Scene synopsis\n│   │   │   │   └── PROSE.md     # Scene prose\n│   │   │   └── Scene 2 - First Impressions/\n│   │   │       ├── SUMMARY.md\n│   │   │       └── PROSE.md\n│   │   └── Chapter 2 - Settling In/\n│   │       └── ...\n│   └── Act 2 - Rising Action/\n│       └── ...\n│\n├── db/                          # Reference database (read-only context)\n│   ├── core/                    # Always-loaded context\n│   │   ├── metadata.yml         # Book title and author\n│   │   └── style.md             # Style guide\n│   ├── characters/\n│   │   ├── elena.md\n│   │   └── tom.md\n│   ├── locations/\n│   │   └── lighthouse.md\n│   ├── items/\n│   ├── themes/\n│   ├── style/\n│   ├── notes/\n│   ├── snippets/\n│   └── other/\n│\n├── instructions/                # Reusable instruction files\n│   ├── tone-shift.md\n│   └── action-scenes.md\n│\n├── cache/                       # Save/load slots (auto-created)\n│   ├── chat/\n│   │   └── default.yml\n│   └── context/\n│       └── default.yml\n│\n├── cover.jpg                    # Cover image (optional, used by EPUB export)\n│\n├── export.md                    # Export output (created by /export)\n├── export.docx\n└── export.epub",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      "Project Layout"
+    ]
+  },
+  {
+    "objectID": "reference/project-layout.html#key-directories",
+    "href": "reference/project-layout.html#key-directories",
+    "title": "Project Layout",
+    "section": "Key Directories",
+    "text": "Key Directories\n\nnovel/\nAll narrative content. The constant NOVEL_DIR = \"novel\" is hardcoded in composez_core/config.py.\nStructure rules:\n\nDirectories follow the pattern Level N - Title (e.g., Act 1 - The Beginning)\nNon-leaf levels (Act, Chapter) can contain any .md files\nLeaf levels (Scene) can only contain SUMMARY.md and PROSE.md\nThe edit_path_validator hook enforces these rules at the coder level\n\n\n\ndb/\nReference material organized by category. Each category is a subdirectory.\nSpecial behavior:\n\ndb/core/ files are always loaded as read-only context\nOther categories are loaded on demand via /add db\nThe AI is instructed not to edit db files during normal chat\n\n\n\ninstructions/\nReusable directive files loaded via /instruct. Can be .md or .txt.\n\n\ncache/\nAuto-created by /save. Contains YAML serializations of chat history (cache/chat/) and file context (cache/context/).",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      "Project Layout"
+    ]
+  },
+  {
+    "objectID": "reference/project-layout.html#important-files",
+    "href": "reference/project-layout.html#important-files",
+    "title": "Project Layout",
+    "section": "Important Files",
+    "text": "Important Files\n\n.composez\nYAML configuration. See .composez Configuration.\n\n\ndb/core/metadata.yml\nBook metadata used by EPUB export:\ntitle: The Lighthouse\nauthor: Elena Vasquez\n\n\ndb/core/style.md\nStyle guide loaded as context for every AI interaction. The most impactful file for prose quality.\n\n\nSUMMARY.md\nScene synopsis. Exists only at leaf level. Used as context when writing adjacent scenes.\n\n\nPROSE.md\nScene prose. Exists only at leaf level. This is the text that appears in your exported manuscript.\n\n\n.vale.ini\nVale linter configuration. Created automatically on first /lint with fiction-friendly defaults. See Prose Linting.\n\n\nCLAUDE.md\nAuto-generated on project initialization. Describes the project structure so other AI tools (Claude Code, etc.) can understand and work with the project correctly.\n\n\ncover.jpg / cover.png\nOptional cover image used by EPUB export. A placeholder SVG is created on project initialization.",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      "Project Layout"
+    ]
+  },
+  {
+    "objectID": "reference/project-layout.html#naming-conventions",
+    "href": "reference/project-layout.html#naming-conventions",
+    "title": "Project Layout",
+    "section": "Naming Conventions",
+    "text": "Naming Conventions\n\nDirectory Names\nLevel N - Title\n\nLevel: matches a configured level name (Act, Chapter, Scene, etc.)\nN: ordinal number (1-based, auto-incremented by /new)\nTitle: optional, human-readable description\n\nExamples:\nAct 1 - The Awakening\nChapter 3 - Revelations\nScene 12 - The Duel\n\n\nDatabase Entry Names\nLowercase, no spaces preferred. The filename (minus extension) is the entry name:\ndb/characters/elena.md    → entry name: elena\ndb/locations/lighthouse.md → entry name: lighthouse\n\n\nInstruction Names\nThe filename stem is the instruction name:\ninstructions/tone-shift.md  → /instruct tone-shift\ninstructions/pacing.txt     → /instruct pacing",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      "Project Layout"
+    ]
+  },
+  {
+    "objectID": "reference/commands.html",
+    "href": "reference/commands.html",
+    "title": "Commands Overview",
+    "section": "",
+    "text": "Composez provides slash commands organized into three categories:\n\n\nCommands for loading files, viewing structure, and managing context.\n\n\n\n\n\n\n\nCommand\nDescription\n\n\n\n\n/add\nAdd files to the chat context\n\n\n/drop\nRemove files from the chat (core db entries reload automatically)\n\n\n/ls\nList narrative structure, db entries, and files in chat\n\n\n/wordcount\nShow word counts by act, chapter, and scene\n\n\n\n\n\n\nCommands for generating and revising manuscript content.\n\n\n\nCommand\nDescription\n\n\n\n\n/write\nGenerate prose from summaries\n\n\n/summarize\nGenerate summaries from prose\n\n\n/edit\nMake targeted edits to manuscript files\n\n\n/query\nQuery the manuscript (read-only)\n\n\n/compose\nEnter compose mode (two-model planning + editing)\n\n\n/agent\nPlan and execute multi-step tasks\n\n\n/select\nSet a text selection for focused editing\n\n\n/instruct\nLoad an instruction file into the chat\n\n\n/lint\nCheck prose for style issues with Vale\n\n\n/lint-level\nSet which severity levels /lint reports\n\n\n/analyze-style\nLoad prose files for style analysis\n\n\n/feedback\nGet prioritized critique of a manuscript section\n\n\n/auto-context\nToggle automatic context identification\n\n\n\n\n\n\nCommands for creating, deleting, moving, and reorganizing content.\n\n\n\nCommand\nDescription\n\n\n\n\n/new\nCreate acts, chapters, scenes, db entries, or instructions\n\n\n/delete\nDelete narrative nodes, db entries, or instructions\n\n\n/insert-after\nInsert a new node after a position\n\n\n/insert-before\nInsert a new node before a position\n\n\n/move\nMove a narrative node or file\n\n\n/import\nImport from Novelcrafter or Markdown\n\n\n/export\nExport to Markdown, DOCX, or EPUB\n\n\n/save\nSave chat history or context to cache\n\n\n/load\nRestore chat history or context from cache\n\n\n/copy-context\nCopy full chat context to clipboard\n\n\n/paste-response\nApply a pasted LLM response",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Commands Overview"
+    ]
+  },
+  {
+    "objectID": "reference/commands.html#command-categories",
+    "href": "reference/commands.html#command-categories",
+    "title": "Commands Overview",
+    "section": "",
+    "text": "Composez provides slash commands organized into three categories:\n\n\nCommands for loading files, viewing structure, and managing context.\n\n\n\n\n\n\n\nCommand\nDescription\n\n\n\n\n/add\nAdd files to the chat context\n\n\n/drop\nRemove files from the chat (core db entries reload automatically)\n\n\n/ls\nList narrative structure, db entries, and files in chat\n\n\n/wordcount\nShow word counts by act, chapter, and scene\n\n\n\n\n\n\nCommands for generating and revising manuscript content.\n\n\n\nCommand\nDescription\n\n\n\n\n/write\nGenerate prose from summaries\n\n\n/summarize\nGenerate summaries from prose\n\n\n/edit\nMake targeted edits to manuscript files\n\n\n/query\nQuery the manuscript (read-only)\n\n\n/compose\nEnter compose mode (two-model planning + editing)\n\n\n/agent\nPlan and execute multi-step tasks\n\n\n/select\nSet a text selection for focused editing\n\n\n/instruct\nLoad an instruction file into the chat\n\n\n/lint\nCheck prose for style issues with Vale\n\n\n/lint-level\nSet which severity levels /lint reports\n\n\n/analyze-style\nLoad prose files for style analysis\n\n\n/feedback\nGet prioritized critique of a manuscript section\n\n\n/auto-context\nToggle automatic context identification\n\n\n\n\n\n\nCommands for creating, deleting, moving, and reorganizing content.\n\n\n\nCommand\nDescription\n\n\n\n\n/new\nCreate acts, chapters, scenes, db entries, or instructions\n\n\n/delete\nDelete narrative nodes, db entries, or instructions\n\n\n/insert-after\nInsert a new node after a position\n\n\n/insert-before\nInsert a new node before a position\n\n\n/move\nMove a narrative node or file\n\n\n/import\nImport from Novelcrafter or Markdown\n\n\n/export\nExport to Markdown, DOCX, or EPUB\n\n\n/save\nSave chat history or context to cache\n\n\n/load\nRestore chat history or context from cache\n\n\n/copy-context\nCopy full chat context to clipboard\n\n\n/paste-response\nApply a pasted LLM response",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Commands Overview"
+    ]
+  },
+  {
+    "objectID": "reference/commands.html#location-argument-syntax",
+    "href": "reference/commands.html#location-argument-syntax",
+    "title": "Commands Overview",
+    "section": "Location Argument Syntax",
+    "text": "Location Argument Syntax\nMany commands accept a location argument to target parts of the hierarchy. Three syntaxes are supported interchangeably:\n\nKeyword\nact 1 chapter 2 scene 3\n\n\nShorthand (numbers only)\n1 2 3\nNumbers map to levels in order: first = act, second = chapter, third = scene.\n\n\nPartial Locations\nYou don’t need to specify all levels:\n\n\n\nArgument\nTarget\n\n\n\n\n1\nAct 1 (and all contents)\n\n\n1 2\nAct 1, Chapter 2 (and all scenes)\n\n\n1 2 3\nAct 1, Chapter 2, Scene 3\n\n\nact 1\nAct 1\n\n\nact 1 chapter 2\nAct 1, Chapter 2",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Commands Overview"
+    ]
+  },
+  {
+    "objectID": "reference/commands.html#hidden-commands",
+    "href": "reference/commands.html#hidden-commands",
+    "title": "Commands Overview",
+    "section": "Hidden Commands",
+    "text": "Hidden Commands\nThese standard Aider commands are hidden in novel mode since they don’t apply:\n\n/test — no test runner for fiction\n/code — replaced by /edit\n/architect — replaced by /compose",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Commands Overview"
+    ]
+  },
+  {
+    "objectID": "reference/navigation-commands.html",
+    "href": "reference/navigation-commands.html",
+    "title": "Navigation & Context Commands",
+    "section": "",
+    "text": "Add files to the chat context. Supports narrative locations, database entries, and raw file paths.\n\n\n/add act 1 chapter 2 scene 3     # Add all files for scene 3\n/add 1 2 3                       # Shorthand (same as above)\n/add 1 2                         # Add everything in chapter 2\n/add 1                           # Add everything in act 1\n\n\n\nPrefix with summaries or prose to load specific file types:\n/add summaries 1 2               # All SUMMARY.md files in chapter 2\n/add prose 1 2                   # All PROSE.md files in chapter 2\n/add prose 1 2 3                 # Just scene 3's PROSE.md\n\n\n\n/add summaries                   # Every SUMMARY.md across the novel\n/add prose                       # Every PROSE.md across the novel\n\n\n\n/add db                          # All db entries\n/add db sarah                    # Specific entry by name\n/add db characters               # All entries in a category\n\n\n\nFalls through to Aider’s base /add for paths that don’t match the above patterns:\n/add novel/Act 1 - Title/outline.md\n\n\n\n\nNarrative files are added as editable by default\nDatabase entries are added as editable (except db/core/ which is always read-only)\nWord counts are displayed for each added file or directory\nCollapsed directory paths are shown when all files in a directory are added",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Navigation & Context Commands"
+    ]
+  },
+  {
+    "objectID": "reference/navigation-commands.html#add",
+    "href": "reference/navigation-commands.html#add",
+    "title": "Navigation & Context Commands",
+    "section": "",
+    "text": "Add files to the chat context. Supports narrative locations, database entries, and raw file paths.\n\n\n/add act 1 chapter 2 scene 3     # Add all files for scene 3\n/add 1 2 3                       # Shorthand (same as above)\n/add 1 2                         # Add everything in chapter 2\n/add 1                           # Add everything in act 1\n\n\n\nPrefix with summaries or prose to load specific file types:\n/add summaries 1 2               # All SUMMARY.md files in chapter 2\n/add prose 1 2                   # All PROSE.md files in chapter 2\n/add prose 1 2 3                 # Just scene 3's PROSE.md\n\n\n\n/add summaries                   # Every SUMMARY.md across the novel\n/add prose                       # Every PROSE.md across the novel\n\n\n\n/add db                          # All db entries\n/add db sarah                    # Specific entry by name\n/add db characters               # All entries in a category\n\n\n\nFalls through to Aider’s base /add for paths that don’t match the above patterns:\n/add novel/Act 1 - Title/outline.md\n\n\n\n\nNarrative files are added as editable by default\nDatabase entries are added as editable (except db/core/ which is always read-only)\nWord counts are displayed for each added file or directory\nCollapsed directory paths are shown when all files in a directory are added",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Navigation & Context Commands"
+    ]
+  },
+  {
+    "objectID": "reference/navigation-commands.html#drop",
+    "href": "reference/navigation-commands.html#drop",
+    "title": "Navigation & Context Commands",
+    "section": "/drop",
+    "text": "/drop\nRemove files from the chat session.\n/drop 1 2 3                     # Drop scene 3's files\n/drop db sarah                  # Drop a db entry\nDelegates to Aider’s base /drop. After any drop operation, db/core/ entries are automatically reloaded as read-only context.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Navigation & Context Commands"
+    ]
+  },
+  {
+    "objectID": "reference/navigation-commands.html#ls",
+    "href": "reference/navigation-commands.html#ls",
+    "title": "Navigation & Context Commands",
+    "section": "/ls",
+    "text": "/ls\nList the narrative structure, database entries, and files currently in the chat.\n/ls\nOutput includes:\n\nNarrative structure — hierarchical outline of acts, chapters, and scenes\nDb entries — all entries grouped by category\nFiles in chat — editable files with word counts\nRead-only files — read-only context files with word counts",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Navigation & Context Commands"
+    ]
+  },
+  {
+    "objectID": "reference/navigation-commands.html#wordcount",
+    "href": "reference/navigation-commands.html#wordcount",
+    "title": "Navigation & Context Commands",
+    "section": "/wordcount",
+    "text": "/wordcount\nShow word counts for each level of the narrative hierarchy.\n/wordcount\nOutput example:\nTotal word count: 47,832\n\nAct 1: The Beginning: 23,456 words\n  Chapter 1: Arrivals: 8,234 words\n    Scene 1: The Train Station: 2,847 words\n    Scene 2: First Impressions: 3,012 words\n    Scene 3: The Welcome: 2,375 words\n  Chapter 2: Settling In: 7,891 words\n    ...\nAct 2: Rising Action: 24,376 words\n  ...",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Navigation & Context Commands"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Composez CLI",
+    "section": "",
+    "text": "Your fiction writing from the power of a terminal CLI. Supported by AI.\n\n\nGet Started Command Reference"
+  },
+  {
+    "objectID": "index.html#what-is-composez-cli",
+    "href": "index.html#what-is-composez-cli",
+    "title": "Composez CLI",
+    "section": "What is Composez CLI?",
+    "text": "What is Composez CLI?\nComposez CLI is a terminal tool purpose-built for writing long-form fiction with AI assistance. It adds structure to your manuscript, making well organized for git version control, AI review and editing – and you!\nInstead of dumping an entire novel into a single prompt, Composez lets you work at the right level of granularity: summarize a scene, write a chapter, reorganize your structure, and lint your prose–all through simple slash commands in the terminal.\nComposez CLI is based on and forked from the Aider software development CLI."
+  },
+  {
+    "objectID": "index.html#where-is-the-user-interface",
+    "href": "index.html#where-is-the-user-interface",
+    "title": "Composez CLI",
+    "section": "Where is the User Interface?",
+    "text": "Where is the User Interface?\nThis is the documentation for the Composez CLI, a terminal companion you can use alongside your favourite editor. If you’re looking for a more ready-made novel editing solution, try out our cloud application, Composez, featuring the raw power of Composez CLI along other features – all ready-to-go in a browser application.\n\n\nNarrative Hierarchy\nOrganize your manuscript into acts, chapters, and scenes with configurable level names. Each scene has dedicated PROSE.md and SUMMARY.md files. The structure is enforced automatically.\n\n\nReference Database\nKeep character sheets, location descriptions, style guides, and world-building notes in a structured db/ directory. Core entries are loaded as context automatically so the AI maintains consistency.\n\n\nSmart Context Management\nAuto-context automatically identifies relevant files before each LLM call, or use /add with narrative locations to load specific scenes, summaries, or database entries. Write and summarize commands spin up isolated sessions with just the right context.\n\n\nImport & Export\nImport existing manuscripts from Novelcrafter or plain Markdown. Export your finished work to Markdown, DOCX, or EPUB with proper formatting, chapter breaks, and scene separators.\n\n\nProse Linting\nIntegrated Vale-based linting catches passive voice, cliches, AI-tells, and style issues. The linter is tuned for fiction—no false positives on invented names or literary conventions.\n\n\nFlexible Modes\nDirect editing, two-phase compose mode, and autonomous agent mode—combine any edit mode with any autonomy level. Use /feedback for structured critique and /analyze-style to capture your voice.\n\n\nFull Git Integration\nEvery edit is version-controlled. You can review diffs, roll back changes, and branch your manuscript. Auto-commits keep a clean history without getting in your way.\n\n\nWorks With Any LLM\nUse Claude, GPT-4, Gemini, local models, or any provider Aider supports. Composez inherits Aider’s full model compatibility, including architect mode with separate planning and editing models."
+  },
+  {
+    "objectID": "index.html#quick-example",
+    "href": "index.html#quick-example",
+    "title": "Composez CLI",
+    "section": "Quick Example",
+    "text": "Quick Example\n# Start composez in your project\ncomposez\n\n# Create your narrative structure\n&gt; /new act The Beginning\n&gt; /new 1 chapter Arrivals\n&gt; /new 1 1 scene The Train Station\n\n# Add a scene and write prose from its summary\n&gt; /add 1 1 1\n&gt; /write 1 1 1\n\n# Summarize what you've written\n&gt; /summarize 1 1 1\n\n# Check your prose for style issues\n&gt; /lint 1 1 1\n\n# Export when you're ready\n&gt; /export epub"
+  },
+  {
+    "objectID": "index.html#how-it-works",
+    "href": "index.html#how-it-works",
+    "title": "Composez CLI",
+    "section": "How It Works",
+    "text": "How It Works\nComposez uses a lightweight overlay on Aider’s coder system rather than a full subclass. This means:\n\nEvery edit format works: whole-file, diff, udiff, and more\nChat and architect modes: use a single model or a planner + editor pair\nUpstream compatibility: stays in sync with Aider improvements\n\nThe narrative structure lives in your filesystem as plain directories and Markdown files—no proprietary formats, no databases, no lock-in. Your manuscript is always readable, diffable, and yours.\n\n\nGet Started →  |  Commands Reference →"
+  },
+  {
+    "objectID": "guide/import-export.html",
+    "href": "guide/import-export.html",
+    "title": "Import & Export",
+    "section": "",
+    "text": "Composez can import existing manuscripts from two sources:\n\n\nImport a Novelcrafter Markdown export (zip file or extracted directory):\n&gt; /import novelcrafter ~/Downloads/my-novel-export.zip\nOr from an extracted directory:\n&gt; /import novelcrafter ~/Downloads/my-novel-export/\nThis imports:\n\nNarrative structure (acts, chapters, scenes with prose and summaries)\nDatabase entries (characters, locations, items, etc.)\nSnippets and other reference material\n\nThe import:\n\nChecks that novel/ and db/ have no uncommitted changes\nClears the existing novel/ and db/ directories\nRuns the import\nCommits the result automatically\n\n\n\n\n\n\n\nWarningDestructive operation\n\n\n\nThe Novelcrafter import replaces your existing narrative structure and database. Commit or stash any uncommitted changes first.\n\n\n\n\n\nImport a plain Markdown file using heading levels to determine structure:\n&gt; /import markdown ~/Documents/draft.md\nHeading mapping:\n\n\n\nMarkdown Heading\nComposez Level\n\n\n\n\n# Heading\nAct\n\n\n## Heading\nChapter\n\n\n### Heading\nScene\n\n\n\nContent under each ### heading becomes the scene’s PROSE.md. The heading text becomes the directory title.\n\n\n\n\n\n\nNoteDatabase not imported\n\n\n\nMarkdown import only creates the narrative structure. You’ll need to create database entries (characters, locations, etc.) manually afterward.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Import & Export"
+    ]
+  },
+  {
+    "objectID": "guide/import-export.html#importing",
+    "href": "guide/import-export.html#importing",
+    "title": "Import & Export",
+    "section": "",
+    "text": "Composez can import existing manuscripts from two sources:\n\n\nImport a Novelcrafter Markdown export (zip file or extracted directory):\n&gt; /import novelcrafter ~/Downloads/my-novel-export.zip\nOr from an extracted directory:\n&gt; /import novelcrafter ~/Downloads/my-novel-export/\nThis imports:\n\nNarrative structure (acts, chapters, scenes with prose and summaries)\nDatabase entries (characters, locations, items, etc.)\nSnippets and other reference material\n\nThe import:\n\nChecks that novel/ and db/ have no uncommitted changes\nClears the existing novel/ and db/ directories\nRuns the import\nCommits the result automatically\n\n\n\n\n\n\n\nWarningDestructive operation\n\n\n\nThe Novelcrafter import replaces your existing narrative structure and database. Commit or stash any uncommitted changes first.\n\n\n\n\n\nImport a plain Markdown file using heading levels to determine structure:\n&gt; /import markdown ~/Documents/draft.md\nHeading mapping:\n\n\n\nMarkdown Heading\nComposez Level\n\n\n\n\n# Heading\nAct\n\n\n## Heading\nChapter\n\n\n### Heading\nScene\n\n\n\nContent under each ### heading becomes the scene’s PROSE.md. The heading text becomes the directory title.\n\n\n\n\n\n\nNoteDatabase not imported\n\n\n\nMarkdown import only creates the narrative structure. You’ll need to create database entries (characters, locations, etc.) manually afterward.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Import & Export"
+    ]
+  },
+  {
+    "objectID": "guide/import-export.html#exporting",
+    "href": "guide/import-export.html#exporting",
+    "title": "Import & Export",
+    "section": "Exporting",
+    "text": "Exporting\n\nMarkdown Export\nExport your entire manuscript as a single Markdown file:\n&gt; /export markdown\n&gt; /export markdown my-novel.md\nThe output includes:\n\nAct titles as # headings\nChapter titles as ## headings\nScene titles as ### headings\nScene prose under each heading\nScene separators (***) between scenes within a chapter\n\n\n\nDOCX Export\nExport as a styled Word document:\n&gt; /export docx\n&gt; /export docx my-novel.docx\nRequires the python-docx package:\npip install python-docx\nThe DOCX export includes:\n\nProper heading styles for acts, chapters, and scenes\nScene separators\nStandard manuscript formatting\n\n\n\nEPUB Export\nExport as an EPUB ebook:\n&gt; /export epub\n&gt; /export epub my-novel.epub\nRequires the ebooklib package:\npip install ebooklib\nThe EPUB includes:\n\nBook title and author from db/core/metadata.yml\nChapter-based structure\nCover image from cover.jpg or cover.png if present\nProper EPUB metadata and navigation",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Import & Export"
+    ]
+  },
+  {
+    "objectID": "guide/import-export.html#default-filenames",
+    "href": "guide/import-export.html#default-filenames",
+    "title": "Import & Export",
+    "section": "Default Filenames",
+    "text": "Default Filenames\nIf you don’t specify a filename, defaults are used:\n\n\n\nFormat\nDefault Filename\n\n\n\n\nMarkdown\nexport.md\n\n\nDOCX\nexport.docx\n\n\nEPUB\nexport.epub\n\n\n\nFiles are created in the project root directory.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Import & Export"
+    ]
+  },
+  {
+    "objectID": "guide/import-export.html#metadata",
+    "href": "guide/import-export.html#metadata",
+    "title": "Import & Export",
+    "section": "Metadata",
+    "text": "Metadata\nExport metadata (title, author) comes from db/core/metadata.yml:\ntitle: The Lighthouse\nauthor: Elena Vasquez\nIf the file doesn’t exist, defaults to “Untitled” and “Unknown”.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Import & Export"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html",
+    "href": "guide/quickstart.html",
+    "title": "Quickstart",
+    "section": "",
+    "text": "This walkthrough takes you from an empty project to a written, summarized scene.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#start-composez",
+    "href": "guide/quickstart.html#start-composez",
+    "title": "Quickstart",
+    "section": "1. Start Composez",
+    "text": "1. Start Composez\nmkdir my-novel && cd my-novel\ngit init\ncomposez",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#create-your-structure",
+    "href": "guide/quickstart.html#create-your-structure",
+    "title": "Quickstart",
+    "section": "2. Create Your Structure",
+    "text": "2. Create Your Structure\n&gt; /new act The Awakening\nCreated novel/Act 1 - The Awakening/\n\n&gt; /new 1 chapter Morning Light\nCreated novel/Act 1 - The Awakening/Chapter 1 - Morning Light/\n\n&gt; /new 1 1 scene The Alarm\nCreated novel/Act 1 - The Awakening/Chapter 1 - Morning Light/Scene 1 - The Alarm/\nThe /new command auto-numbers each level. You can also use keyword syntax:\n&gt; /new act 1 chapter 1 scene A Strange Visitor",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#add-a-character",
+    "href": "guide/quickstart.html#add-a-character",
+    "title": "Quickstart",
+    "section": "3. Add a Character",
+    "text": "3. Add a Character\n&gt; /new db characters elena\nCreated db entry: db/characters/elena.md\nThe file opens in your chat. Describe your character:\n&gt; Elena Vasquez, 34. Former marine biologist turned lighthouse keeper.\n&gt; Sharp-eyed, pragmatic, haunted by something she saw in the deep.\n&gt; Speech: clipped sentences, avoids eye contact, dry humor.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#write-the-summary",
+    "href": "guide/quickstart.html#write-the-summary",
+    "title": "Quickstart",
+    "section": "4. Write the Summary",
+    "text": "4. Write the Summary\nAdd the scene to your context and write the summary:\n&gt; /add 1 1 1\nAdded novel/Act 1 - The Awakening/Chapter 1 - Morning Light/Scene 1 - The Alarm/ (0 words)\nNow describe what happens:\n&gt; Elena wakes to the lighthouse alarm at 3 AM. The fog is impossibly thick.\n&gt; She checks the radar — something large is moving just offshore.\n&gt; She tells herself it's a whale. She almost believes it.\nThe AI will write the SUMMARY.md for you.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#write-the-prose",
+    "href": "guide/quickstart.html#write-the-prose",
+    "title": "Quickstart",
+    "section": "5. Write the Prose",
+    "text": "5. Write the Prose\n&gt; /write 1 1 1\nThis spins up a focused session with the scene’s summary, your character sheet, and style guide as context, then generates the full prose in PROSE.md.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#review-and-revise",
+    "href": "guide/quickstart.html#review-and-revise",
+    "title": "Quickstart",
+    "section": "6. Review and Revise",
+    "text": "6. Review and Revise\nGet AI feedback on what you’ve written:\n&gt; /feedback 1 1 1\nThis gives you a prioritized critique with concrete suggestions. Or load the prose and chat about it directly:\n&gt; /add prose 1 1 1\nAdded novel/.../Scene 1 - The Alarm/PROSE.md (847 words)\nNow you can chat naturally about the prose:\n&gt; Make Elena's internal monologue shorter and more fragmented.\n&gt; The radar scene should build more tension — slow it down.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#summarize",
+    "href": "guide/quickstart.html#summarize",
+    "title": "Quickstart",
+    "section": "7. Summarize",
+    "text": "7. Summarize\nOnce you’re happy with the prose, generate the summary:\n&gt; /summarize 1 1 1\nThis reads the prose and writes a concise synopsis to SUMMARY.md, which will be used as context when writing adjacent scenes.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#check-your-prose",
+    "href": "guide/quickstart.html#check-your-prose",
+    "title": "Quickstart",
+    "section": "8. Check Your Prose",
+    "text": "8. Check Your Prose\n&gt; /lint 1 1 1\nVale checks for passive voice, cliches, and other style issues. Fix them interactively or dismiss.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#see-your-progress",
+    "href": "guide/quickstart.html#see-your-progress",
+    "title": "Quickstart",
+    "section": "9. See Your Progress",
+    "text": "9. See Your Progress\n&gt; /ls\nShows your narrative structure, db entries, word counts, and what’s currently loaded in the chat.\n&gt; /wordcount\nGives you word counts broken down by act, chapter, and scene.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/quickstart.html#next-steps",
+    "href": "guide/quickstart.html#next-steps",
+    "title": "Quickstart",
+    "section": "Next Steps",
+    "text": "Next Steps\n\nNarrative Structure — understand how acts, chapters, and scenes work\nWriting Workflow — the full write → summarize → revise loop\nCommands Reference — every command in detail",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html",
+    "href": "guide/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "Python 3.9+\nGit (for version control integration)\nAn API key for your preferred LLM provider (Claude, OpenAI, etc.)",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#prerequisites",
+    "href": "guide/installation.html#prerequisites",
+    "title": "Installation",
+    "section": "",
+    "text": "Python 3.9+\nGit (for version control integration)\nAn API key for your preferred LLM provider (Claude, OpenAI, etc.)",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#install-composez",
+    "href": "guide/installation.html#install-composez",
+    "title": "Installation",
+    "section": "Install Composez",
+    "text": "Install Composez\nComposez is distributed as a fork of Aider. Clone the repository and install:\ngit clone https://github.com/kmewhort/aider.git composez\ncd composez\npython -m venv venv\nsource venv/bin/activate    # On Windows: venv\\Scripts\\activate\npip install -e .",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#configure-your-api-key",
+    "href": "guide/installation.html#configure-your-api-key",
+    "title": "Installation",
+    "section": "Configure Your API Key",
+    "text": "Configure Your API Key\nSet your API key as an environment variable. For Claude (recommended):\nexport ANTHROPIC_API_KEY=sk-ant-...\nFor OpenAI:\nexport OPENAI_API_KEY=sk-...\nYou can also place these in a .env file in your project directory.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#create-a-new-project",
+    "href": "guide/installation.html#create-a-new-project",
+    "title": "Installation",
+    "section": "Create a New Project",
+    "text": "Create a New Project\nmkdir my-novel && cd my-novel\ngit init\ncomposez\nOn first launch, Composez will:\n\nCreate the .composez configuration file with default settings\nSet up the db/core/ directory with a default style guide\nCreate db/core/metadata.yml with the project name and git author\nGenerate a CLAUDE.md file so other AI tools understand your project",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#optional-install-vale-for-prose-linting",
+    "href": "guide/installation.html#optional-install-vale-for-prose-linting",
+    "title": "Installation",
+    "section": "Optional: Install Vale for Prose Linting",
+    "text": "Optional: Install Vale for Prose Linting\nComposez uses Vale for prose style checking. Install it for /lint support:\npip install vale\nOn first lint, Composez will create a .vale.ini with fiction-friendly defaults and download the required style packages (write-good, proselint, ai-tells).",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#optional-install-export-dependencies",
+    "href": "guide/installation.html#optional-install-export-dependencies",
+    "title": "Installation",
+    "section": "Optional: Install Export Dependencies",
+    "text": "Optional: Install Export Dependencies\nFor DOCX and EPUB export:\npip install python-docx    # For /export docx\npip install ebooklib        # For /export epub\nMarkdown export works without additional dependencies.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/installation.html#verify-your-installation",
+    "href": "guide/installation.html#verify-your-installation",
+    "title": "Installation",
+    "section": "Verify Your Installation",
+    "text": "Verify Your Installation\ncomposez --version\nThen start Composez and try:\n&gt; /ls\nYou should see an empty narrative structure and the default db entries.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Installation"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html",
+    "href": "guide/prose-linting.html",
+    "title": "Prose Linting",
+    "section": "",
+    "text": "Composez integrates Vale, the prose linter, to check your writing for style issues. The linter is configured with fiction-friendly defaults—it won’t flag invented character names as spelling errors or penalize you for literary conventions like em-dashes.\nThree style packages are included:\n\nwrite-good — general prose quality (passive voice, weasel words, etc.)\nproselint — editing advice (cliches, typography, jargon)\nai-tells — patterns that make AI-generated prose feel generic",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#overview",
+    "href": "guide/prose-linting.html#overview",
+    "title": "Prose Linting",
+    "section": "",
+    "text": "Composez integrates Vale, the prose linter, to check your writing for style issues. The linter is configured with fiction-friendly defaults—it won’t flag invented character names as spelling errors or penalize you for literary conventions like em-dashes.\nThree style packages are included:\n\nwrite-good — general prose quality (passive voice, weasel words, etc.)\nproselint — editing advice (cliches, typography, jargon)\nai-tells — patterns that make AI-generated prose feel generic",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#setup",
+    "href": "guide/prose-linting.html#setup",
+    "title": "Prose Linting",
+    "section": "Setup",
+    "text": "Setup\nInstall the Vale Python package:\npip install vale\nThat’s it. On first lint, Composez will:\n\nCreate a .vale.ini configuration file with fiction-friendly defaults\nRun vale sync to download the style packages",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#using-lint",
+    "href": "guide/prose-linting.html#using-lint",
+    "title": "Prose Linting",
+    "section": "Using /lint",
+    "text": "Using /lint\n\nLint by location\n&gt; /lint 1 2 3                  # Lint act 1, chapter 2, scene 3\n&gt; /lint act 1 chapter 2        # Lint all prose in chapter 2\n&gt; /lint 1                      # Lint all prose in act 1\n\n\nLint files in the chat\n&gt; /lint                        # Lint all files currently in the chat\n\n\nLint specific files\n&gt; /lint novel/Act 1 - Title/Chapter 1 - Title/Scene 1 - Title/PROSE.md",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#lint-output",
+    "href": "guide/prose-linting.html#lint-output",
+    "title": "Prose Linting",
+    "section": "Lint Output",
+    "text": "Lint Output\nVale reports issues grouped by severity:\n## Vale lint: novel/.../Scene 1 - The Alarm/PROSE.md\n\n### warning (2)\n  Line 5: [write-good.Passive] \"was killed\" may be passive voice.\n  Line 12: [proselint.Clichés] \"It was a dark and stormy night\" is a cliché.\n\n### suggestion (1)\n  Line 8: [ai-tells.GenericDescriptors] \"beautiful\" is a generic descriptor.\nAfter each file, Composez asks if you want to fix the issues:\nFix lint issues in .../PROSE.md? [Y/n]\nIf you accept, the AI reads the lint output and edits the file to address the issues.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#lint-levels",
+    "href": "guide/prose-linting.html#lint-levels",
+    "title": "Prose Linting",
+    "section": "Lint Levels",
+    "text": "Lint Levels\nControl which severities are reported with /lint-level:\n&gt; /lint-level                 # Show current level\n&gt; /lint-level error           # Only show errors\n&gt; /lint-level warning         # Errors + warnings (default)\n&gt; /lint-level suggestion      # Everything\nThe lint level also applies to auto-lint (the linter that runs after each AI edit).",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#auto-lint",
+    "href": "guide/prose-linting.html#auto-lint",
+    "title": "Prose Linting",
+    "section": "Auto-Lint",
+    "text": "Auto-Lint\nWhen Composez is configured with --auto-lint (or auto_lint: true in config), Vale automatically runs after each AI edit to prose files. Issues at or above the current lint level will trigger a fix cycle.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#fiction-friendly-defaults",
+    "href": "guide/prose-linting.html#fiction-friendly-defaults",
+    "title": "Prose Linting",
+    "section": "Fiction-Friendly Defaults",
+    "text": "Fiction-Friendly Defaults\nThe default .vale.ini disables rules that aren’t useful for fiction:\n\n\n\n\n\n\n\n\nRule\nDefault\nWhy\n\n\n\n\nVale.Spelling\nOFF\nInvented names and places cause false positives\n\n\nwrite-good.E-Prime\nOFF\nFlagging “is/was/are” is too noisy for prose\n\n\nwrite-good.Passive\nsuggestion\nPassive voice is a stylistic choice, not an error\n\n\nai-tells.EmDashUsage\nOFF\nEm-dashes are standard literary punctuation\n\n\nai-tells.FormalTransitions\nOFF\n“Furthermore” and “Moreover” have literary uses\n\n\nproselint.Typography\nsuggestion\nEllipsis style is a house-style decision\n\n\nproselint.Clichés\nwarning\nWorth flagging but not blocking\n\n\nproselint.But\nsuggestion\n“Don’t start with So/But” is advisory\n\n\nwrite-good.So\nsuggestion\nSame as above",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#customizing-vale",
+    "href": "guide/prose-linting.html#customizing-vale",
+    "title": "Prose Linting",
+    "section": "Customizing Vale",
+    "text": "Customizing Vale\nEdit .vale.ini in your project root to adjust:\n# Example: disable passive voice checking entirely\nwrite-good.Passive = NO\n\n# Example: make cliches into errors\nproselint.Clichés = error\n\n# Example: add your own style package\nPackages = write-good, proselint, \\\n  https://github.com/tbhb/vale-ai-tells/releases/download/v1.4.0/ai-tells.zip\nAfter editing .vale.ini, the next /lint will automatically re-sync the style packages.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/prose-linting.html#creating-custom-rules",
+    "href": "guide/prose-linting.html#creating-custom-rules",
+    "title": "Prose Linting",
+    "section": "Creating Custom Rules",
+    "text": "Creating Custom Rules\nVale supports custom rules via YAML files in the .vale-styles/ directory. This is useful for project-specific checks:\n# .vale-styles/MyNovel/CharacterNames.yml\nextends: existence\nmessage: \"Use 'Elena' not '%s' — that's her old name.\"\nlevel: warning\ntokens:\n  - Helen\n  - Helena\nSee Vale’s documentation for the full rule specification.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Prose Linting"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html",
+    "href": "guide/agent-mode.html",
+    "title": "Agent Mode",
+    "section": "",
+    "text": "Agent mode is one of three autonomy levels in Composez. It lets you describe a high-level goal—“rewrite the first three chapters to shift the POV from third person to first person”—and have Composez plan and execute the multi-step work automatically. The agent creates a structured plan of slash commands, runs them in isolated subprocesses, reviews results after each step, and revises the plan as needed.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#overview",
+    "href": "guide/agent-mode.html#overview",
+    "title": "Agent Mode",
+    "section": "",
+    "text": "Agent mode is one of three autonomy levels in Composez. It lets you describe a high-level goal—“rewrite the first three chapters to shift the POV from third person to first person”—and have Composez plan and execute the multi-step work automatically. The agent creates a structured plan of slash commands, runs them in isolated subprocesses, reviews results after each step, and revises the plan as needed.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#entering-agent-mode",
+    "href": "guide/agent-mode.html#entering-agent-mode",
+    "title": "Agent Mode",
+    "section": "Entering Agent Mode",
+    "text": "Entering Agent Mode\n&gt; /agent Rewrite act 1 chapter 1 in first person POV\nThis runs the agent one-shot: it plans, executes, and returns to your normal chat mode. You can also enter persistent agent mode:\n&gt; /agent\nNow every message you type is interpreted by the agent orchestrator.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#how-plans-work",
+    "href": "guide/agent-mode.html#how-plans-work",
+    "title": "Agent Mode",
+    "section": "How Plans Work",
+    "text": "How Plans Work\nWhen you give the agent a task, it produces a YAML plan:\nplan:\n  - step: 1\n    description: \"Gather context about existing POV\"\n    commands:\n      - \"/add summaries\"\n      - \"/add db\"\n      - \"/query What is the current POV and tense in act 1?\"\n\n  - step: 2\n    description: \"Update style guide for first person\"\n    commands:\n      - \"/add db core style\"\n      - \"/edit Update the style guide to specify first person POV\"\n\n  - step: 3\n    description: \"Rewrite scenes in parallel\"\n    depends_on: [1, 2]\n    parallel:\n      - commands:\n          - \"/add act 1 chapter 1 scene 1\"\n          - \"/write act 1 chapter 1 scene 1\"\n      - commands:\n          - \"/add act 1 chapter 1 scene 2\"\n          - \"/write act 1 chapter 1 scene 2\"\n\n  - step: 4\n    description: \"Commit changes\"\n    command: \"/git add -A && git commit -m 'Rewrite act 1 ch 1 in first person'\"",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#plan-elements",
+    "href": "guide/agent-mode.html#plan-elements",
+    "title": "Agent Mode",
+    "section": "Plan Elements",
+    "text": "Plan Elements\n\nSequential Steps\nMost steps run one after another. Each step has a unique number and a description:\n- step: 1\n  description: \"Analyze the current narrative structure\"\n  commands:\n    - \"/add summaries\"\n    - \"/query What are the main plot threads across act 1?\"\nUse commands (list) for multi-command scripts and command (string) for single commands.\n\n\nParallel Steps\nIndependent work can be parallelized. Each entry in parallel gets its own subprocess:\n- step: 3\n  description: \"Write scenes concurrently\"\n  parallel:\n    - commands:\n        - \"/add 1 1 1\"\n        - \"/write 1 1 1\"\n    - commands:\n        - \"/add 1 1 2\"\n        - \"/write 1 1 2\"\n\n\nDependencies\nBy default, steps run sequentially. Use depends_on to express explicit dependencies:\n- step: 3\n  depends_on: [1, 2]\n  description: \"This step waits for steps 1 and 2\"\n\n\nUser Questions\nThe agent can pause to ask you a question:\n- step: 2\n  description: \"Confirm tone preference\"\n  ask_user: \"Should the rewrite feel more literary or more commercial?\"\nYour answer is available in later steps via {answer:2}:\n- step: 3\n  commands:\n    - \"/add 1 1 1\"\n    - \"/edit Rewrite this scene with a {{answer:2}} tone\"",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#subprocess-isolation",
+    "href": "guide/agent-mode.html#subprocess-isolation",
+    "title": "Agent Mode",
+    "section": "Subprocess Isolation",
+    "text": "Subprocess Isolation\nEach step runs in its own fresh Composez subprocess. This means:\n\nEach step starts with an empty context (no files added, no chat history)\nFile edits from earlier steps are visible on disk\n/add context and chat history do not carry over\n\nThis is by design—it prevents context pollution between steps. Use /add at the start of each step to set up the context it needs.\n\n\n\n\n\n\nTipSaving and loading context\n\n\n\nIf you need to carry context across steps, use /save and /load:\n- step: 1\n  commands:\n    - \"/add summaries\"\n    - \"/query Analyze the plot structure\"\n    - \"/save ctx analysis\"\n\n- step: 2\n  commands:\n    - \"/load ctx analysis\"\n    - \"/query Based on your analysis, suggest improvements\"\nOnly use this when genuinely needed—the default pattern of fresh context per step is usually better.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#review-loop",
+    "href": "guide/agent-mode.html#review-loop",
+    "title": "Agent Mode",
+    "section": "Review Loop",
+    "text": "Review Loop\nAfter each step that produces meaningful output (commands like /query, /write, /summarize, /edit), the agent reviews the results and decides whether to:\n\nContinue with the next planned step\nRevise the remaining plan based on results\nAsk the user a clarifying question\nStop if the task is complete or should be abandoned\n\nThis makes the agent adaptive—if writing Scene 1 reveals a plot inconsistency, the agent can revise the remaining plan to address it.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#auto-commits",
+    "href": "guide/agent-mode.html#auto-commits",
+    "title": "Agent Mode",
+    "section": "Auto-Commits",
+    "text": "Auto-Commits\nAuto-commits are disabled during plan execution. The plan should include an explicit /git commit step at the end. This gives you a single clean commit for the entire operation rather than one per step.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/agent-mode.html#tips",
+    "href": "guide/agent-mode.html#tips",
+    "title": "Agent Mode",
+    "section": "Tips",
+    "text": "Tips\n\nStart with focused tasks. “Rewrite the dialogue in act 1 chapter 2” is better than “Make the whole novel better.”\nThe agent works best with clear, concrete goals. Vague requests lead to vague plans.\nReview the plan before it executes. The agent shows you the plan and you can adjust before committing.\nFor very large operations, break them into multiple agent invocations rather than one enormous plan.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Agent Mode"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html",
+    "href": "guide/narrative-structure.html",
+    "title": "Narrative Structure",
+    "section": "",
+    "text": "Composez enforces a hierarchical directory structure for your manuscript. By default, this is a three-level hierarchy: Act &gt; Chapter &gt; Scene. The level names are configurable via the .composez file, but the structure works the same regardless of what you call them.\nAll narrative content lives under the novel/ directory.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#overview",
+    "href": "guide/narrative-structure.html#overview",
+    "title": "Narrative Structure",
+    "section": "",
+    "text": "Composez enforces a hierarchical directory structure for your manuscript. By default, this is a three-level hierarchy: Act &gt; Chapter &gt; Scene. The level names are configurable via the .composez file, but the structure works the same regardless of what you call them.\nAll narrative content lives under the novel/ directory.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#directory-layout",
+    "href": "guide/narrative-structure.html#directory-layout",
+    "title": "Narrative Structure",
+    "section": "Directory Layout",
+    "text": "Directory Layout\nnovel/\n  Act 1 - The Beginning/\n    outline.md                              # Any .md file (user notes)\n    Chapter 1 - Arrivals/\n      notes.md                              # Any .md file (user notes)\n      Scene 1 - The Train Station/\n        SUMMARY.md                          # Scene synopsis\n        PROSE.md                            # Scene prose\n      Scene 2 - First Impressions/\n        SUMMARY.md\n        PROSE.md\n    Chapter 2 - Settling In/\n      Scene 1 - The Apartment/\n        SUMMARY.md\n        PROSE.md\n  Act 2 - Rising Action/\n    ...",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#naming-convention",
+    "href": "guide/narrative-structure.html#naming-convention",
+    "title": "Narrative Structure",
+    "section": "Naming Convention",
+    "text": "Naming Convention\nEvery directory at a narrative level follows the pattern:\nLevel N - Title\nFor example: Act 1 - The Beginning, Chapter 3 - Revelations, Scene 2 - The Duel.\nThe number N is an ordinal that determines ordering. Titles are optional but recommended—they make the structure readable in your file browser and provide context to the AI.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#file-rules",
+    "href": "guide/narrative-structure.html#file-rules",
+    "title": "Narrative Structure",
+    "section": "File Rules",
+    "text": "File Rules\nDifferent levels allow different files:\n\nLeaf Level (Scenes)\nThe deepest level—scenes by default—may only contain:\n\nSUMMARY.md — a synopsis of the scene\nPROSE.md — the narrative prose\n\nNo other files are allowed. This constraint is enforced by the edit_path_validator and prevents the AI from creating stray files inside scenes.\n\n\nNon-Leaf Levels (Acts, Chapters)\nAny .md file is allowed. Use these for:\n\nOutlines and beat sheets\nCharacter notes specific to a chapter\nResearch or reference material\nTimeline documents\n\nThese files are included as context when you /add the parent level.\n\n\n\n\n\n\nTipTip: Use non-leaf .md files for planning\n\n\n\nCreate an outline.md at the chapter level to sketch out your scene progression before writing. The AI will use it as context when generating prose.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#summary.md-and-prose.md",
+    "href": "guide/narrative-structure.html#summary.md-and-prose.md",
+    "title": "Narrative Structure",
+    "section": "SUMMARY.md and PROSE.md",
+    "text": "SUMMARY.md and PROSE.md\nThese two files are the backbone of the writing workflow:\n\nSUMMARY.md\nA concise synopsis of the scene. It should capture:\n\nKey events and plot points\nCharacter dynamics and emotional beats\nImportant revelations or turning points\nSetting and atmosphere notes\n\nSummaries serve as context when writing adjacent scenes. When you /write a chapter, the AI reads all scene summaries to maintain narrative continuity without needing the full prose of every scene in the prompt.\n\n\nPROSE.md\nThe actual narrative prose. This is the text that will appear in your exported manuscript.\n\n\n\n\n\n\nNoteNo top-level headings\n\n\n\nNeither SUMMARY.md nor PROSE.md should contain top-level headings (# Title). The scene’s title lives in the directory name. If you need to change a title, use git mv to rename the directory, or let the AI suggest a rename.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#auto-created-files",
+    "href": "guide/narrative-structure.html#auto-created-files",
+    "title": "Narrative Structure",
+    "section": "Auto-Created Files",
+    "text": "Auto-Created Files\nSUMMARY.md and PROSE.md are in the auto_create_fnames set, which means the AI can create them without asking for user confirmation. All other new files (database entries, notes, etc.) still require your approval.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#how-the-narrative-map-works",
+    "href": "guide/narrative-structure.html#how-the-narrative-map-works",
+    "title": "Narrative Structure",
+    "section": "How the Narrative Map Works",
+    "text": "How the Narrative Map Works\nComposez builds a narrative map from your directory structure. This map:\n\nScans the novel/ directory for level-matching directories\nReads SUMMARY.md files from each scene\nCounts words in PROSE.md files\nRenders a structured outline that the AI sees as context\n\nThe narrative map replaces Aider’s tree-sitter-based code analysis (repo map) with something appropriate for fiction. The AI always sees the full narrative outline, including summaries and word counts.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#configurable-levels",
+    "href": "guide/narrative-structure.html#configurable-levels",
+    "title": "Narrative Structure",
+    "section": "Configurable Levels",
+    "text": "Configurable Levels\nThe default levels are [\"Act\", \"Chapter\", \"Scene\"], but you can change them in .composez:\nlevels:\n  - Part\n  - Chapter\n  - Scene\nOr for a simpler structure:\nlevels:\n  - Chapter\n  - Scene\nThe last level in the list is always the leaf level where PROSE.md and SUMMARY.md live. You need at least two levels.\nSee Configuration for details.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/narrative-structure.html#navigating-with-location-arguments",
+    "href": "guide/narrative-structure.html#navigating-with-location-arguments",
+    "title": "Narrative Structure",
+    "section": "Navigating with Location Arguments",
+    "text": "Navigating with Location Arguments\nMost commands accept a location argument to target specific parts of the hierarchy. Three syntaxes are supported:\n\nKeyword Syntax\nact 1 chapter 2 scene 3\n\n\nShorthand Syntax\n1 2 3\nNumbers are matched to levels in order: the first number is the act, second is chapter, third is scene.\n\n\nMixed Syntax\nact 1 chapter 2 scene\nUsing a level name without a number targets “all” at that level (useful for commands like /write that can operate on multiple scenes).\n\n\nPartial Locations\nYou don’t have to specify every level:\n\n/add 1 — adds everything in Act 1\n/write 1 2 — writes all scenes in Act 1, Chapter 2\n/summarize 1 2 3 — summarizes Act 1, Chapter 2, Scene 3",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Narrative Structure"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html",
+    "href": "guide/configuration.html",
+    "title": "Configuration",
+    "section": "",
+    "text": "Every Composez project has a .composez file at the project root. This YAML file controls the narrative hierarchy and other project-level settings.\n\n\nCreated automatically on first launch:\nlevels:\n- Act\n- Chapter\n- Scene\n\n\n\nChange the hierarchy to match your project:\n# For a simpler structure\nlevels:\n- Chapter\n- Scene\n# For a different naming convention\nlevels:\n- Part\n- Chapter\n- Scene\n# For a more granular structure\nlevels:\n- Book\n- Part\n- Chapter\n- Scene\nRules:\n\nYou need at least two levels\nLevel names are automatically title-cased (chapter becomes Chapter)\nThe last level is always the leaf level where PROSE.md and SUMMARY.md live\nChanges to levels after creating content may require renaming directories",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#the-.composez-file",
+    "href": "guide/configuration.html#the-.composez-file",
+    "title": "Configuration",
+    "section": "",
+    "text": "Every Composez project has a .composez file at the project root. This YAML file controls the narrative hierarchy and other project-level settings.\n\n\nCreated automatically on first launch:\nlevels:\n- Act\n- Chapter\n- Scene\n\n\n\nChange the hierarchy to match your project:\n# For a simpler structure\nlevels:\n- Chapter\n- Scene\n# For a different naming convention\nlevels:\n- Part\n- Chapter\n- Scene\n# For a more granular structure\nlevels:\n- Book\n- Part\n- Chapter\n- Scene\nRules:\n\nYou need at least two levels\nLevel names are automatically title-cased (chapter becomes Chapter)\nThe last level is always the leaf level where PROSE.md and SUMMARY.md live\nChanges to levels after creating content may require renaming directories",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#auto-context",
+    "href": "guide/configuration.html#auto-context",
+    "title": "Configuration",
+    "section": "Auto-Context",
+    "text": "Auto-Context\nComposez can automatically identify which files are relevant before each LLM call, adding them as temporary read-only context. This means you don’t always need to manually /add files—the AI figures out what it needs.\nAuto-context is enabled by default. To set the default for your project, add to .composez:\nauto_context: false\nYou can also toggle it for the current session with /auto-context on or /auto-context off.\n\nHow it works\nBefore each user message (not slash commands), Composez:\n\nRuns a lightweight context-analysis pass using the weak model\nIdentifies which manuscript and database files are relevant to your message\nTemporarily adds them as read-only context for the duration of that single LLM call\nRemoves them afterward so they don’t accumulate\n\nThis is especially useful for conversational editing where you mention characters or scenes by name without having explicitly added them.\n\n\n\n\n\n\nTipAuto-context complements manual /add\n\n\n\nAuto-context adds files as read-only. If you need to edit a file, you still need to /add it explicitly. Auto-context is best for pulling in reference material (character sheets, location descriptions) that the AI needs for consistency.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#style-guide",
+    "href": "guide/configuration.html#style-guide",
+    "title": "Configuration",
+    "section": "Style Guide",
+    "text": "Style Guide\nThe style guide at db/core/style.md is the most impactful configuration for prose quality. It’s loaded as context for every AI interaction.\nYou can write the style guide manually, or use /analyze-style to load your prose and ask the AI to write one:\n&gt; /analyze-style 1 1             # Load all prose from act 1, chapter 1\n&gt; Write a comprehensive style guide to db/core/style.md based on this prose.\nSee the command reference for details.\nA good style guide includes:\n## Voice & Tone\nThird-person limited POV, past tense. Stay close to the\nviewpoint character's thoughts and perceptions.\n\n## Prose Principles\n- Show, don't tell: convey emotion through action and\n  physical sensation, not labels\n- Favor active voice in action scenes\n- Use short, punchy sentences during tension\n- Allow longer, more flowing sentences for reflection\n\n## Dialogue\n- No dialogue tags beyond \"said\" and \"asked\" except\n  when genuinely needed\n- Use action beats instead of adverbs: not \"she said angrily\"\n  but \"she slammed the cup down\"\n- Each character should have a distinct speech pattern\n\n## Pacing\n- Open scenes in media res when possible\n- End scenes on tension, questions, or emotional shifts\n- Vary sentence length for rhythm\n\n## Avoid\n- Purple prose and overwriting\n- Info-dumps disguised as dialogue\n- Head-hopping between characters within a scene",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#project-metadata",
+    "href": "guide/configuration.html#project-metadata",
+    "title": "Configuration",
+    "section": "Project Metadata",
+    "text": "Project Metadata\ndb/core/metadata.yml stores book-level information:\ntitle: The Lighthouse\nauthor: Elena Vasquez\nThis is used by:\n\nEPUB export for title and author metadata\nCLAUDE.md generation so other AI tools understand your project",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#instructions",
+    "href": "guide/configuration.html#instructions",
+    "title": "Configuration",
+    "section": "Instructions",
+    "text": "Instructions\nThe instructions/ directory holds reusable directives:\ninstructions/\n  tone-dark.md\n  action-scenes.md\n  dialogue-rules.md\nLoad an instruction before writing to guide the AI:\n&gt; /instruct tone-dark\nCreate new instructions:\n&gt; /new instruction action-scenes\nInstructions are injected into the chat as user messages, influencing the AI’s behavior for subsequent commands.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#lint-configuration",
+    "href": "guide/configuration.html#lint-configuration",
+    "title": "Configuration",
+    "section": "Lint Configuration",
+    "text": "Lint Configuration\nSee Prose Linting for Vale configuration via .vale.ini.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/configuration.html#aider-configuration",
+    "href": "guide/configuration.html#aider-configuration",
+    "title": "Configuration",
+    "section": "Aider Configuration",
+    "text": "Aider Configuration\nComposez inherits all of Aider’s configuration options. You can use:\n\n.aider.conf.yml for persistent settings\n.env for API keys\nCommand-line flags for per-session overrides\n\nCommon Aider settings that matter for fiction:\n# .aider.conf.yml\nauto-commits: true       # Commit after each AI edit\nauto-lint: true          # Run Vale after each edit\nstream: true             # Stream AI responses\nmodel: claude-sonnet-4-20250514    # Model selection\nSee Aider’s configuration docs for the full list.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "guide/getting-started.html",
+    "href": "guide/getting-started.html",
+    "title": "Getting Started",
+    "section": "",
+    "text": "Composez is a terminal-based AI writing tool for long-form fiction. It’s built as a fork of Aider, the AI pair-programming assistant, adapted for the specific needs of novel writing:\n\nStructured narrative management instead of flat file editing\nProse-oriented prompts instead of code-oriented ones\nReference database for characters, locations, and world-building\nScene-level granularity for focused, context-efficient AI interactions\nExport pipeline for producing publication-ready manuscripts\n\nIf you’ve used Aider for code, Composez will feel familiar. If you haven’t, think of it as a command-line interface where you chat with an AI that understands your novel’s structure.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "guide/getting-started.html#what-is-composez",
+    "href": "guide/getting-started.html#what-is-composez",
+    "title": "Getting Started",
+    "section": "",
+    "text": "Composez is a terminal-based AI writing tool for long-form fiction. It’s built as a fork of Aider, the AI pair-programming assistant, adapted for the specific needs of novel writing:\n\nStructured narrative management instead of flat file editing\nProse-oriented prompts instead of code-oriented ones\nReference database for characters, locations, and world-building\nScene-level granularity for focused, context-efficient AI interactions\nExport pipeline for producing publication-ready manuscripts\n\nIf you’ve used Aider for code, Composez will feel familiar. If you haven’t, think of it as a command-line interface where you chat with an AI that understands your novel’s structure.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "guide/getting-started.html#key-concepts",
+    "href": "guide/getting-started.html#key-concepts",
+    "title": "Getting Started",
+    "section": "Key Concepts",
+    "text": "Key Concepts\n\nThe Narrative Hierarchy\nYour manuscript is organized into a configurable hierarchy of levels—by default, Act, Chapter, and Scene:\nnovel/\n  Act 1 - The Beginning/\n    Chapter 1 - Arrivals/\n      Scene 1 - The Train Station/\n        SUMMARY.md      # Synopsis of this scene\n        PROSE.md        # The actual prose\n      Scene 2 - First Impressions/\n        SUMMARY.md\n        PROSE.md\n    Chapter 2 - Settling In/\n      ...\n  Act 2 - Rising Action/\n    ...\nEach scene contains exactly two files:\n\nPROSE.md — the actual narrative prose\nSUMMARY.md — a synopsis the AI uses for context when writing adjacent scenes\n\nNon-leaf levels (acts and chapters) can contain any .md files you want—outlines, notes, research, timelines.\n\n\nThe Reference Database\nThe db/ directory holds reference material that the AI uses to maintain consistency:\ndb/\n  core/\n    metadata.yml    # Book title, author\n    style.md        # Style guide (voice, tone, POV)\n  characters/\n    sarah.md\n    tom.md\n  locations/\n    apartment.md\n  themes/\n    ...\nEntries in db/core/ are always loaded as read-only context. Other entries can be added on demand with /add db.\n\n\nSlash Commands\nEverything in Composez is driven by slash commands. The most important ones:\n\n\n\nCommand\nWhat it does\n\n\n\n\n/add\nLoad files into the AI’s context\n\n\n/write\nGenerate prose from summaries\n\n\n/summarize\nGenerate summaries from prose\n\n\n/new\nCreate new acts, chapters, scenes, or db entries\n\n\n/lint\nCheck prose for style issues\n\n\n/analyze-style\nLoad prose for style analysis\n\n\n/feedback\nGet prioritized critique of a section\n\n\n/export\nExport to Markdown, DOCX, or EPUB\n\n\n/ls\nShow narrative structure and what’s loaded\n\n\n\nSee the Commands Reference for the full list.\n\n\nGit Integration\nComposez inherits Aider’s full git integration. Every AI edit is automatically committed, giving you a complete history of changes. You can review diffs, revert edits, and branch your manuscript just like code.",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "guide/getting-started.html#whats-next",
+    "href": "guide/getting-started.html#whats-next",
+    "title": "Getting Started",
+    "section": "What’s Next?",
+    "text": "What’s Next?\n\nInstallation — get Composez up and running\nQuickstart — write your first scene in 5 minutes\nNarrative Structure — deep dive into how the hierarchy works",
+    "crumbs": [
+      "Guide",
+      "Getting Started",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html",
+    "href": "guide/writing-workflow.html",
+    "title": "Writing Workflow",
+    "section": "",
+    "text": "The fundamental workflow in Composez follows a cycle:\n\nPlan — outline what happens in your scenes (summaries)\nWrite — generate prose from summaries\nRevise — refine the prose through conversation\nSummarize — update summaries to reflect changes\nRepeat — move to the next scene with accurate context\n\nThis loop keeps summaries in sync with prose, which is critical for context management. When writing Scene 5, the AI reads the summaries of Scenes 1–4 rather than their full prose, keeping the context window focused and efficient.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#the-core-loop",
+    "href": "guide/writing-workflow.html#the-core-loop",
+    "title": "Writing Workflow",
+    "section": "",
+    "text": "The fundamental workflow in Composez follows a cycle:\n\nPlan — outline what happens in your scenes (summaries)\nWrite — generate prose from summaries\nRevise — refine the prose through conversation\nSummarize — update summaries to reflect changes\nRepeat — move to the next scene with accurate context\n\nThis loop keeps summaries in sync with prose, which is critical for context management. When writing Scene 5, the AI reads the summaries of Scenes 1–4 rather than their full prose, keeping the context window focused and efficient.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#step-by-step",
+    "href": "guide/writing-workflow.html#step-by-step",
+    "title": "Writing Workflow",
+    "section": "Step by Step",
+    "text": "Step by Step\n\n1. Set Up Your Structure\nBefore writing, create the skeleton of your narrative:\n&gt; /new act The Awakening\n&gt; /new 1 chapter Morning Light\n&gt; /new 1 1 scene The Alarm\n&gt; /new 1 1 scene The Discovery\n&gt; /new 1 1 scene The Decision\n&gt; /new 1 chapter The Journey\n&gt; /new 1 2 scene Departure\n\n\n2. Write Summaries First\nAdd your scenes and describe what happens in each:\n&gt; /add 1 1 1\n&gt; Elena wakes to the lighthouse alarm at 3 AM. Dense fog.\n&gt; She checks the radar and sees something large moving offshore.\n&gt; She tells herself it's a whale.\nThe AI writes the SUMMARY.md. Repeat for each scene in the chapter.\n\n\n3. Write Prose\nOnce you have summaries for a chapter’s scenes, write the prose:\n&gt; /write 1 1\nThis writes all scenes in Chapter 1. For each scene, the AI:\n\nLoads the scene’s SUMMARY.md as context\nLoads sibling scene summaries for continuity\nLoads parent-level .md files (chapter outlines, etc.)\nLoads db/core/ entries (style guide, etc.)\nGenerates PROSE.md\n\nYou can also write individual scenes:\n&gt; /write 1 1 1\n\n\n4. Get Feedback\nBefore diving into revisions, get a structured critique:\n&gt; /feedback 1 1 1\nThis gives you prioritized suggestions (high, medium, low) with specific passages and concrete improvements.\n\n\n5. Revise Interactively\nLoad the prose into your chat and revise:\n&gt; /add prose 1 1 1\nThen converse naturally:\n&gt; The opening paragraph is too slow. Start with the alarm sound.\n&gt; Make Elena's internal monologue more fragmented — short sentences.\n&gt; Add more sensory detail about the fog.\n\n\n6. Update Summaries\nAfter significant prose changes, regenerate the summary:\n&gt; /summarize 1 1 1\nOr summarize an entire chapter:\n&gt; /summarize 1 1\nThis drills down to all scenes in the chapter and updates each SUMMARY.md from its PROSE.md.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#working-at-different-levels",
+    "href": "guide/writing-workflow.html#working-at-different-levels",
+    "title": "Writing Workflow",
+    "section": "Working at Different Levels",
+    "text": "Working at Different Levels\n\nScene-Level Work\nFor focused, detailed work on a single scene:\n&gt; /add 1 1 1\nThis loads both SUMMARY.md and PROSE.md. You can edit either file through conversation.\n\n\nChapter-Level Work\nFor working across a chapter:\n&gt; /add summaries 1 1    # Load all summaries\n&gt; /add prose 1 1        # Load all prose\n&gt; /add 1 1              # Load everything\n\n\nAct-Level Work\nBe mindful of context size when loading entire acts. Often, loading summaries is sufficient:\n&gt; /add summaries         # All summaries across the entire novel\n&gt; /add summaries 1       # All summaries in act 1",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#the-edit-command",
+    "href": "guide/writing-workflow.html#the-edit-command",
+    "title": "Writing Workflow",
+    "section": "The /edit Command",
+    "text": "The /edit Command\nFor targeted edits that aren’t full rewrites, use /edit:\n&gt; /add 1 1 1\n&gt; /edit Change Tom's dialogue to be more confrontational\nThis is similar to chatting, but the command makes intent explicit and works well in agent mode plans.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#auto-context",
+    "href": "guide/writing-workflow.html#auto-context",
+    "title": "Writing Workflow",
+    "section": "Auto-Context",
+    "text": "Auto-Context\nBy default, Composez automatically identifies relevant files before each LLM call. When you mention a character or scene by name, the AI pulls in the relevant database entries and narrative files as temporary read-only context—no need to /add them manually.\nThis works for conversational editing but not for /write and /summarize, which use their own focused context. See Configuration for details.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#context-management-tips",
+    "href": "guide/writing-workflow.html#context-management-tips",
+    "title": "Writing Workflow",
+    "section": "Context Management Tips",
+    "text": "Context Management Tips\n\n\n\n\n\n\nTipKeep context focused\n\n\n\nThe AI produces better prose when it has focused context rather than everything at once. Load the scene you’re writing plus summaries of adjacent scenes, not the entire novel.\n\n\n\n\n\n\n\n\nTipUse the style guide\n\n\n\nEdit db/core/style.md to match your voice. Be specific: instead of “write well,” say “use third-person limited POV, past tense, favor short sentences in action scenes.”\n\n\n\n\n\n\n\n\nTipSummary quality matters\n\n\n\nThe AI’s prose is only as good as the context it receives. Invest time in clear, specific summaries that capture not just plot but tone, character dynamics, and sensory atmosphere.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#compose-mode",
+    "href": "guide/writing-workflow.html#compose-mode",
+    "title": "Writing Workflow",
+    "section": "Compose Mode",
+    "text": "Compose Mode\nFor complex revisions, use compose mode (architect mode) with two models—one plans the edits, the other executes:\n&gt; /compose\nThis is useful for large structural changes where you want a planning step before the AI starts editing files.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/writing-workflow.html#instructions",
+    "href": "guide/writing-workflow.html#instructions",
+    "title": "Writing Workflow",
+    "section": "Instructions",
+    "text": "Instructions\nFor recurring directives that should apply to specific tasks, use the instructions system:\n&gt; /new instruction tone-shift\nThen write the instruction:\n&gt; From this point forward, the tone should shift darker.\n&gt; Elena's inner voice becomes more paranoid.\n&gt; Dialogue should have more subtext and less directness.\nLoad it before writing:\n&gt; /instruct tone-shift\nThe instruction content is injected into the chat, guiding the AI for subsequent commands.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Writing Workflow"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html",
+    "href": "guide/reference-database.html",
+    "title": "Reference Database",
+    "section": "",
+    "text": "The reference database (db/) holds all the background material the AI needs to write consistently: character descriptions, location details, style guides, timelines, and any other reference material. These files are treated as read-only context during normal editing—the AI reads them but won’t modify them unless you explicitly ask.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html#overview",
+    "href": "guide/reference-database.html#overview",
+    "title": "Reference Database",
+    "section": "",
+    "text": "The reference database (db/) holds all the background material the AI needs to write consistently: character descriptions, location details, style guides, timelines, and any other reference material. These files are treated as read-only context during normal editing—the AI reads them but won’t modify them unless you explicitly ask.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html#directory-structure",
+    "href": "guide/reference-database.html#directory-structure",
+    "title": "Reference Database",
+    "section": "Directory Structure",
+    "text": "Directory Structure\ndb/\n  core/\n    metadata.yml        # Book title and author\n    style.md            # Style guide (voice, POV, tone)\n  characters/\n    sarah.md\n    tom.md\n  locations/\n    apartment.md\n    lighthouse.md\n  items/\n    ...\n  themes/\n    ...\n  notes/\n    ...\n  snippets/\n    ...\n\nDefault Categories\nWhen you initialize a project, the following categories are created:\n\n\n\nCategory\nPurpose\n\n\n\n\ncore\nAlways-loaded context: metadata, style guide\n\n\ncharacters\nCharacter sheets and descriptions\n\n\nlocations\nSetting descriptions\n\n\nitems\nImportant objects\n\n\nthemes\nThematic notes\n\n\nstyle\nStyle reference material\n\n\nnotes\nGeneral notes\n\n\nother\nAnything else\n\n\n\nYou can add any category you want—just create a subdirectory under db/.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html#core-context",
+    "href": "guide/reference-database.html#core-context",
+    "title": "Reference Database",
+    "section": "Core Context",
+    "text": "Core Context\nFiles in db/core/ are special: they’re always loaded as read-only context whenever novel mode is active. You don’t need to /add them—they’re included automatically.\n\nmetadata.yml\nCreated on first launch with the project directory name and git user:\ntitle: My Novel\nauthor: Jane Smith\nThis metadata is used for EPUB export and other features.\n\n\nstyle.md\nA default style guide is seeded on first launch. It includes guidelines for:\n\nVoice and tone\nProse principles (show vs. tell, active voice)\nDialogue conventions\nPacing\nConsistency rules\n\nEdit this file to match your project’s style. The AI will follow these guidelines when writing prose.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html#managing-entries",
+    "href": "guide/reference-database.html#managing-entries",
+    "title": "Reference Database",
+    "section": "Managing Entries",
+    "text": "Managing Entries\n\nCreating Entries\n&gt; /new db characters elena\nCreated db entry: db/characters/elena.md\nAdded to chat for editing: characters/elena\nThe entry is added to your chat so you can describe the character immediately. Non-core entries are added as editable; core entries are added as read-only.\n\n\nLoading Entries\n&gt; /add db                     # Add ALL db entries\n&gt; /add db sarah               # Add a specific entry by name\n&gt; /add db characters           # Add all entries in a category\n\n\nDeleting Entries\n&gt; /delete db sarah\n&gt; /delete db characters sarah   # Scoped by category\n\n\nListing Entries\n&gt; /ls\nShows all db entries grouped by category, along with the narrative structure.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html#writing-effective-reference-entries",
+    "href": "guide/reference-database.html#writing-effective-reference-entries",
+    "title": "Reference Database",
+    "section": "Writing Effective Reference Entries",
+    "text": "Writing Effective Reference Entries\nFor best results, structure your entries to give the AI clear, concrete details:\n\nCharacter Sheets\nElena Vasquez, 34. Former marine biologist, now lighthouse keeper\non Cape Isolation.\n\n**Appearance**: Tall, sun-weathered skin, dark hair always in a\npractical braid. Calloused hands. Faint scar across her left palm\nfrom a diving accident.\n\n**Personality**: Pragmatic and self-reliant. Dry humor as a\ndefense mechanism. Avoids emotional vulnerability. Deeply curious\nbut has learned to suppress it.\n\n**Speech**: Clipped sentences. Rarely asks questions — makes\nstatements. Avoids eye contact during difficult conversations.\nUses marine biology metaphors unconsciously.\n\n**Background**: Left her university position after an incident\nduring a deep-sea expedition. Refuses to discuss what happened.\nTook the lighthouse job for isolation.\n\n**Relationships**:\n- Tom (ex-colleague): complicated, unresolved trust issues\n- The lighthouse: treats it like a living thing\n\n\nLocation Descriptions\nThe lighthouse stands on a basalt promontory 40 meters above\nthe tide line. Victorian-era construction, white-painted stone,\nred-capped lantern room.\n\n**Interior**: Spiral iron staircase, 127 steps. Ground floor\nconverted to a small apartment. Equipment room on the second\nlevel. Lantern room at the top with 360-degree views.\n\n**Atmosphere**: The building groans in high wind. Salt encrusts\nevery exterior surface. The foghorn can be heard from inside,\na deep vibration more felt than heard.\n\n**Key details**: The radio equipment is from the 1970s but\nreliable. There's no cell coverage. Supply boat comes Tuesdays.\n\n\n\n\n\n\nTipTip: Be specific about speech patterns\n\n\n\nThe AI is excellent at maintaining character voice when you give concrete examples of how a character speaks rather than abstract descriptions.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/reference-database.html#how-the-database-integrates",
+    "href": "guide/reference-database.html#how-the-database-integrates",
+    "title": "Reference Database",
+    "section": "How the Database Integrates",
+    "text": "How the Database Integrates\nWhen you’re chatting or writing, the AI sees your db entries as read-only context prefixed with:\n\nHere are some READ ONLY reference files (db entries, summaries, etc.) provided for context. Do not edit these files! Use them to maintain consistency in characters, settings, timeline, and tone.\n\nThis ensures the AI uses the entries for reference but doesn’t modify them during normal prose editing.",
+    "crumbs": [
+      "Guide",
+      "Core Concepts",
+      "Reference Database"
+    ]
+  },
+  {
+    "objectID": "guide/modes.html",
+    "href": "guide/modes.html",
+    "title": "Edit Modes & Autonomy",
+    "section": "",
+    "text": "Composez has two orthogonal settings that control its behavior:\n\nEdit mode — what the AI does (query content, edit files, replace a selection)\nAutonomy level — how the AI is orchestrated (single turn, two-phase, multi-step agent)\n\nAny edit mode works with any autonomy level. They’re completely independent.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Edit Modes & Autonomy"
+    ]
+  },
+  {
+    "objectID": "guide/modes.html#two-independent-axes",
+    "href": "guide/modes.html#two-independent-axes",
+    "title": "Edit Modes & Autonomy",
+    "section": "",
+    "text": "Composez has two orthogonal settings that control its behavior:\n\nEdit mode — what the AI does (query content, edit files, replace a selection)\nAutonomy level — how the AI is orchestrated (single turn, two-phase, multi-step agent)\n\nAny edit mode works with any autonomy level. They’re completely independent.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Edit Modes & Autonomy"
+    ]
+  },
+  {
+    "objectID": "guide/modes.html#edit-modes",
+    "href": "guide/modes.html#edit-modes",
+    "title": "Edit Modes & Autonomy",
+    "section": "Edit Modes",
+    "text": "Edit Modes\n\n\n\n\n\n\n\n\nMode\nWhat it does\nCommand\n\n\n\n\nQuery\nAnswers questions without changing files\n/query\n\n\nEdit\nMakes changes to manuscript files\n/edit or just chat\n\n\nSelection\nReplaces a specific text range\n/select to set, then chat\n\n\n\nSwitch modes with /chat-mode:\n&gt; /chat-mode query        # Switch to query mode\n&gt; /chat-mode edit         # Switch to edit mode",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Edit Modes & Autonomy"
+    ]
+  },
+  {
+    "objectID": "guide/modes.html#autonomy-levels",
+    "href": "guide/modes.html#autonomy-levels",
+    "title": "Edit Modes & Autonomy",
+    "section": "Autonomy Levels",
+    "text": "Autonomy Levels\n\n\n\n\n\n\n\n\nLevel\nHow it works\nCommand\n\n\n\n\nDirect\nSingle turn — one prompt, one response (the default)\n/chat-mode direct\n\n\nCompose\nTwo-phase — a planning model designs changes, an editor model applies them\n/compose\n\n\nAgent\nMulti-step — plans and executes a sequence of slash commands\n/agent\n\n\n\n\nDirect (default)\nYou send a message, the AI responds once, and any edits are applied. This is the standard mode for most writing and editing work.\n\n\nCompose\nUses two models in sequence:\n\nA planning model (the main model) analyzes your request and writes a detailed plan\nAn editor model turns the plan into specific file edits\n\nThis is useful when working with models that are strong at reasoning but less precise at producing file edits. Composez picks a suitable editor model by default, or you can choose one with --editor-model.\nEnter compose mode with /compose or use it one-shot:\n&gt; /compose Restructure the dialogue in scene 3 to reveal the secret gradually\n\n\nAgent\nThe AI creates a structured YAML plan of slash commands and executes them step by step. This is ideal for complex, multi-step tasks that span multiple scenes or files.\n&gt; /agent Rewrite act 1 chapter 1 in first person POV\nSee Agent Mode for the full guide on plans, parallel execution, and review loops.",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Edit Modes & Autonomy"
+    ]
+  },
+  {
+    "objectID": "guide/modes.html#combining-modes",
+    "href": "guide/modes.html#combining-modes",
+    "title": "Edit Modes & Autonomy",
+    "section": "Combining Modes",
+    "text": "Combining Modes\nEvery edit mode works with every autonomy level. The table below shows what happens for each combination:\n\n\n\n\n\n\n\n\n\n\nDirect\nCompose\nAgent\n\n\n\n\nQuery\nAI answers directly in one turn.\nPlanning model drafts an answer, then a second pass refines it. No files edited.\nAI creates a multi-step plan to research and answer the question.\n\n\nEdit\nAI edits files in one step.\nPlanning model designs changes, then an editor model implements them.\nAI creates a multi-step plan of editing commands executed automatically.\n\n\nSelection\nAI replaces the selected text in one turn.\nPlanning model designs the replacement, then a second pass applies it.\nAI creates a multi-step plan that may include research before replacing the selection.\n\n\n\n\nLegacy names\nThe old mode names still work:\n\n/architect is equivalent to /compose\n/code is equivalent to /edit",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Edit Modes & Autonomy"
+    ]
+  },
+  {
+    "objectID": "guide/modes.html#switching",
+    "href": "guide/modes.html#switching",
+    "title": "Edit Modes & Autonomy",
+    "section": "Switching",
+    "text": "Switching\nUse /chat-mode to switch either axis independently:\n&gt; /chat-mode query        # Change edit mode to query (keeps current autonomy)\n&gt; /chat-mode compose      # Change autonomy to compose (keeps current edit mode)\n&gt; /chat-mode edit         # Change edit mode to edit\n&gt; /chat-mode direct       # Change autonomy back to direct\nOr use the shorthand commands:\n&gt; /query                  # Switch to query mode\n&gt; /compose                # Switch to compose autonomy\n&gt; /agent                  # Switch to agent autonomy\nThe prompt indicator shows your current mode:\n&gt; normal prompt (edit + direct)\ncompose&gt; compose mode active\nquery&gt; query mode active",
+    "crumbs": [
+      "Guide",
+      "Advanced",
+      "Edit Modes & Autonomy"
+    ]
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html",
+    "href": "design/cloud-multiuser-evaluation.html",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Composez already has a single-user web architecture:\n\nFastAPI backend (composez_core/server/app.py) with 36+ REST endpoints and a WebSocket for streaming chat\nVue 3 frontend (novel_ui/) with CodeMirror editor, file browser, git pane, and console\nFile-based storage — all project data lives on the local filesystem (novel content, db/ reference material, .composez config)\nSingle global Coder instance — one _coder module-level variable initialized lazily on first WebSocket connect\nNo authentication — open CORS (allow_origins=[\"*\"]), no login, no session management\nGit for version history — each project is a git repo; all edits are committed locally\nLocal-only deployment — binds to 127.0.0.1:8188 by default\n\nThe core bottleneck for multi-user is that the entire server is wired to a single project directory and a single Coder instance.\n\n\n\n\n\n\n\n\n\n\n\nChallenge\nWhy It’s Hard\n\n\n\n\nIsolation\nAider’s Coder holds mutable state (file lists, model config, chat history, git repo ref). Multiple users editing the same project need either separate Coder instances or serialized access.\n\n\nFile storage\nContent lives on a local filesystem. Cloud deployment needs remote storage with per-project isolation.\n\n\nGit\nGit repos are local directories. Concurrent writers to the same repo cause conflicts.\n\n\nLLM costs\nEach user drives their own API calls. Need per-user metering or shared billing.\n\n\nReal-time collab\nThe WebSocket currently streams LLM responses to one client. Multi-user editing requires conflict resolution (OT/CRDT).\n\n\n\n\n\n\n\nConcept: Each user/project gets its own container running the existing server.\n\n\nUser → HTTPS → Reverse Proxy (nginx/Caddy)\n                    ↓\n            Container Orchestrator (ECS / Cloud Run / K8s)\n                    ↓\n        ┌───────────────────────┐\n        │  Container per user   │\n        │  uvicorn + FastAPI    │\n        │  local git repo       │\n        │  mounted volume       │\n        └───────────────────────┘\n\n\n\n\nAuth gateway — add an auth layer (OAuth2/OIDC) at the proxy or a lightweight middleware\nContainer orchestration — spin up/down containers per session (Cloud Run is a natural fit: scale-to-zero, per-request billing)\nPersistent storage — mount a volume (EFS, GCS FUSE, Persistent Disk) per project so the git repo and files survive container restarts\nRouting — map user-project.composez.app or /projects/{id} to the right container\nLLM key management — users bring their own API keys (stored encrypted) or you provide a pooled key with per-user metering\n\n\n\n\n\nMinimal code changes — the existing single-tenant server works as-is inside a container\nStrong isolation — each user gets their own filesystem, git repo, and Coder instance\nSimple concurrency model — no shared-state problems\nIncremental path — can start with a handful of users on dedicated VMs, then move to orchestration\n\n\n\n\n\nCold-start latency — spinning up a container + initializing a Coder takes seconds (Cloud Run cold starts ~2-5s, Coder init adds more)\nCost at scale — one container per active user; idle containers waste resources unless using scale-to-zero\nNo real-time collaboration — each project is still single-user; sharing requires passing the project (like a baton)\nStorage management — need to handle volume lifecycle, backups, cross-region access\n\n\n\n\n2-4 weeks for a working prototype (Dockerfile tuning, auth gateway, volume mounts, deploy scripts).\n\n\n\n\n\nConcept: A single (or small cluster of) server(s) manage multiple Coder instances, one per active session.\n\n\nUsers → HTTPS → Load Balancer\n                    ↓\n            App Server(s) (FastAPI)\n            ┌─────────────────────────────┐\n            │  Session Manager            │\n            │  ┌────────┐ ┌────────┐     │\n            │  │Coder A │ │Coder B │ ... │\n            │  └────────┘ └────────┘     │\n            │  Project Storage (S3/GCS)   │\n            └─────────────────────────────┘\n\n\n\n\nSession manager — replace the global _coder with a session→Coder registry; route requests by session/project ID\nAuth + user model — add user accounts, project ownership, API key vault\nRemote storage backend — abstract file operations to support S3/GCS (clone project to temp dir on session start, sync back on idle/close)\nDatabase — add PostgreSQL or SQLite for user accounts, project metadata, billing; keep content files on object storage\nWebSocket multiplexing — tag WebSocket messages with session IDs; route to the correct Coder\nResource limits — cap concurrent Coders per server, evict idle sessions, queue overflow\n\n\n\n\n\nBetter resource utilization — share server resources across users; no per-user container overhead\nLower latency — Coder instances can be kept warm in memory\nFoundation for collaboration — the session manager is the natural place to add multi-writer support later\n\n\n\n\n\nSignificant refactoring — the biggest change is decoupling the global Coder from request handling; many endpoints call _get_coder() which assumes one global instance\nIsolation risks — a bug in one session could affect others (memory leak, uncaught exception)\nGit complexity — need per-session working directories; concurrent git operations on clones of the same repo need careful locking\nCoder memory footprint — each Coder instance holds chat history, file caches, model state; ~50-200MB per session depending on project size\n\n\n\n\n6-10 weeks for a production-ready multi-tenant server.\n\n\n\n\n\nConcept: Build on Option A or B but add real-time multi-user editing of the same project.\n\n\n                    ┌─────────────────┐\n                    │  Collab Server   │\n                    │  (Y.js / CRDT)  │\n                    │  ↕ sync ↕       │\n        ┌───────────┴───┐   ┌───┴───────────┐\n        │ User A browser│   │ User B browser│\n        └───────────────┘   └───────────────┘\n                    ↓ periodic commit ↓\n                    ┌─────────────────┐\n                    │    Git repo     │\n                    │  (source of     │\n                    │   truth)        │\n                    └─────────────────┘\n\n\n\n\nCRDT layer — integrate Y.js (or Automerge) for conflict-free concurrent editing of .md files\nPresence & cursors — show who’s editing where\nMerge strategy — CRDT handles real-time edits; git commits are periodic snapshots\nLLM coordination — when one user runs /write, lock the affected files or queue edits so the LLM output doesn’t conflict with a concurrent human edit\nPermissions — owner/editor/viewer roles per project\n\n\n\n\n\nTrue collaboration — Google-Docs-style multi-writer experience for fiction teams (author + editor, writing partners)\nDifferentiated product — no existing AI writing tool offers real-time collaborative AI-assisted fiction editing\n\n\n\n\n\nVery high complexity — CRDTs are hard; integrating them with git commit history and LLM-generated edits adds significant surface area\nLLM contention — two users both running /write on overlapping scenes creates hard coordination problems\nScope creep risk — collaboration features tend to expand indefinitely\n\n\n\n\n3-6 months on top of either Option A or B.\n\n\n\n\n\nConcept: Use Option A (one container per user) but share projects via git remotes. Collaboration happens through branches and PRs, not real-time co-editing.\n\n\nUser A (container) ──push──→ GitHub repo ←──pull── User B (container)\n                              ↑\n                         PRs / Reviews\n                         Branch protection\n\n\n\n\nGit remote integration — add push/pull to remote in the UI (the git pane already shows branches/remotes)\nBranch workflow — each user works on their own branch; merges happen via PR\nProject sharing — invite collaborators by granting access to the GitHub repo\nConflict resolution — leverage git’s merge tooling; the CodeMirror merge view already exists in the UI\n\n\n\n\n\nMinimal new infrastructure — git hosting platforms handle auth, storage, collaboration, and backup\nFamiliar model — writers who use git (or can learn basic branch/merge) get a natural workflow\nLow risk — no CRDT, no shared-state servers, no real-time sync complexity\nAsync collaboration fits fiction — writers rarely need to edit the same sentence simultaneously; chapter-level branching is natural\n\n\n\n\n\nNot real-time — no live co-editing; users see each other’s changes after push/pull\nGit literacy required — many fiction writers are not git users (though the UI can abstract most of it)\nMerge conflicts on prose — git’s line-based merge doesn’t understand narrative structure; conflicts in .md files can be confusing\n\n\n\n\n2-3 weeks on top of Option A (mostly UI work for push/pull/branch workflows).\n\n\n\n\n\n\n\nThis gets you to “cloud-based” with the least risk and code change. The existing server works almost unchanged inside a container. Focus on: 1. Auth gateway (OAuth2 via Auth0/Clerk/Supabase Auth — ~1 week) 2. Container orchestration (Cloud Run or Fly.io — ~1 week) 3. Persistent storage (mounted volume per project — ~1 week) 4. LLM key management (encrypted key vault — ~3 days)\n\n\n\nOnce cloud hosting works, add git remote workflows for async collaboration. This is the highest-value, lowest-risk path to multi-user.\n\n\n\nOnly pursue this when the per-container model becomes too expensive at scale (likely &gt;100 concurrent users). The session-manager refactor is significant but well-understood.\n\n\n\nOnly build CRDT-based co-editing if users explicitly need it. For fiction writing, async collaboration (branches + reviews) is usually sufficient.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlatform\nCold Start\nScale to Zero\nPersistent Storage\nCost Model\nFit\n\n\n\n\nFly.io\n~1-2s\nYes (Machines)\nFly Volumes\nPer-VM-second\nGood — simple, volumes built-in\n\n\nGoogle Cloud Run\n~2-5s\nYes\nGCS FUSE (limited)\nPer-request\nOK — needs sidecar for git/volumes\n\n\nAWS ECS + Fargate\n~10-30s\nNo (min 1 task)\nEFS\nPer-vCPU-hour\nHeavy — better for steady load\n\n\nRailway\n~2-3s\nYes\nVolumes (beta)\nPer-usage\nGood — simple DX, growing platform\n\n\nRender\n~5-10s\nYes (free tier)\nPersistent Disk\nPer-instance\nOK — simple but limited scaling\n\n\nSelf-hosted K8s\n~1s (warm)\nVia KEDA\nAny CSI driver\nInfrastructure\nBest control, most ops burden\n\n\n\nRecommendation: Fly.io for initial launch (simple Machines API, built-in volumes, fast cold starts, predictable pricing). Migrate to K8s or Cloud Run if scaling demands it."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#current-state",
+    "href": "design/cloud-multiuser-evaluation.html#current-state",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Composez already has a single-user web architecture:\n\nFastAPI backend (composez_core/server/app.py) with 36+ REST endpoints and a WebSocket for streaming chat\nVue 3 frontend (novel_ui/) with CodeMirror editor, file browser, git pane, and console\nFile-based storage — all project data lives on the local filesystem (novel content, db/ reference material, .composez config)\nSingle global Coder instance — one _coder module-level variable initialized lazily on first WebSocket connect\nNo authentication — open CORS (allow_origins=[\"*\"]), no login, no session management\nGit for version history — each project is a git repo; all edits are committed locally\nLocal-only deployment — binds to 127.0.0.1:8188 by default\n\nThe core bottleneck for multi-user is that the entire server is wired to a single project directory and a single Coder instance."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#key-challenges",
+    "href": "design/cloud-multiuser-evaluation.html#key-challenges",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Challenge\nWhy It’s Hard\n\n\n\n\nIsolation\nAider’s Coder holds mutable state (file lists, model config, chat history, git repo ref). Multiple users editing the same project need either separate Coder instances or serialized access.\n\n\nFile storage\nContent lives on a local filesystem. Cloud deployment needs remote storage with per-project isolation.\n\n\nGit\nGit repos are local directories. Concurrent writers to the same repo cause conflicts.\n\n\nLLM costs\nEach user drives their own API calls. Need per-user metering or shared billing.\n\n\nReal-time collab\nThe WebSocket currently streams LLM responses to one client. Multi-user editing requires conflict resolution (OT/CRDT)."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#option-a-cloud-hosted-single-tenant-one-container-per-user",
+    "href": "design/cloud-multiuser-evaluation.html#option-a-cloud-hosted-single-tenant-one-container-per-user",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Concept: Each user/project gets its own container running the existing server.\n\n\nUser → HTTPS → Reverse Proxy (nginx/Caddy)\n                    ↓\n            Container Orchestrator (ECS / Cloud Run / K8s)\n                    ↓\n        ┌───────────────────────┐\n        │  Container per user   │\n        │  uvicorn + FastAPI    │\n        │  local git repo       │\n        │  mounted volume       │\n        └───────────────────────┘\n\n\n\n\nAuth gateway — add an auth layer (OAuth2/OIDC) at the proxy or a lightweight middleware\nContainer orchestration — spin up/down containers per session (Cloud Run is a natural fit: scale-to-zero, per-request billing)\nPersistent storage — mount a volume (EFS, GCS FUSE, Persistent Disk) per project so the git repo and files survive container restarts\nRouting — map user-project.composez.app or /projects/{id} to the right container\nLLM key management — users bring their own API keys (stored encrypted) or you provide a pooled key with per-user metering\n\n\n\n\n\nMinimal code changes — the existing single-tenant server works as-is inside a container\nStrong isolation — each user gets their own filesystem, git repo, and Coder instance\nSimple concurrency model — no shared-state problems\nIncremental path — can start with a handful of users on dedicated VMs, then move to orchestration\n\n\n\n\n\nCold-start latency — spinning up a container + initializing a Coder takes seconds (Cloud Run cold starts ~2-5s, Coder init adds more)\nCost at scale — one container per active user; idle containers waste resources unless using scale-to-zero\nNo real-time collaboration — each project is still single-user; sharing requires passing the project (like a baton)\nStorage management — need to handle volume lifecycle, backups, cross-region access\n\n\n\n\n2-4 weeks for a working prototype (Dockerfile tuning, auth gateway, volume mounts, deploy scripts)."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#option-b-multi-tenant-server-with-per-session-coder-pools",
+    "href": "design/cloud-multiuser-evaluation.html#option-b-multi-tenant-server-with-per-session-coder-pools",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Concept: A single (or small cluster of) server(s) manage multiple Coder instances, one per active session.\n\n\nUsers → HTTPS → Load Balancer\n                    ↓\n            App Server(s) (FastAPI)\n            ┌─────────────────────────────┐\n            │  Session Manager            │\n            │  ┌────────┐ ┌────────┐     │\n            │  │Coder A │ │Coder B │ ... │\n            │  └────────┘ └────────┘     │\n            │  Project Storage (S3/GCS)   │\n            └─────────────────────────────┘\n\n\n\n\nSession manager — replace the global _coder with a session→Coder registry; route requests by session/project ID\nAuth + user model — add user accounts, project ownership, API key vault\nRemote storage backend — abstract file operations to support S3/GCS (clone project to temp dir on session start, sync back on idle/close)\nDatabase — add PostgreSQL or SQLite for user accounts, project metadata, billing; keep content files on object storage\nWebSocket multiplexing — tag WebSocket messages with session IDs; route to the correct Coder\nResource limits — cap concurrent Coders per server, evict idle sessions, queue overflow\n\n\n\n\n\nBetter resource utilization — share server resources across users; no per-user container overhead\nLower latency — Coder instances can be kept warm in memory\nFoundation for collaboration — the session manager is the natural place to add multi-writer support later\n\n\n\n\n\nSignificant refactoring — the biggest change is decoupling the global Coder from request handling; many endpoints call _get_coder() which assumes one global instance\nIsolation risks — a bug in one session could affect others (memory leak, uncaught exception)\nGit complexity — need per-session working directories; concurrent git operations on clones of the same repo need careful locking\nCoder memory footprint — each Coder instance holds chat history, file caches, model state; ~50-200MB per session depending on project size\n\n\n\n\n6-10 weeks for a production-ready multi-tenant server."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#option-c-git-centric-collaboration-multi-user-on-shared-projects",
+    "href": "design/cloud-multiuser-evaluation.html#option-c-git-centric-collaboration-multi-user-on-shared-projects",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Concept: Build on Option A or B but add real-time multi-user editing of the same project.\n\n\n                    ┌─────────────────┐\n                    │  Collab Server   │\n                    │  (Y.js / CRDT)  │\n                    │  ↕ sync ↕       │\n        ┌───────────┴───┐   ┌───┴───────────┐\n        │ User A browser│   │ User B browser│\n        └───────────────┘   └───────────────┘\n                    ↓ periodic commit ↓\n                    ┌─────────────────┐\n                    │    Git repo     │\n                    │  (source of     │\n                    │   truth)        │\n                    └─────────────────┘\n\n\n\n\nCRDT layer — integrate Y.js (or Automerge) for conflict-free concurrent editing of .md files\nPresence & cursors — show who’s editing where\nMerge strategy — CRDT handles real-time edits; git commits are periodic snapshots\nLLM coordination — when one user runs /write, lock the affected files or queue edits so the LLM output doesn’t conflict with a concurrent human edit\nPermissions — owner/editor/viewer roles per project\n\n\n\n\n\nTrue collaboration — Google-Docs-style multi-writer experience for fiction teams (author + editor, writing partners)\nDifferentiated product — no existing AI writing tool offers real-time collaborative AI-assisted fiction editing\n\n\n\n\n\nVery high complexity — CRDTs are hard; integrating them with git commit history and LLM-generated edits adds significant surface area\nLLM contention — two users both running /write on overlapping scenes creates hard coordination problems\nScope creep risk — collaboration features tend to expand indefinitely\n\n\n\n\n3-6 months on top of either Option A or B."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#option-d-hybrid-githubgitlab-as-the-collaboration-layer",
+    "href": "design/cloud-multiuser-evaluation.html#option-d-hybrid-githubgitlab-as-the-collaboration-layer",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Concept: Use Option A (one container per user) but share projects via git remotes. Collaboration happens through branches and PRs, not real-time co-editing.\n\n\nUser A (container) ──push──→ GitHub repo ←──pull── User B (container)\n                              ↑\n                         PRs / Reviews\n                         Branch protection\n\n\n\n\nGit remote integration — add push/pull to remote in the UI (the git pane already shows branches/remotes)\nBranch workflow — each user works on their own branch; merges happen via PR\nProject sharing — invite collaborators by granting access to the GitHub repo\nConflict resolution — leverage git’s merge tooling; the CodeMirror merge view already exists in the UI\n\n\n\n\n\nMinimal new infrastructure — git hosting platforms handle auth, storage, collaboration, and backup\nFamiliar model — writers who use git (or can learn basic branch/merge) get a natural workflow\nLow risk — no CRDT, no shared-state servers, no real-time sync complexity\nAsync collaboration fits fiction — writers rarely need to edit the same sentence simultaneously; chapter-level branching is natural\n\n\n\n\n\nNot real-time — no live co-editing; users see each other’s changes after push/pull\nGit literacy required — many fiction writers are not git users (though the UI can abstract most of it)\nMerge conflicts on prose — git’s line-based merge doesn’t understand narrative structure; conflicts in .md files can be confusing\n\n\n\n\n2-3 weeks on top of Option A (mostly UI work for push/pull/branch workflows)."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#recommendation",
+    "href": "design/cloud-multiuser-evaluation.html#recommendation",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "This gets you to “cloud-based” with the least risk and code change. The existing server works almost unchanged inside a container. Focus on: 1. Auth gateway (OAuth2 via Auth0/Clerk/Supabase Auth — ~1 week) 2. Container orchestration (Cloud Run or Fly.io — ~1 week) 3. Persistent storage (mounted volume per project — ~1 week) 4. LLM key management (encrypted key vault — ~3 days)\n\n\n\nOnce cloud hosting works, add git remote workflows for async collaboration. This is the highest-value, lowest-risk path to multi-user.\n\n\n\nOnly pursue this when the per-container model becomes too expensive at scale (likely &gt;100 concurrent users). The session-manager refactor is significant but well-understood.\n\n\n\nOnly build CRDT-based co-editing if users explicitly need it. For fiction writing, async collaboration (branches + reviews) is usually sufficient."
+  },
+  {
+    "objectID": "design/cloud-multiuser-evaluation.html#platform-comparison-for-phase-1",
+    "href": "design/cloud-multiuser-evaluation.html#platform-comparison-for-phase-1",
+    "title": "Cloud & Multi-User Evaluation for Composez",
+    "section": "",
+    "text": "Platform\nCold Start\nScale to Zero\nPersistent Storage\nCost Model\nFit\n\n\n\n\nFly.io\n~1-2s\nYes (Machines)\nFly Volumes\nPer-VM-second\nGood — simple, volumes built-in\n\n\nGoogle Cloud Run\n~2-5s\nYes\nGCS FUSE (limited)\nPer-request\nOK — needs sidecar for git/volumes\n\n\nAWS ECS + Fargate\n~10-30s\nNo (min 1 task)\nEFS\nPer-vCPU-hour\nHeavy — better for steady load\n\n\nRailway\n~2-3s\nYes\nVolumes (beta)\nPer-usage\nGood — simple DX, growing platform\n\n\nRender\n~5-10s\nYes (free tier)\nPersistent Disk\nPer-instance\nOK — simple but limited scaling\n\n\nSelf-hosted K8s\n~1s (warm)\nVia KEDA\nAny CSI driver\nInfrastructure\nBest control, most ops burden\n\n\n\nRecommendation: Fly.io for initial launch (simple Machines API, built-in volumes, fast cold starts, predictable pricing). Migrate to K8s or Cloud Run if scaling demands it."
+  },
+  {
+    "objectID": "reference/composez-config.html",
+    "href": "reference/composez-config.html",
+    "title": ".composez Configuration",
+    "section": "",
+    "text": "The .composez file lives at the root of your project directory. It’s created automatically on first launch.",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      ".composez Configuration"
+    ]
+  },
+  {
+    "objectID": "reference/composez-config.html#file-location",
+    "href": "reference/composez-config.html#file-location",
+    "title": ".composez Configuration",
+    "section": "",
+    "text": "The .composez file lives at the root of your project directory. It’s created automatically on first launch.",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      ".composez Configuration"
+    ]
+  },
+  {
+    "objectID": "reference/composez-config.html#format",
+    "href": "reference/composez-config.html#format",
+    "title": ".composez Configuration",
+    "section": "Format",
+    "text": "Format\nYAML format. The file is read by composez_core/config.py.",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      ".composez Configuration"
+    ]
+  },
+  {
+    "objectID": "reference/composez-config.html#fields",
+    "href": "reference/composez-config.html#fields",
+    "title": ".composez Configuration",
+    "section": "Fields",
+    "text": "Fields\n\nlevels\nType: list of strings Default: [\"Act\", \"Chapter\", \"Scene\"] Required: No (defaults are used if missing)\nThe narrative hierarchy levels, from outermost to innermost. The last level is always the leaf level where PROSE.md and SUMMARY.md files live.\nConstraints:\n\nMinimum 2 levels\nEach level must be a non-empty string\nNames are automatically title-cased (chapter → Chapter)\n\n\n\nauto_context\nType: boolean Default: true Required: No\nWhen enabled, Composez automatically identifies relevant files before each LLM call and adds them as temporary read-only context. Uses the weak model for a lightweight analysis pass.\nThis sets the default for new sessions. The /auto-context command can override the setting for the current session without modifying this file.\nSet to false to disable by default:\nauto_context: false\n\n\nExamples\n\nDefault (3-level)\nlevels:\n- Act\n- Chapter\n- Scene\nDirectory structure:\nnovel/\n  Act 1 - Title/\n    Chapter 1 - Title/\n      Scene 1 - Title/\n        PROSE.md\n        SUMMARY.md\n\n\nTwo-level (simple)\nlevels:\n- Chapter\n- Scene\nDirectory structure:\nnovel/\n  Chapter 1 - Title/\n    Scene 1 - Title/\n      PROSE.md\n      SUMMARY.md\n\n\nFour-level\nlevels:\n- Book\n- Part\n- Chapter\n- Scene\nDirectory structure:\nnovel/\n  Book 1 - Title/\n    Part 1 - Title/\n      Chapter 1 - Title/\n        Scene 1 - Title/\n          PROSE.md\n          SUMMARY.md\n\n\nCustom names\nlevels:\n- Volume\n- Section\n- Passage\nThe level names appear in directory names and command syntax:\n/new volume The First Year\n/new 1 section Autumn\n/new 1 1 passage The Letter\n/write 1 1 1",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      ".composez Configuration"
+    ]
+  },
+  {
+    "objectID": "reference/composez-config.html#programmatic-access",
+    "href": "reference/composez-config.html#programmatic-access",
+    "title": ".composez Configuration",
+    "section": "Programmatic Access",
+    "text": "Programmatic Access\nfrom composez_core.config import load_config, save_config, get_levels\n\n# Read config\nconfig = load_config(\"/path/to/project\")\nlevels = config[\"levels\"]  # [\"Act\", \"Chapter\", \"Scene\"]\n\n# Just get levels\nlevels = get_levels(\"/path/to/project\")\n\n# Write config\nsave_config(\"/path/to/project\", {\"levels\": [\"Part\", \"Chapter\", \"Scene\"]})",
+    "crumbs": [
+      "Reference",
+      "Configuration",
+      ".composez Configuration"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html",
+    "href": "reference/writing-commands.html",
+    "title": "Writing & Editing Commands",
+    "section": "",
+    "text": "Generate prose from summaries. For scenes, writes PROSE.md from SUMMARY.md. For chapters and acts, writes all descendant scenes.\n\n\n/write act 1 chapter 2 scene 3   # Write a single scene\n/write 1 2 3                     # Shorthand\n/write act 1 chapter 2           # Write all scenes in chapter 2\n/write 1 2                       # Shorthand\n/write act 1                     # Write all scenes in act 1\n/write 1                         # Shorthand\n\n\n\nFor a single scene:\n\nReads the scene’s SUMMARY.md\nLoads sibling scene summaries for continuity\nLoads parent-level .md files (chapter outlines, notes)\nLoads db/core/ entries (style guide, metadata)\nGenerates PROSE.md in an isolated coder session\n\nFor a chapter:\nEach scene is written with context from all sibling summaries plus any .md files at the chapter level.\nFor an act:\nWrites all scenes across all chapters in the act.\n\n\n\n\nThe target scene(s) must have a non-empty SUMMARY.md\nAn empty PROSE.md is created automatically if missing",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#write",
+    "href": "reference/writing-commands.html#write",
+    "title": "Writing & Editing Commands",
+    "section": "",
+    "text": "Generate prose from summaries. For scenes, writes PROSE.md from SUMMARY.md. For chapters and acts, writes all descendant scenes.\n\n\n/write act 1 chapter 2 scene 3   # Write a single scene\n/write 1 2 3                     # Shorthand\n/write act 1 chapter 2           # Write all scenes in chapter 2\n/write 1 2                       # Shorthand\n/write act 1                     # Write all scenes in act 1\n/write 1                         # Shorthand\n\n\n\nFor a single scene:\n\nReads the scene’s SUMMARY.md\nLoads sibling scene summaries for continuity\nLoads parent-level .md files (chapter outlines, notes)\nLoads db/core/ entries (style guide, metadata)\nGenerates PROSE.md in an isolated coder session\n\nFor a chapter:\nEach scene is written with context from all sibling summaries plus any .md files at the chapter level.\nFor an act:\nWrites all scenes across all chapters in the act.\n\n\n\n\nThe target scene(s) must have a non-empty SUMMARY.md\nAn empty PROSE.md is created automatically if missing",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#summarize",
+    "href": "reference/writing-commands.html#summarize",
+    "title": "Writing & Editing Commands",
+    "section": "/summarize",
+    "text": "/summarize\nGenerate summaries from prose. For scenes, reads PROSE.md and writes SUMMARY.md. For chapters and acts, summarizes all descendant scenes.\n\nUsage\n/summarize act 1 chapter 2 scene 3\n/summarize 1 2 3\n/summarize act 1 chapter 2       # Summarize all scenes in chapter 2\n/summarize 1 2\n/summarize act 1                  # Summarize all scenes in act 1\n/summarize 1\n\n\nHow it works\nFor a single scene:\n\nReads the scene’s PROSE.md\nGenerates a concise synopsis for SUMMARY.md\n\nFor a chapter or act:\nFinds all descendant leaf scenes that have prose and generates summaries for each one in a single batched LLM call.\n\n\nSummary content\nThe generated summary captures:\n\nKey events and plot points\nCharacter dynamics and emotional beats\nImportant revelations, decisions, or turning points\n\nSummaries start directly with content—no title heading (the title lives in the directory name).",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#edit",
+    "href": "reference/writing-commands.html#edit",
+    "title": "Writing & Editing Commands",
+    "section": "/edit",
+    "text": "/edit\nMake targeted edits to manuscript files. Works like chatting but makes the editing intent explicit.\n\nUsage\n/edit Change Tom's dialogue to be more confrontational\n/edit Tighten the pacing in the second half of this scene\nWith no arguments, switches to the model’s preferred edit mode.\n\n\nHow it works\nSpins up an isolated coder with the model’s preferred edit format, runs the prompt, and returns to your current mode. Files currently in the chat are available for editing.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#query",
+    "href": "reference/writing-commands.html#query",
+    "title": "Writing & Editing Commands",
+    "section": "/query",
+    "text": "/query\nQuery the manuscript without editing any files. Delegates to a read-only query mode.\n/query What are the main themes established in act 1?\n/query Does Elena's character arc feel consistent across these scenes?\n/query Identify any plot holes in the chapter summaries",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#compose",
+    "href": "reference/writing-commands.html#compose",
+    "title": "Writing & Editing Commands",
+    "section": "/compose",
+    "text": "/compose\nEnter compose mode, which uses two models: one to plan the edits and another to execute them. This is Aider’s architect mode with novel-mode prompts.\n/compose\n/compose Restructure the dialogue in this scene to build more tension\nWith no arguments, enters persistent compose mode. With arguments, runs a single compose operation.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#agent",
+    "href": "reference/writing-commands.html#agent",
+    "title": "Writing & Editing Commands",
+    "section": "/agent",
+    "text": "/agent\nPlan and execute complex multi-step tasks autonomously. See the Agent Mode guide for full details.\n/agent                           # Enter persistent agent mode\n/agent Rewrite act 1 in first person POV",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#select",
+    "href": "reference/writing-commands.html#select",
+    "title": "Writing & Editing Commands",
+    "section": "/select",
+    "text": "/select\nSet a text selection for focused editing. Used primarily by IDE integrations.\n\nUsage\n/select filename:start_line:start_col-end_line:end_col\nLine and column numbers are 1-based.\n/select novel/Act 1 - Title/Chapter 1 - Title/Scene 1 - Title/PROSE.md:5:1-12:45\nSwitches to selection editing mode focused on the selected text.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#instruct",
+    "href": "reference/writing-commands.html#instruct",
+    "title": "Writing & Editing Commands",
+    "section": "/instruct",
+    "text": "/instruct\nLoad an instruction file and inject its content into the current chat.\n\nUsage\n/instruct tone-shift             # Load instructions/tone-shift.md (or .txt)\nThe instruction content becomes a user message in the chat, influencing subsequent AI behavior. Useful for recurring directives like tone shifts, pacing changes, or style overrides.\nTab-completion shows available instruction names.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#lint",
+    "href": "reference/writing-commands.html#lint",
+    "title": "Writing & Editing Commands",
+    "section": "/lint",
+    "text": "/lint\nCheck prose files for style issues using Vale. See the Prose Linting guide for setup and configuration.\n\nUsage\n/lint                            # Lint files in the chat (or dirty files)\n/lint 1 2 3                      # Lint a specific scene\n/lint act 1 chapter 2            # Lint all prose in chapter 2\n/lint path/to/file.md            # Lint a specific file\nAfter displaying issues, offers to fix them with AI assistance.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#lint-level",
+    "href": "reference/writing-commands.html#lint-level",
+    "title": "Writing & Editing Commands",
+    "section": "/lint-level",
+    "text": "/lint-level\nControl which severity levels /lint reports.\n\nUsage\n/lint-level                      # Show current level\n/lint-level error                # Errors only\n/lint-level warning              # Errors + warnings (default)\n/lint-level suggestion           # Everything",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#analyze-style",
+    "href": "reference/writing-commands.html#analyze-style",
+    "title": "Writing & Editing Commands",
+    "section": "/analyze-style",
+    "text": "/analyze-style\nAdd prose files to the chat as read-only context for style analysis.\n\nUsage\n/analyze-style act 1 chapter 2 scene 3\n/analyze-style 1 2 3             # Shorthand\n/analyze-style act 1 chapter 2   # All prose in chapter 2\n/analyze-style 1 2               # Shorthand\n/analyze-style act 1             # All prose in act 1\n/analyze-style path/to/file.md   # A specific file\n\n\nHow it works\n\nCollects all PROSE.md files from the specified location\nAdds them to the chat as read-only context\nYou then chat with the AI about the style, asking it to write a style guide or answer specific questions\n\nThis is a context-loading command, not an automatic generator. After loading the prose, follow up with a message like:\n&gt; /analyze-style 1\n&gt; Write a comprehensive style guide to db/core/style.md based on this prose.\nThis approach gives you control over what the AI focuses on and lets you iterate on the style guide interactively.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#feedback",
+    "href": "reference/writing-commands.html#feedback",
+    "title": "Writing & Editing Commands",
+    "section": "/feedback",
+    "text": "/feedback\nGet a structured, prioritized critique of a manuscript section.\n\nUsage\n/feedback act 1 chapter 2 scene 3\n/feedback 1 2 3             # Shorthand\n/feedback act 1 chapter 2   # All files in chapter 2\n/feedback 1 2               # Shorthand\n/feedback act 1             # All files in act 1\n/feedback path/to/file.md   # A specific file\n\n\nHow it works\n\nLoads the specified files as read-only context\nSpins up a temporary query-mode session with the style guide loaded\nReturns a structured critique with prioritized suggestions\n\n\n\nOutput format\nThe feedback is organized into three priority tiers:\n\nHigh Priority (2–3 items) — critical issues like plot holes, character inconsistencies, pacing problems, unclear prose\nMedium Priority (2–3 items) — important improvements like dialogue refinement, scene transitions, deepening characterization\nLow Priority (2–3 items) — polish-level suggestions like word choice, rhythm, atmospheric details\n\nEach suggestion quotes the relevant passage, explains the issue, and proposes a concrete improvement. If a style guide is loaded, feedback references it.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/writing-commands.html#auto-context",
+    "href": "reference/writing-commands.html#auto-context",
+    "title": "Writing & Editing Commands",
+    "section": "/auto-context",
+    "text": "/auto-context\nToggle automatic context identification before each LLM call.\n\nUsage\n/auto-context              # Toggle on/off\n/auto-context on           # Enable\n/auto-context off          # Disable\n\n\nHow it works\nWhen enabled (the default), Composez runs a lightweight pre-pass before each user message to identify relevant files, adding them as temporary read-only context. See Auto-Context for details.\nChanges from this command only last for the current session. Use the Settings tab (in the web UI) or .composez to persist the setting.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Writing & Editing Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html",
+    "href": "reference/management-commands.html",
+    "title": "Management Commands",
+    "section": "",
+    "text": "Create new narrative nodes, database entries, or instruction files.\n\n\n/new act The Beginning                    # Create Act 1\n/new act 1 chapter Arrivals               # Create Chapter 1 in Act 1\n/new 1 chapter Arrivals                   # Same (shorthand)\n/new act 1 chapter 1 scene The Train      # Create Scene 1 in Chapter 1\n/new 1 1 scene The Train                  # Same (shorthand)\nWhen creating a node:\n\nThe number is auto-assigned (next in sequence)\nA SUMMARY.md is created with the title as initial content\nFor leaf nodes (scenes), an empty PROSE.md is also created\nBoth files are added to the chat for immediate editing\n\n\n\n\n/new db characters elena          # Create db/characters/elena.md\n/new db locations lighthouse      # Create db/locations/lighthouse.md\n/new db core style               # Create db/core/style.md\nThe entry is added to the chat so you can describe it immediately. Core entries are added as read-only; others as editable.\n\n\n\n/new instruction tone-shift       # Create instructions/tone-shift.md",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#new",
+    "href": "reference/management-commands.html#new",
+    "title": "Management Commands",
+    "section": "",
+    "text": "Create new narrative nodes, database entries, or instruction files.\n\n\n/new act The Beginning                    # Create Act 1\n/new act 1 chapter Arrivals               # Create Chapter 1 in Act 1\n/new 1 chapter Arrivals                   # Same (shorthand)\n/new act 1 chapter 1 scene The Train      # Create Scene 1 in Chapter 1\n/new 1 1 scene The Train                  # Same (shorthand)\nWhen creating a node:\n\nThe number is auto-assigned (next in sequence)\nA SUMMARY.md is created with the title as initial content\nFor leaf nodes (scenes), an empty PROSE.md is also created\nBoth files are added to the chat for immediate editing\n\n\n\n\n/new db characters elena          # Create db/characters/elena.md\n/new db locations lighthouse      # Create db/locations/lighthouse.md\n/new db core style               # Create db/core/style.md\nThe entry is added to the chat so you can describe it immediately. Core entries are added as read-only; others as editable.\n\n\n\n/new instruction tone-shift       # Create instructions/tone-shift.md",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#delete",
+    "href": "reference/management-commands.html#delete",
+    "title": "Management Commands",
+    "section": "/delete",
+    "text": "/delete\nDelete narrative nodes, database entries, or instruction files.\n\nNarrative nodes\n/delete act 2                     # Delete Act 2 and all contents\n/delete 1 2                       # Delete Act 1, Chapter 2\n/delete 1 2 3                     # Delete Act 1, Chapter 2, Scene 3\nDeletion is cascading (all children are removed) and renumbering (subsequent siblings are decremented). For example, deleting Chapter 2 renames Chapter 3 to Chapter 2, Chapter 4 to Chapter 3, etc.\nA confirmation prompt shows the number of files that will be deleted.\n\n\nDatabase entries\n/delete db sarah                  # Delete by name\n/delete db characters sarah       # Delete by category/name\n\n\nInstruction files\n/delete instruction tone-shift",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#insert-after",
+    "href": "reference/management-commands.html#insert-after",
+    "title": "Management Commands",
+    "section": "/insert-after",
+    "text": "/insert-after\nInsert a new node after a given position, renumbering subsequent siblings.\n\nUsage\n/insert-after act 2                       # Insert new act after Act 2\n/insert-after act 1 chapter 3             # Insert new chapter after Ch 3\n/insert-after act 1 chapter 2 scene 1     # Insert scene after Scene 1\n/insert-after 2                           # Shorthand: insert act after 2\n/insert-after 1 3                         # Shorthand: insert chapter after 3\n/insert-after 1 2 1                       # Shorthand: insert scene after 1\nAn optional title can be appended:\n/insert-after 1 2 The Confrontation",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#insert-before",
+    "href": "reference/management-commands.html#insert-before",
+    "title": "Management Commands",
+    "section": "/insert-before",
+    "text": "/insert-before\nSame as /insert-after but inserts before the specified position.\n/insert-before act 1 chapter 2 scene 3 The Flashback\n/insert-before 1 2 3 The Flashback",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#move",
+    "href": "reference/management-commands.html#move",
+    "title": "Management Commands",
+    "section": "/move",
+    "text": "/move\nMove a narrative node or file to a new position.\n\nNarrative moves\nUse to to separate source and target:\n/move 2 1 to 2 2                 # Move Act 2, Ch 1 → Act 2, Ch 2 position\n/move 1 1 1 to 1 2 1            # Move scene between chapters\n/move 2 1 to 2                   # Move Ch 1 to end of Act 2\n/move act 2 chapter 1 to act 2 chapter 3   # Keyword syntax\nThe source is removed from its original position, siblings are renumbered, and the node is inserted at the target. Titles are preserved.\n\n\nFile/directory moves\nFor non-narrative paths:\n/move db/characters/Sarah.md db/locations/",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#import",
+    "href": "reference/management-commands.html#import",
+    "title": "Management Commands",
+    "section": "/import",
+    "text": "/import\nImport content from external sources.\n\nNovelcrafter\n/import novelcrafter path/to/export.zip\n/import novelcrafter path/to/export-dir/\nImports narrative structure and database entries. Replaces existing novel/ and db/ directories. See Import & Export.\n\n\nMarkdown\n/import markdown path/to/draft.md\nMaps # → Act, ## → Chapter, ### → Scene. Only replaces novel/. See Import & Export.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#export",
+    "href": "reference/management-commands.html#export",
+    "title": "Management Commands",
+    "section": "/export",
+    "text": "/export\nExport the manuscript to a file.\n/export markdown                 # → export.md\n/export markdown my-novel.md     # Custom filename\n/export docx                     # → export.docx (requires python-docx)\n/export epub                     # → export.epub (requires ebooklib)\nSee Import & Export for details on each format.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#save",
+    "href": "reference/management-commands.html#save",
+    "title": "Management Commands",
+    "section": "/save",
+    "text": "/save\nSave chat history or file context to a named cache slot.\n/save chat                       # Save chat history to cache/chat/default.yml\n/save chat analysis              # Save to cache/chat/analysis.yml\n/save ctx                        # Save file context to cache/context/default.yml\n/save ctx research               # Save to cache/context/research.yml\n\nChat saves\nSaves done_messages and cur_messages as YAML. Useful for preserving conversation context across sessions or agent steps.\n\n\nContext saves\nSaves the list of editable and read-only file paths. Useful for quickly switching between different working sets.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#load",
+    "href": "reference/management-commands.html#load",
+    "title": "Management Commands",
+    "section": "/load",
+    "text": "/load\nRestore chat history or file context from a cache slot.\n/load chat                       # Restore from cache/chat/default.yml\n/load chat analysis              # Restore from cache/chat/analysis.yml\n/load ctx                        # Restore from cache/context/default.yml\n/load ctx research               # Restore from cache/context/research.yml\nLoading replaces the current chat history or file context—it does not merge.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#copy-context",
+    "href": "reference/management-commands.html#copy-context",
+    "title": "Management Commands",
+    "section": "/copy-context",
+    "text": "/copy-context\nCopy the full chat context (as the LLM sees it) to the clipboard.\n/copy-context                    # Full context\n/copy-context continue           # Only current conversation (after summary)\nUseful for copying context to a web UI for LLMs that don’t have API access.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  },
+  {
+    "objectID": "reference/management-commands.html#paste-response",
+    "href": "reference/management-commands.html#paste-response",
+    "title": "Management Commands",
+    "section": "/paste-response",
+    "text": "/paste-response\nApply an LLM response from the clipboard as if the model returned it.\n/paste-response\nThis reads the clipboard, applies any file edits found in the response using the normal edit pipeline, auto-commits, and runs the linter. Paired with /copy-context for a web-UI workflow.",
+    "crumbs": [
+      "Reference",
+      "Commands",
+      "Management Commands"
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+Sitemap: https://kmewhort.github.io/composez-core/sitemap.xml
