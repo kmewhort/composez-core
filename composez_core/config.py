@@ -3,6 +3,11 @@
 Reads and writes the ``.composez`` file at the project root, which stores
 configurable settings such as the narrative hierarchy levels and
 task-specific model assignments.
+
+An optional *model file override* (set via :func:`set_model_file`) takes
+precedence over the project's ``.composez`` for model role assignments.
+This allows the server to inject pre-configured model tiers (Low / Medium /
+High Power) without modifying the user's project config.
 """
 
 import os
@@ -23,6 +28,27 @@ MODEL_ROLES = (
     "compose_model",
     "agent_model",
 )
+
+# ---------------------------------------------------------------------------
+# Model file override — set by ``--composez-model-file`` CLI flag
+# ---------------------------------------------------------------------------
+
+_model_file_override: str | None = None
+
+
+def set_model_file(path: str | None):
+    """Set a model override file whose values take precedence over ``.composez``.
+
+    The file uses the same YAML format as ``.composez`` (a ``models:`` key
+    mapping role names to model strings).  Pass ``None`` to clear.
+    """
+    global _model_file_override
+    _model_file_override = path
+
+
+def get_model_file() -> str | None:
+    """Return the current model override file path, or ``None``."""
+    return _model_file_override
 
 
 def _config_path(root):
@@ -97,15 +123,37 @@ def get_auto_lint(root):
 
 
 def get_models(root):
-    """Return the ``models`` dict from ``.composez`` (may be empty).
+    """Return the ``models`` dict, merging any model file override on top.
+
+    Base values come from ``.composez``.  If a model override file has been
+    set via :func:`set_model_file`, its entries take precedence.
 
     Only keys listed in :data:`MODEL_ROLES` are returned; unknown keys
     are silently dropped.
     """
     raw = load_config(root).get("models")
-    if not isinstance(raw, dict):
-        return {}
-    return {k: v for k, v in raw.items() if k in MODEL_ROLES and isinstance(v, str) and v}
+    base = (
+        {k: v for k, v in raw.items() if k in MODEL_ROLES and isinstance(v, str) and v}
+        if isinstance(raw, dict)
+        else {}
+    )
+
+    # Merge override file (highest priority)
+    if _model_file_override and os.path.isfile(_model_file_override):
+        try:
+            text = Path(_model_file_override).read_text(encoding="utf-8")
+            data = yaml.safe_load(text)
+            if isinstance(data, dict):
+                # Accept both ``models:`` nested and top-level role keys
+                override = data.get("models", data)
+                if isinstance(override, dict):
+                    for k, v in override.items():
+                        if k in MODEL_ROLES and isinstance(v, str) and v:
+                            base[k] = v
+        except Exception:
+            pass  # bad file — fall through to base config
+
+    return base
 
 
 def resolve_model_for_role(root, role, fallback=None):
